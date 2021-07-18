@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Table from './Table'
 
 const FormWrapper = styled.form`
 width: 70%;
@@ -67,6 +68,15 @@ const PaymentForm = () => {
         </InputRow>
         <InputRow>
             <TextField id="filled-basic" label="За перепробег" variant="filled" style={{ marginLeft: '705px' }} />
+        </InputRow>
+        <Table
+            width="100"
+        />
+        <InputRow>
+        <TextField id="filled-basic" label="Дней" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField id="filled-basic" label="Начислено" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField id="filled-basic" label="Оплачено" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField id="filled-basic" label="Баланс" variant="filled" style={{ marginRight: '30px' }} />
         </InputRow>
     </FormWrapper>
 }

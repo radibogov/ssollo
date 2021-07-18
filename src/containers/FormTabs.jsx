@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ContractForm from '../components/ContractForm';
 import PaymentForm from '../components/PaymentForm'
+import CommentsForm from '../components/CommentsForm'
+
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -34,7 +37,7 @@ function a11yProps(index) {
 }
 
 const FormTabs = () => {
-    const [value, setValue] = React.useState(2);
+    const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -54,7 +57,7 @@ const FormTabs = () => {
                 <PaymentForm/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+                <CommentsForm/>
             </TabPanel>
         </Paper>
     );

@@ -12,8 +12,8 @@ import Slide from '@material-ui/core/Slide';
 import FormTabs from '../containers/FormTabs'
 
 const Row = styled.div`
-    display: flex;
-    flex-direction: row;
+white-space: nowrap;
+width: 1100px;
     :hover{
         background-color: #eee;
         transition: .2s;
@@ -22,11 +22,12 @@ const Row = styled.div`
 `;
 const Cell = styled.div`
     white-space: nowrap;
-    padding: 2px 4px;
+    display: inline-block;
+    padding: 2px 6px;
     border-left: 1px solid #000;
     border-right: 1px solid #000;
     overflow: hidden;
-    min-width: 140px;
+    min-width: 230px;
 `;
 
 const useStyles = makeStyles((theme) => ({
