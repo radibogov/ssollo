@@ -30,7 +30,14 @@ const RightTable = (props) => {
     height: 400px;
     `;
     const current = useSelector(state => state.currentRow.right)
+    React.useEffect(() => {
+        for (let i = 0; i < props.rows.length; i++) {
+            if (props.rows[i].calculation) {
+                // console.log(props.rows[i])
+            }
 
+        }
+    }, [props.rows])
 
     return <Wrapper>
         <Row>
@@ -89,7 +96,7 @@ const RightTable = (props) => {
                 /*                 widthState={widthState} */
                 list={item.calculation}
                 isCurrent={current == item.id}
-                side='left'
+                side='right'
                 id={item.id}
             />
         )}

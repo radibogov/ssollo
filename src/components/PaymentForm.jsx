@@ -89,7 +89,7 @@ const PaymentForm = () => {
         <InputRow>
             <TextField
                 value={calculation.delay}
-                onChange={ 
+                onChange={
                     (event) => {
                         dispatch(setDelay(event.target.value))
                     }
@@ -114,9 +114,21 @@ const PaymentForm = () => {
             <TextField id="filled-basic" label="Перепробег" variant="filled" style={{ marginRight: '20px' }} />
         </InputRow>
         <InputRow>
-            <TextField id="filled-basic" label="За перепробег" variant="filled" style={{ marginLeft: '705px' }} />
+            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                Оплата
+            </Button>
+            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                Добавить
+            </Button>
+            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                Открыть
+            </Button>
+            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                Удалить
+            </Button>
+            <TextField id="filled-basic" label="За перепробег" variant="filled" style={{ marginLeft: '220px' }} />
         </InputRow>
-                <PaymentTable/>
+        <PaymentTable />
         <InputRow>
             <TextField id="filled-basic" label="Дней" variant="filled" style={{ marginRight: '30px' }} />
             <TextField id="filled-basic" label="Начислено" variant="filled" style={{ marginRight: '30px' }} />

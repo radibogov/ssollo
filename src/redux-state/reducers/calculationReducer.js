@@ -79,6 +79,7 @@ export const calculationReducer = (state = defaultState, action) => {
                 mileage_after: null
             }
         case SET_CALC_LIST:
+            console.log(action.payload)
             return {
                 state,
                 ...state,

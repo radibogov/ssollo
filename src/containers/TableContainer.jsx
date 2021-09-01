@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
 import LeftTable from '../components/LeftTable';
 import RightTable from '../components/RightTable';
+import ContractDialog from '../components/ContractDialog';
 
 const Wrapper = styled.div`
 display: flex;
@@ -20,6 +21,7 @@ const TableContainer = () => {
     }, [])
     console.log(tables)
     return <Wrapper>
+        <ContractDialog />
         <LeftTable
             rows={tables.left}
         />

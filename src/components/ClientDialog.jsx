@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCars } from '../redux-state/async-actions/fetchCars';
 import { fetchUsers } from '../redux-state/async-actions/fetchUsers';
 import { setUserID } from '../redux-state/reducers/contractFormReducer';
+import { toggleClientDialog } from '../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -36,14 +37,14 @@ export default function ClientDialog() {
     const dispatch = useDispatch()
     const autoList = useSelector(state => state.lists.users)
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const open = useSelector(state => state.dialogs.client)
 
     const handleClickOpen = () => {
-        setOpen(true);
+        dispatch(toggleClientDialog(true))
     };
 
     const handleClose = () => {
-        setOpen(false);
+        dispatch(toggleClientDialog(false))
     };
 
     React.useEffect(() => {
@@ -79,12 +80,14 @@ export default function ClientDialog() {
                         <ListItemText primary="Баланс" />
                     </ListItem>
                     {autoList.map(el =>
-                        <React.Fragment>
+                        <React.Fragment
+                        key={el.id}
+                        >
                             <ListItem button
                                 onClick={
                                     () => {
                                         dispatch(setUserID({ id: el.id, name: el.full_name }))
-                                        setOpen(false)
+                                        dispatch(toggleClientDialog(false))
                                     }
                                 }
                             >

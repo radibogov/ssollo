@@ -16,6 +16,7 @@ import ClientDialog from './ClientDialog';
 import { Button } from '@material-ui/core';
 import FirmDialog from './firmDialog';
 import { createContract } from '../redux-state/async-actions/createContract';
+import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
 
 
 const FormWrapper = styled.form`
@@ -144,7 +145,7 @@ const ContractForm = () => {
                         shrink: true,
                     }}
                 />
-                <TextField
+                {/* <TextField
                     id="date"
                     label="Дата тар."
                     type="date"
@@ -158,7 +159,7 @@ const ContractForm = () => {
                         shrink: true,
                     }}
                     style={{ marginLeft: '20px' }}
-                />
+                /> */}
 
             </InputRow>
             <InputRow>
@@ -338,6 +339,8 @@ const ContractForm = () => {
                 onClick={
                     () => {
                         dispatch(createContract(contractForm))
+                        dispatch(fetchTableRows(true))
+
                     }
                 }
                 variant="contained" color="primary">

@@ -16,6 +16,7 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCars } from '../redux-state/async-actions/fetchCars';
 import { setAutomobileId, setRealAutoId } from '../redux-state/reducers/contractFormReducer';
+import { toggleAutoDialog } from '../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -35,14 +36,14 @@ export default function AutoDialog() {
     const dispatch = useDispatch()
     const autoList = useSelector(state => state.lists.cars)
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const open = useSelector(state => state.dialogs.auto)
 
     const handleClickOpen = () => {
-        setOpen(true);
+        dispatch(toggleAutoDialog(true))
     };
 
     const handleClose = () => {
-        setOpen(false);
+        dispatch(toggleAutoDialog(false))
     };
 
     React.useEffect(() => {
@@ -78,16 +79,17 @@ export default function AutoDialog() {
                         <ListItemText primary="Модель машины" />
                     </ListItem>
                     {autoList.map(el =>
-                        <React.Fragment>
+                        <React.Fragment
+                            key={el.id}
+                        >
                             <ListItem style={{ background: el.red_stat ? 'pink' : 'transparent' }} button
-                            onClick={
-                                () => {
-                                    dispatch(setRealAutoId({id: el.id, name: el.name + ', ' + el.gos_number}))
-                                    dispatch(setAutomobileId(el.tarif.id))
-                                    console.log(el.tarif)
-                                    setOpen(false);
+                                onClick={
+                                    () => {
+                                        dispatch(setRealAutoId({ id: el.id, name: el.name + ', ' + el.gos_number }))
+                                        dispatch(setAutomobileId(el.tarif.id))
+                                        dispatch(toggleAutoDialog(false))
+                                    }
                                 }
-                            }
                             >
                                 <ListItemText primary={el.id} />
                                 <ListItemText primary={el.gos_number} />

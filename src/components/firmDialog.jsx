@@ -16,6 +16,7 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFirmId, setUserID } from '../redux-state/reducers/contractFormReducer';
 import { fetchFirms } from '../redux-state/async-actions/fetchFirms';
+import { toggleFirmDialog } from '../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -35,14 +36,14 @@ export default function FirmDialog() {
     const dispatch = useDispatch()
     const autoList = useSelector(state => state.lists.firms)
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const open = useSelector(state => state.dialogs.firm)
 
     const handleClickOpen = () => {
-        setOpen(true);
+        dispatch(toggleFirmDialog(true))
     };
 
     const handleClose = () => {
-        setOpen(false);
+        dispatch(toggleFirmDialog(false))
     };
 
     React.useEffect(() => {
@@ -77,15 +78,17 @@ export default function FirmDialog() {
                         <ListItemText primary="Название" />
                     </ListItem>
                     {autoList.map(el =>
-                        <React.Fragment>
+                        <React.Fragment
+                            key={el.id}
+                        >
                             <ListItem button
-                            onClick={
-                                () => {
-                                    dispatch(setFirmId(el))
-                                    setOpen(false)
+                                onClick={
+                                    () => {
+                                        dispatch(setFirmId(el))
+                                        dispatch(toggleFirmDialog(false))
+                                    }
+
                                 }
-                                
-                            }
                             >
                                 <ListItemText primary={el.id} />
                                 <ListItemText primary={el.name} />

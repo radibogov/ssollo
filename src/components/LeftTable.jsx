@@ -30,6 +30,15 @@ const LeftTable = (props) => {
     height: 400px;
     `;
     const current = useSelector(state => state.currentRow.left)
+    
+    React.useEffect(() => {
+        for (let i = 0; i < props.rows.length; i++) {
+            if(props.rows[i].calculation) {
+                console.log(props.rows[i])
+            }
+            
+        }
+    }, [props.rows])
 
     return <Wrapper>
         <Row>
@@ -74,10 +83,10 @@ const LeftTable = (props) => {
             <TableRow
                 key={item.id}
                 time={item.start_datetime && moment(item.start_datetime).format('DD / MM / YYYY')}
-                numberAuto={item.real_auto}
+                numberAuto={item.real_auto && item.real_auto.gos_number}
                 model={item.automobile.name}
                 place={item.address_gave}
-                // client={item.user !== null ? item.user : ''}
+                client={item.user !== null ? item.user.full_name : ''}
                 payment={item.payment}
                 balance={item.automobile.deposit}
                 days={item.days_second - item.days_first}
@@ -85,8 +94,7 @@ const LeftTable = (props) => {
                 contract={item.contract_number}
                 // comment={item.comment}
                 // mark={item.mark}
-                /*                 widthState={widthState} */
-                list={item.calculation}
+                list={item.payments}
                 isCurrent={current == item.id}
                 side='left'
                 id={item.id}

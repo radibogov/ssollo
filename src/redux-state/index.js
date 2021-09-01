@@ -7,6 +7,8 @@ import { contractFormReducer } from "./reducers/contractFormReducer";
 import { listsReducer } from "./reducers/listsReducer";
 import { calculationReducer } from "./reducers/calculationReducer";
 import { currentRowReducer } from "./reducers/currentRowReducer";
+import { dialogReducer } from "./reducers/DialogsReducer";
+import { paymentReducer } from "./reducers/paymentReducer";
 
 
 const rootReducer = combineReducers({
@@ -16,6 +18,11 @@ const rootReducer = combineReducers({
     lists: listsReducer,
     calculation: calculationReducer,
     currentRow: currentRowReducer,
+    dialogs: dialogReducer,
+    payment: paymentReducer,
 })
+
+
+
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
