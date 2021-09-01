@@ -1,0 +1,1 @@
+export const FETCH_URL = 'http://civiltechgroup.ru:8888'

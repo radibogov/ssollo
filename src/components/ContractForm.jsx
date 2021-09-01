@@ -9,7 +9,13 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import AddIcon from '@material-ui/icons/Add';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setContractNumber, setDaysFirst, setDaysSecond, setEndDatetime, setGodNumber, setIsGiven, setIsReturned, setRealAutoId, setStartDateTime, setTariffDate, setUchNumber } from '../redux-state/reducers/contractFormReducer';
+import AutoDialog from './AutoDialog';
+import ClientDialog from './ClientDialog';
+import { Button } from '@material-ui/core';
+import FirmDialog from './firmDialog';
+import { createContract } from '../redux-state/async-actions/createContract';
 
 
 const FormWrapper = styled.form`
@@ -27,19 +33,20 @@ border-bottom: 1px solid #3f51b5;
 `;
 
 const ContractForm = () => {
-    const [checked, setChecked] = React.useState(false)
-
-
+    const dispatch = useDispatch()
+    const contractForm = useSelector(state => state.contractForm)
+    console.log(contractForm)
 
     return <FormWrapper>
+
         <Inner>
             <InputRow>
-                <TextField id="filled-basic" label="Договор №" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
-                <TextField id="filled-basic" label="Уч №" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
-                <TextField id="filled-basic" label="№ год." variant="filled" style={{ marginRight: '20px', width: '120%' }} />
-                <TextField id="filled-basic" label="№ автом" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
+                <TextField value={contractForm.contract_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
+                <TextField value={contractForm.uch_number} onChange={(event) => dispatch(setUchNumber(event.target.value))} id="filled-basic" label="Уч №" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
+                <TextField value={contractForm.god_number} onChange={(event) => dispatch(setGodNumber(event.target.value))} id="filled-basic" label="№ год." variant="filled" style={{ marginRight: '20px', width: '120%' }} />
+                <TextField value={contractForm.real_auto_id} onChange={(event) => dispatch(setRealAutoId(event.target.value))} id="filled-basic" label="№ автом" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
                 <FormControlLabel
-                    control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checkedA" />}
+                    control={<Checkbox checked={contractForm.is_given} onChange={(event) => dispatch(setIsGiven(event.target.checked))} name="checkedA" />}
                     label="Автомобиль выдан"
                 />
             </InputRow>
@@ -50,12 +57,10 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '30%'
                 }}>
-                    <TextField id="filled-basic" label="Автомобиль" variant="filled" style={{ width: '90%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
+                    <TextField value={contractForm.real_auto_id && '' + contractForm.real_auto_id} readOnly id="filled-basic" label="Автомобиль" variant="filled" style={{ width: '90%' }} />
+                    <AutoDialog />
                 </div>
-                <TextField id="filled-basic" value='Skoda Rapid, 063BK750' variant="filled" style={{ width: '70%' }} />
+                <TextField id="filled-basic" value={contractForm.auto_name} variant="filled" style={{ width: '70%' }} />
             </InputRow>
             <InputRow>
                 <div style={{
@@ -64,14 +69,12 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '75%'
                 }}>
-                    <TextField id="filled-basic" label="Клиент" variant="filled" style={{ width: '95%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
+                    <TextField readOnly value={contractForm.client_name} id="filled-basic" label="Клиент" variant="filled" style={{ width: '95%' }} />
+                    <ClientDialog />
                 </div>
                 <TextField id="filled-basic" value='Новый' variant="filled" style={{ width: '30%' }} />
             </InputRow>
-            <InputRow>
+            {/* <InputRow>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -123,7 +126,7 @@ const ContractForm = () => {
                     </IconButton>
 
                 </div>
-            </InputRow>
+            </InputRow> */}
         </Inner>
         <Inner>
             <InputRow>
@@ -131,7 +134,12 @@ const ContractForm = () => {
                     id="datetime-local"
                     label="Начало"
                     type="datetime-local"
-
+                    value={contractForm.start_datetime}
+                    onChange={
+                        (event) => {
+                            dispatch(setStartDateTime(event.target.value))
+                        }
+                    }
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -140,7 +148,12 @@ const ContractForm = () => {
                     id="date"
                     label="Дата тар."
                     type="date"
-                    defaultValue="2017-05-24"
+                    value={contractForm.tariff_date}
+                    onChange={
+                        (event) => {
+                            dispatch(setTariffDate(event.target.value))
+                        }
+                    }
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -153,18 +166,27 @@ const ContractForm = () => {
                     id="datetime-local"
                     label="Возврат"
                     type="datetime-local"
-
+                    value={contractForm.end_datetime}
+                    onChange={
+                        (event) => {
+                            dispatch(setEndDatetime(event.target.value))
+                        }
+                    }
                     InputLabelProps={{
                         shrink: true,
                     }}
                 />
                 <FormControlLabel
-                    control={<Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checkedA" />}
+                    control={<Checkbox checked={contractForm.is_returned} onChange={() => {
+                        dispatch(setIsReturned())
+                    }
+                    } name="checkedA" />}
                     label="Возвращено"
                     style={{ marginLeft: '20px' }}
                 />
             </InputRow>
             <InputRow>
+                {/* НЕ ПОНЯТНО ЧТО С ЭТИМ ПОЛЕМ, РИДОНЛИ ОНО ИЛИ НЕТ, ОТКУДА БРАТЬ ЕГО */}
                 <TextField
                     id="date"
                     label="Оплачено"
@@ -176,15 +198,27 @@ const ContractForm = () => {
                 />
             </InputRow>
             <InputRow>
-                <IconButton color="primary">
+                <IconButton color="primary"
+                    onClick={
+                        () => {
+                            dispatch(setDaysFirst(+contractForm.days_first - 1 >= 0 ? +contractForm.days_first - 1 : 0))
+                        }
+                    }
+                >
                     <ArrowLeftIcon />
                 </IconButton>
-                <TextField id="filled-basic" label="Дней" variant="filled" defaultValue={2} type="number" />
-                <IconButton color="primary">
+                <TextField id="filled-basic" label="Дней" variant="filled" value={'' + contractForm.days_first} onChange={(event) => dispatch(setDaysFirst(event.target.value))} type="number" />
+                <IconButton color="primary"
+                    onClick={
+                        () => {
+                            dispatch(setDaysFirst(+contractForm.days_first + 1))
+                        }
+                    }
+                >
                     <ArrowRightIcon />
                 </IconButton>
                 <AddIcon />
-                <TextField id="filled-basic" variant="filled" defaultValue={2} type="number" style={{ width: '80px', marginLeft: '15px' }} />
+                <TextField id="filled-basic" variant="filled" value={contractForm.days_second} onChange={event => dispatch(setDaysSecond(event.target.value))} type="number" style={{ width: '80px', marginLeft: '15px' }} />
             </InputRow>
             <InputRow>
                 <div style={{
@@ -266,10 +300,8 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField id="filled-basic" label="Фирма" variant="filled" style={{ width: '87%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
+                    <TextField value={contractForm.firm_name} id="filled-basic" label="Фирма" variant="filled" style={{ width: '87%' }} />
+                <FirmDialog/>
 
                 </div>
             </InputRow>
@@ -295,6 +327,22 @@ const ContractForm = () => {
                     <TextField id="filled-basic" label="Примечание" variant="filled" style={{ width: '100%' }} />
 
                 </div>
+            </InputRow>
+            <InputRow
+                style={{
+                    justifyContent: 'flex-end',
+                    padding: '20px 0'
+                }}
+            >
+                <Button
+                onClick={
+                    () => {
+                        dispatch(createContract(contractForm))
+                    }
+                }
+                variant="contained" color="primary">
+                    Сохранить
+                </Button>
             </InputRow>
         </Inner>
     </FormWrapper>

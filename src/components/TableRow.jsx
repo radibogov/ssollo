@@ -10,13 +10,17 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import FormTabs from '../containers/FormTabs'
+import { useDispatch } from 'react-redux';
+import { setCalcList } from '../redux-state/reducers/calculationReducer';
+import { setCurrentLeft, setCurrentRight } from '../redux-state/reducers/currentRowReducer';
 
 const Row = styled.div`
 white-space: nowrap;
-width: 1100px;
+width: 2440px;
+transition: .2s;
     :hover{
-        background-color: #eee;
-        transition: .2s;
+        background: #eee;
+
         cursor: pointer;
     }
 `;
@@ -28,6 +32,8 @@ const Cell = styled.div`
     border-right: 1px solid #000;
     overflow: hidden;
     min-width: 230px;
+    height: 100%;
+    text-align: center;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +51,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const TableRow = (props) => {
+    const dispatch = useDispatch()
     const rowRef = React.useRef()
     const classes = useStyles();
     const [open, setOpen] = React.useState(false)
@@ -56,7 +63,7 @@ const TableRow = (props) => {
     const handleClose = () => {
         setOpen(false);
     };
-
+    // console.log(props.list)
     return <>
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
@@ -67,9 +74,6 @@ const TableRow = (props) => {
                     <Typography variant="h6" className={classes.title}>
                         Договор проката
                     </Typography>
-                    <Button autoFocus color="inherit" onClick={handleClose}>
-                        Сохранить
-                    </Button>
                 </Toolbar>
             </AppBar>
             <FormTabs />
@@ -78,14 +82,23 @@ const TableRow = (props) => {
 
 
         <Row
+            style={{
+                background: props.isCurrent ? 'lightblue' : ''
+            }}
             ref={rowRef}
             onClick={
                 () => {
-                    //rowRef.current.style
+                    if (props.side === 'right') {
+                        dispatch(setCurrentRight(props.id))
+                    } else if (props.side === 'left') {
+                        dispatch(setCurrentLeft(props.id))
+                    }
+
                 }
             }
             onDoubleClick={
                 () => {
+                    dispatch(setCalcList(props.list))
                     handleClickOpen()
                 }
             }
@@ -120,12 +133,12 @@ const TableRow = (props) => {
             <Cell>
                 {props.contract}
             </Cell>
-            <Cell>
+            {/* <Cell>
                 {props.comment}
             </Cell>
             <Cell>
                 {props.mark}
-            </Cell>
+            </Cell> */}
         </Row>
     </>
 }

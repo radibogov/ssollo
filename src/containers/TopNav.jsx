@@ -6,12 +6,24 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Tooltip from '@material-ui/core/Tooltip';
 import 'date-fns';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
+import Slide from '@material-ui/core/Slide';
+import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDate } from '../redux-state/reducers/dateReducer';
+import Dialog from '@material-ui/core/Dialog';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import FormTabs from '../containers/FormTabs'
+import { deleteContract } from '../redux-state/async-actions/deleteContract';
+import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
+import { clearContractForm } from '../redux-state/reducers/contractFormReducer';
 
 const Wrapper = styled.div`
 display: flex;
@@ -43,28 +55,78 @@ const Header = styled.div`
   border-radius: 2rem 2rem 0 0;
 `;
 
-const TopNav = () => {
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+const useStyles = makeStyles((theme) => ({
+  appBar: {
+      position: 'relative',
+  },
+  title: {
+      marginLeft: theme.spacing(2),
+      flex: 1,
+  },
+}));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const TopNav = () => {
+  const date = useSelector(state => state.date.date)
+  const current = useSelector(state => state.currentRow.left)
+  const dispatch = useDispatch()
+  const classes = useStyles();
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    dispatch(setDate(date))
+    dispatch(fetchTableRows(true))
+    dispatch(fetchTableRows(false))
+  };
+  const [open, setOpen] = React.useState(false)
+  const handleClickOpen = () => {
+    setOpen(true);
+    dispatch(clearContractForm())
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
   return <Wrapper>
     <Row>
       <Inner>
         <Tooltip title="Добавить новую запись">
-          <IconButton aria-label="delete" color="primary">
+          <IconButton aria-label="delete" color="primary"
+          onClick={handleClickOpen}
+          >
             <NoteAddIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Открыть договор">
+        <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className={classes.title}>
+                Договор проката
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <FormTabs />
+        </Dialog>
+        {/* <Tooltip title="Открыть договор">
           <IconButton aria-label="delete" color="primary">
             <NoteIcon />
           </IconButton>
-        </Tooltip>
-        <Tooltip title="Удалить договор-">
-          <IconButton aria-label="delete" color="primary">
+        </Tooltip> */}
+        <Tooltip title="Удалить договор">
+          <IconButton 
+          onClick={
+            () => {
+              dispatch(deleteContract(current))
+              setTimeout(() => {
+                dispatch(fetchTableRows(true))
+              }, 200)
+            }
+          }
+          aria-label="delete" color="primary">
             <DeleteForeverIcon />
           </IconButton>
         </Tooltip>
@@ -78,7 +140,7 @@ const TopNav = () => {
             margin="normal"
             id="date-picker-inline"
             label="Дата для просмотра"
-            value={selectedDate}
+            value={date}
             onChange={handleDateChange}
             KeyboardButtonProps={{
               'aria-label': 'change date',
@@ -90,11 +152,6 @@ const TopNav = () => {
         <Tooltip title="Открыть договор">
           <IconButton aria-label="delete" color="primary">
             <NoteIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Замечание">
-          <IconButton aria-label="delete" color="primary">
-            <AnnouncementIcon />
           </IconButton>
         </Tooltip>
       </Inner>
