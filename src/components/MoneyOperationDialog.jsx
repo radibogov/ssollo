@@ -98,7 +98,9 @@ export default function MoneyOperationDialog() {
                         >
                             <TextField
                                 id="standard-basic"
-                                label="Услуга" />
+                                label="Услуга" 
+                                disabled
+                                />
                             <IconButton color="primary">
                                 <ArrowDropDownCircleIcon />
                             </IconButton>
@@ -108,7 +110,9 @@ export default function MoneyOperationDialog() {
                     <InputRow>
                         <TextField
                             id="standard-basic"
-                            label="Тариф" />
+                            label="Тариф" 
+                            
+                            />
                         <div
                             style={{
                                 display: 'flex',

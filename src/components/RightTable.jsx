@@ -82,7 +82,7 @@ const RightTable = (props) => {
             <TableRow
                 key={item.id}
                 time={item.start_datetime && moment(item.start_datetime).format('DD / MM / YYYY')}
-                numberAuto={item.real_auto}
+                numberAuto={item.real_auto && item.real_auto.gos_number}
                 model={item.automobile.name}
                 place={item.address_gave}
                 // client={item.user !== null ? item.user : ''}
