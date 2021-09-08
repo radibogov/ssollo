@@ -3,6 +3,8 @@
 
 const SET_MANAGER_OT_ID = 'SET_MANAGER_OT_ID'
 const SET_MANAGER_PR_ID = 'SET_MANAGER_PR_ID'
+const SET_PLACE_OT = 'SET_PLACE_OT'
+const SET_PLACE_PR = 'SET_PLACE_PR'
 const SET_AUTOMIBILE_ID = 'SET_AUTOMIBILE_ID'
 const SET_CONTRACT_NUMBER = 'SET_CONTRACT_NUMBER'
 const SET_UCH_NUMBER = 'SET_UCH_NUMBER'
@@ -24,18 +26,26 @@ const SET_DISCOUNT_REASON = 'SET_DISCOUNT_REASON'
 const SET_SUMMA_PROKATA = 'SET_SUMMA_PROKATA'
 const SET_PROKATA_TARIF = 'SET_PROKATA_TARIF'
 const SET_FIRM_ID = 'SET_FIRM_ID'
+const SET_TERRITORY = 'SET_TERRITORY'
+const SET_NOTES = 'SET_NOTES'
+const SET_MARKS = 'SET_MARKS'
 const CLEAR_FORM = 'CLEAR_FORM'
 
 
 
 const defaultState = {
     manager_ot_id: null,
+    manager_ot_name: '',
     manager_pr_id: null,
+    manager_pr_name: '',
+    place_ot: '',
+    place_pr: '',
     automobile_id: null,
     contract_number: null,
     uch_number: null,
     god_number: null,
     real_auto_id: '',
+    gos_number: '',
     auto_name: '',
     user_id: null,
     client_name: '',
@@ -54,7 +64,10 @@ const defaultState = {
     summa_prokata: 0,
     summa_prokata_tarif: 8200,
     firm_id: null,
-    firm_name: ''
+    firm_name: '',
+    territory: '',
+    notes: '',
+    marks:''
 }
 
 export const contractFormReducer = (state = defaultState, action) => {
@@ -62,21 +75,6 @@ export const contractFormReducer = (state = defaultState, action) => {
 
 
     switch (action.type) {
-        case SET_MANAGER_OT_ID:
-            return {
-                ...state,
-                manager_ot_id: action.payload
-            }
-        case SET_MANAGER_PR_ID:
-            return {
-                ...state,
-                manager_pr_id: action.payload
-            }
-        case SET_AUTOMIBILE_ID:
-            return {
-                ...state,
-                automobile_id: action.payload
-            }
         case SET_CONTRACT_NUMBER:
             return {
                 ...state,
@@ -92,10 +90,40 @@ export const contractFormReducer = (state = defaultState, action) => {
                 ...state,
                 god_number: action.payload
             }
+        case SET_AUTOMIBILE_ID:
+            return {
+                ...state,
+                automobile_id: action.payload
+            }
+        case SET_MANAGER_OT_ID:
+            return {
+                ...state,
+                manager_ot_id: action.payload.id,
+                manager_ot_name: action.payload.full_name
+            }
+        case SET_MANAGER_PR_ID:
+            return {
+                ...state,
+                manager_pr_id: action.payload.id,
+                manager_pr_name: action.payload.full_name
+            }
+
+        case SET_PLACE_OT:
+            return {
+                ...state,
+                place_ot: action.payload.address
+            }
+        case SET_PLACE_PR:
+            return {
+                ...state,
+                place_pr: action.payload.address
+            }
+
         case SET_REAL_AUTO_ID:
             return {
                 ...state,
                 real_auto_id: action.payload.id,
+                gos_number: action.payload.gos_number,
                 auto_name: action.payload.name
             }
         case SET_USER_ID:
@@ -180,15 +208,35 @@ export const contractFormReducer = (state = defaultState, action) => {
                 firm_id: action.payload.id,
                 firm_name: action.payload.name
             }
+        case SET_TERRITORY:
+            return {
+                ...state,
+                territory: action.payload,
+            }
+        case SET_NOTES:
+            return {
+                ...state,
+                notes: action.payload,
+            }
+        case SET_MARKS:
+            return {
+                ...state,
+                marks: action.payload,
+            }
         case CLEAR_FORM:
             return {
                 manager_ot_id: null,
+                manager_ot_name: '',
                 manager_pr_id: null,
+                manager_pr_name: '',
+                place_ot: '',
+                place_pr: '',
                 automobile_id: null,
                 contract_number: null,
                 uch_number: null,
                 god_number: null,
                 real_auto_id: '',
+                gos_number: '',
                 auto_name: '',
                 user_id: null,
                 client_name: '',
@@ -207,10 +255,11 @@ export const contractFormReducer = (state = defaultState, action) => {
                 summa_prokata: 0,
                 summa_prokata_tarif: 8200,
                 firm_id: null,
-                firm_name: ''
+                firm_name: '',
+                territory: '',
+                notes: '',
+                marks:''
             }
-
-
 
         default:
             return state
@@ -222,6 +271,8 @@ export const contractFormReducer = (state = defaultState, action) => {
 
 export const setManagerOtId = (payload) => { return { type: SET_MANAGER_OT_ID, payload } }
 export const setManagerPrId = (payload) => { return { type: SET_MANAGER_PR_ID, payload } }
+export const setPlaceOt = (payload) => { return { type: SET_PLACE_OT, payload } }
+export const setPlacePr = (payload) => { return { type: SET_PLACE_PR, payload } }
 export const setAutomobileId = (payload) => { return { type: SET_AUTOMIBILE_ID, payload } }
 export const setContractNumber = (payload) => { return { type: SET_CONTRACT_NUMBER, payload } }
 export const setUchNumber = (payload) => { return { type: SET_UCH_NUMBER, payload } }
@@ -243,5 +294,8 @@ export const setDIscountReason = (payload) => { return { type: SET_DISCOUNT_REAS
 export const setSummaProkata = (payload) => { return { type: SET_SUMMA_PROKATA, payload } }
 export const setProkataTarif = (payload) => { return { type: SET_PROKATA_TARIF, payload } }
 export const setFirmId = (payload) => { return { type: SET_FIRM_ID, payload } }
+export const setTerritory = (payload) => { return { type: SET_TERRITORY, payload } }
+export const setNotes = (payload) => { return { type: SET_NOTES, payload } }
+export const setMarks = (payload) => { return { type: SET_MARKS, payload } }
 export const clearContractForm = () => { return { type: CLEAR_FORM } }
 

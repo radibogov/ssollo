@@ -1,6 +1,6 @@
 import React from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,11 +13,12 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCars } from '../redux-state/async-actions/fetchCars';
-import { fetchUsers } from '../redux-state/async-actions/fetchUsers';
-import { setUserID } from '../redux-state/reducers/contractFormReducer';
-import { toggleClientDialog } from '../redux-state/reducers/DialogsReducer';
+import { setPlaceOt, setPlacePr} from '../../redux-state/reducers/contractFormReducer';
+import { fetchPlaces } from '../../redux-state/async-actions/fetchPlaces';
+import { togglePlaceOtDialog, togglePlacePrDialog
+    } from '../../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -32,33 +33,32 @@ const useStyles = makeStyles((theme) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-
-export default function ClientDialog() {
+export default function PlaceDialog({priem}) {
     const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.users)
+    const placesList = useSelector(state => state.lists.places)
+    console.log()
     const classes = useStyles();
-    const open = useSelector(state => state.dialogs.client)
+    const open = useSelector(state => priem?state.dialogs.place_pr:state.dialogs.place_ot)
 
     const handleClickOpen = () => {
-        dispatch(toggleClientDialog(true))
+        priem?dispatch(togglePlacePrDialog(true)):dispatch(togglePlaceOtDialog(true))
     };
 
     const handleClose = () => {
-        dispatch(toggleClientDialog(false))
+        priem?dispatch(togglePlacePrDialog(false)):dispatch(togglePlaceOtDialog(false))
     };
 
     React.useEffect(() => {
-        dispatch(fetchUsers())
+        dispatch(fetchPlaces())
     }, [])
-    // console.log(autoList)
     return (
         <div>
             <IconButton color="primary"
-                onClick={
-                    () => {
-                        handleClickOpen(true)
-                    }
-                }
+                        onClick={
+                            () => {
+                                handleClickOpen(true)
+                            }
+                        }
             >
                 <ArrowDropDownCircleIcon />
             </IconButton>
@@ -69,31 +69,35 @@ export default function ClientDialog() {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            Пользователи
+                            {priem?' Прием':' Выдача'}
                         </Typography>
                     </Toolbar>
                 </AppBar>
                 <List>
                     <ListItem style={{ background: 'red' }}>
                         <ListItemText primary="Айди" />
-                        <ListItemText primary="Полное имя" />
-                        <ListItemText primary="Баланс" />
+                        <ListItemText primary="Адресс" />
                     </ListItem>
-                    {autoList.map(el =>
+                    {placesList?.map(el =>
                         <React.Fragment
-                        key={el.id}
+                            key={el.id}
                         >
                             <ListItem button
-                                onClick={
-                                    () => {
-                                        dispatch(setUserID({ id: el.id, name: el.full_name }))
-                                        dispatch(toggleClientDialog(false))
-                                    }
-                                }
+                                      onClick={
+                                          () => {
+                                              if (priem) {
+                                                  dispatch(setPlacePr(el));
+                                                  dispatch(togglePlacePrDialog(false));
+                                              } else {
+                                                  dispatch(setPlaceOt(el));
+                                                  dispatch(togglePlaceOtDialog(false));
+                                              }
+                                          }
+
+                                      }
                             >
                                 <ListItemText primary={el.id} />
-                                <ListItemText primary={el.full_name} />
-                                <ListItemText primary={el.phone_balance} />
+                                <ListItemText primary={el.address} />
                             </ListItem>
                             <Divider />
                         </React.Fragment>

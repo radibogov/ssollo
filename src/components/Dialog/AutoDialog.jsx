@@ -14,9 +14,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFirmId, setUserID } from '../redux-state/reducers/contractFormReducer';
-import { fetchFirms } from '../redux-state/async-actions/fetchFirms';
-import { toggleFirmDialog } from '../redux-state/reducers/DialogsReducer';
+import { fetchCars } from '../../redux-state/async-actions/fetchCars';
+import { setAutomobileId, setRealAutoId } from '../../redux-state/reducers/contractFormReducer';
+import { toggleAutoDialog } from '../../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -32,24 +32,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FirmDialog() {
+export default function AutoDialog() {
     const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.firms)
+    const autoList = useSelector(state => state.lists.cars)
     const classes = useStyles();
-    const open = useSelector(state => state.dialogs.firm)
+    const open = useSelector(state => state.dialogs.auto)
 
     const handleClickOpen = () => {
-        dispatch(toggleFirmDialog(true))
+        dispatch(toggleAutoDialog(true))
     };
 
     const handleClose = () => {
-        dispatch(toggleFirmDialog(false))
+        dispatch(toggleAutoDialog(false))
     };
 
     React.useEffect(() => {
-        dispatch(fetchFirms())
+        dispatch(fetchCars())
     }, [])
-    console.log(autoList)
     return (
         <div>
             <IconButton color="primary"
@@ -68,29 +67,33 @@ export default function FirmDialog() {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            Фирмы
+                            Автомобили
                         </Typography>
                     </Toolbar>
                 </AppBar>
                 <List>
                     <ListItem style={{ background: 'red' }}>
                         <ListItemText primary="Айди" />
-                        <ListItemText primary="Название" />
+                        <ListItemText primary="Гос номер" />
+                        <ListItemText primary="Модель машины" />
                     </ListItem>
                     {autoList.map(el =>
                         <React.Fragment
                             key={el.id}
                         >
-                            <ListItem button
+                            <ListItem style={{ background: el.red_stat ? 'pink' : 'transparent' }} button
                                 onClick={
                                     () => {
-                                        dispatch(setFirmId(el))
-                                        dispatch(toggleFirmDialog(false))
+                                        dispatch(setRealAutoId({ id: el.id,
+                                                                        gos_number: el.gos_number,
+                                                                        name: el.name + ', ' + el.gos_number }))
+                                        dispatch(setAutomobileId(el.tarif.id))
+                                        dispatch(toggleAutoDialog(false))
                                     }
-
                                 }
                             >
                                 <ListItemText primary={el.id} />
+                                <ListItemText primary={el.gos_number} />
                                 <ListItemText primary={el.name} />
                             </ListItem>
                             <Divider />

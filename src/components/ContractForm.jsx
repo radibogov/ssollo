@@ -5,19 +5,36 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import AddIcon from '@material-ui/icons/Add';
 import { useDispatch, useSelector } from 'react-redux';
-import { setContractNumber, setDaysFirst, setDaysSecond, setEndDatetime, setGodNumber, setIsGiven, setIsReturned, setRealAutoId, setStartDateTime, setTariffDate, setUchNumber } from '../redux-state/reducers/contractFormReducer';
-import AutoDialog from './AutoDialog';
-import ClientDialog from './ClientDialog';
+import {
+    setContractNumber,
+    setDaysFirst,
+    setDaysSecond,
+    setEndDatetime,
+    setGodNumber,
+    setIsGiven,
+    setIsReturned,
+    setRealAutoId,
+    setStartDateTime,
+    setUchNumber,
+    setNotes,
+    setDiscoundsPercents, setDiscountSum, setDIscountReason, setMarks
+} from '../redux-state/reducers/contractFormReducer';
 import { Button } from '@material-ui/core';
-import FirmDialog from './firmDialog';
+
 import { createContract } from '../redux-state/async-actions/createContract';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
 
+import ClientDialog from './Dialog/ClientDialog';
+import AutoDialog from './Dialog/AutoDialog';
+import TariffDialog from "./Dialog/TariffDialog";
+import ManagerDialog from "./Dialog/ManagerDialog";
+import PlaceDialog from "./Dialog/PlaceDialog";
+import FirmDialog from './Dialog/firmDialog';
+import TerritoryDialog from "./Dialog/TerritoryDialog";
 
 const FormWrapper = styled.form`
 width: 80%;
@@ -45,7 +62,10 @@ const ContractForm = () => {
                 <TextField value={contractForm.contract_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
                 <TextField value={contractForm.uch_number} onChange={(event) => dispatch(setUchNumber(event.target.value))} id="filled-basic" label="Уч №" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
                 <TextField value={contractForm.god_number} onChange={(event) => dispatch(setGodNumber(event.target.value))} id="filled-basic" label="№ год." variant="filled" style={{ marginRight: '20px', width: '120%' }} />
-                <TextField value={contractForm.real_auto_id} onChange={(event) => dispatch(setRealAutoId(event.target.value))} id="filled-basic" label="№ автом" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
+                <TextField value={contractForm.real_auto_id} onChange={
+                    (event) => dispatch(setRealAutoId( { id: event.target.value,
+                                                                    gos_number: contractForm.gos_number,
+                                                                    name: contractForm.name  }))}  id="filled-basic" label="№ автом" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
                 <FormControlLabel
                     control={<Checkbox checked={contractForm.is_given} onChange={(event) => dispatch(setIsGiven(event.target.checked))} name="checkedA" />}
                     label="Автомобиль выдан"
@@ -58,7 +78,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '30%'
                 }}>
-                    <TextField value={contractForm.real_auto_id && '' + contractForm.real_auto_id} readOnly id="filled-basic" label="Автомобиль" variant="filled" style={{ width: '90%' }} />
+                    <TextField value={contractForm.gos_number} readOnly id="filled-basic" label="Автомобиль" variant="filled" style={{ width: '90%' }} />
                     <AutoDialog />
                 </div>
                 <TextField id="filled-basic" value={contractForm.auto_name} variant="filled" style={{ width: '70%' }} />
@@ -229,12 +249,7 @@ const ContractForm = () => {
                     width: '40%'
                 }}>
                     <TextField id="filled-basic" label="Тариф" variant="filled" style={{ width: '65%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
-                    <IconButton color="secondary">
-                        <CancelIcon />
-                    </IconButton>
+                    <TariffDialog />
                 </div>
                 <div style={{
                     display: 'flex',
@@ -246,13 +261,13 @@ const ContractForm = () => {
                 </div>
             </InputRow>
             <InputRow>
-                <TextField id="filled-basic" label="Скидка в процентах %" variant="filled" style={{ width: '26%' }} />
-                <TextField id="filled-basic" label="Скидка абсолютная ₽" variant="filled" style={{ width: '26%', marginLeft: '20px' }} />
-                <TextField id="filled-basic" label="Причина скидки" variant="filled" style={{ width: '45%', marginLeft: '20px' }} />
+                <TextField id="filled-basic" value={contractForm.discount_percents} onChange={(event) => dispatch(setDiscoundsPercents(event.target.value))} label="Скидка в процентах %" variant="filled" style={{ width: '26%' }} />
+                <TextField id="filled-basic" value={contractForm.discount_sum} onChange={(event) => dispatch(setDiscountSum(event.target.value))} label="Скидка абсолютная ₽" variant="filled" style={{ width: '26%', marginLeft: '20px' }} />
+                <TextField id="filled-basic" value={contractForm.discount_reason} onChange={(event) => dispatch(setDIscountReason(event.target.value))} label="Причина скидки" variant="filled" style={{ width: '45%', marginLeft: '20px' }} />
             </InputRow>
             <InputRow>
-                <TextField id="filled-basic" label="За прокат" variant="filled" style={{ width: '27%', marginLeft: '' }} />
-                <TextField id="filled-basic" label="Отметки" variant="filled" style={{ width: '75%', marginLeft: '20px' }} />
+                <TextField readOnly value={contractForm.summa_prokata} id="filled-basic"  label="За прокат"  variant="filled" style={{ width: '27%', marginLeft: '' }} />
+                <TextField id="filled-basic" value={contractForm.marks} onChange={(event) => dispatch(setMarks(event.target.value))} label="Отметки" variant="filled" style={{ width: '75%', marginLeft: '20px' }} />
             </InputRow>
         </Inner>
         <Inner>
@@ -263,11 +278,8 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField id="filled-basic" label="Выдача" variant="filled" style={{ width: '87%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
-
+                    <TextField value={contractForm.place_ot} readOnly id="filled-basic" label="Выдача" variant="filled" style={{ width: '87%' }} />
+                    <PlaceDialog priem={false}/>
                 </div>
                 <div style={{
                     display: 'flex',
@@ -275,11 +287,8 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField id="filled-basic" label="Сотрудник" variant="filled" style={{ width: '87%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
-
+                    <TextField value={contractForm.manager_pr_name} readOnly id="filled-basic" label="Менеджер приема" variant="filled" style={{ width: '87%' }} />
+                    <ManagerDialog priem={true} />
                 </div>
             </InputRow>
             <InputRow>
@@ -289,11 +298,8 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField id="filled-basic" label="Прием" variant="filled" style={{ width: '87%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
-
+                    <TextField value={contractForm.place_pr} readOnly id="filled-basic" label="Прием" variant="filled" style={{ width: '87%' }} />
+                    <PlaceDialog priem={true}/>
                 </div>
                 <div style={{
                     display: 'flex',
@@ -301,9 +307,8 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField value={contractForm.firm_name} id="filled-basic" label="Фирма" variant="filled" style={{ width: '87%' }} />
-                <FirmDialog/>
-
+                    <TextField value={contractForm.manager_ot_name} readOnly id="filled-basic" label="Менеджер возврата " variant="filled" style={{ width: '87%' }} />
+                    <ManagerDialog priem={false} />
                 </div>
             </InputRow>
             <InputRow>
@@ -313,37 +318,40 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '60%'
                 }}>
-                    <TextField id="filled-basic" label="Территория" variant="filled" style={{ width: '87%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
-
+                    <TextField value={contractForm.territory} id="filled-basic" label="Территория" variant="filled" style={{ width: '87%' }} />
+                    <TerritoryDialog />
                 </div>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
-                    width: '75%'
+                    width: '50%'
                 }}>
-                    <TextField id="filled-basic" label="Примечание" variant="filled" style={{ width: '100%' }} />
-
+                    <TextField value={contractForm.firm_name} id="filled-basic" label="Фирма" variant="filled" style={{ width: '87%' }} />
+                    <FirmDialog/>
                 </div>
             </InputRow>
             <InputRow
                 style={{
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                     padding: '20px 0'
                 }}
             >
-                <Button
-                onClick={
-                    () => {
-                        dispatch(createContract(contractForm))
-                        dispatch(fetchTableRows(true))
-
-                    }
-                }
-                variant="contained" color="primary">
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'end',
+                    width: '75%'
+                }}>
+                    <TextField value={contractForm.notes} onChange={(event) => dispatch(setNotes(event.target.value))} id="filled-basic" label="Примечание" variant="filled" style={{ width: '100%' }} />
+                </div>
+                <Button variant="contained" color="primary"
+                    onClick={
+                        () => {
+                            dispatch(createContract(contractForm))
+                            dispatch(fetchTableRows(true))
+                        }
+                    }>
                     Сохранить
                 </Button>
             </InputRow>

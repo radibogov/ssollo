@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,9 +13,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCars } from '../redux-state/async-actions/fetchCars';
-import { setAutomobileId, setRealAutoId } from '../redux-state/reducers/contractFormReducer';
-import { toggleAutoDialog } from '../redux-state/reducers/DialogsReducer';
+
+import { setTerritory } from '../../redux-state/reducers/contractFormReducer';
+import { fetchTerritories } from '../../redux-state/async-actions/fetchTerritories';
+import { toggleTerritoryDialog } from '../../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -32,32 +32,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AutoDialog() {
+export default function TerritoryDialog() {
     const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.cars)
+    const autoList = useSelector(state => state.lists.territories)
     const classes = useStyles();
-    const open = useSelector(state => state.dialogs.auto)
+    const open = useSelector(state => state.dialogs.territory)
 
     const handleClickOpen = () => {
-        dispatch(toggleAutoDialog(true))
+        dispatch(toggleTerritoryDialog(true))
     };
 
     const handleClose = () => {
-        dispatch(toggleAutoDialog(false))
+        dispatch(toggleTerritoryDialog(false))
     };
 
     React.useEffect(() => {
-        dispatch(fetchCars())
+        dispatch(fetchTerritories())
     }, [])
-    // console.log(autoList)
     return (
         <div>
             <IconButton color="primary"
-                onClick={
-                    () => {
-                        handleClickOpen(true)
-                    }
-                }
+                        onClick={
+                            () => {
+                                handleClickOpen(true)
+                            }
+                        }
             >
                 <ArrowDropDownCircleIcon />
             </IconButton>
@@ -68,32 +67,30 @@ export default function AutoDialog() {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            Автомобили
+                            Территории эксплуатации
                         </Typography>
                     </Toolbar>
                 </AppBar>
                 <List>
                     <ListItem style={{ background: 'red' }}>
                         <ListItemText primary="Айди" />
-                        <ListItemText primary="Гос номер" />
-                        <ListItemText primary="Модель машины" />
+                        <ListItemText primary="Территория" />
                     </ListItem>
                     {autoList.map(el =>
                         <React.Fragment
                             key={el.id}
                         >
-                            <ListItem style={{ background: el.red_stat ? 'pink' : 'transparent' }} button
-                                onClick={
-                                    () => {
-                                        dispatch(setRealAutoId({ id: el.id, name: el.name + ', ' + el.gos_number }))
-                                        dispatch(setAutomobileId(el.tarif.id))
-                                        dispatch(toggleAutoDialog(false))
-                                    }
-                                }
+                            <ListItem button
+                                      onClick={
+                                          () => {
+                                              dispatch(setTerritory(el.territory_name))
+                                              dispatch(toggleTerritoryDialog(false))
+                                          }
+
+                                      }
                             >
                                 <ListItemText primary={el.id} />
-                                <ListItemText primary={el.gos_number} />
-                                <ListItemText primary={el.name} />
+                                <ListItemText primary={el.territory_name} />
                             </ListItem>
                             <Divider />
                         </React.Fragment>

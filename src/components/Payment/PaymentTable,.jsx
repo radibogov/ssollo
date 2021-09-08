@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import PaymentTableRow from './PaymentTableRow';
 import moment from 'moment';
 import MoneyOperationDialog from './MoneyOperationDialog';
-import { fetchServices } from '../redux-state/async-actions/services/fetchServices';
+import { fetchServices } from '../../redux-state/async-actions/services/fetchServices';
 
 const Wrapper = styled.div`
 max-width: 100%;
@@ -32,13 +32,13 @@ text-align: center;
 const PaymentTable = (props) => {
     const dispatch = useDispatch()
     const list = useSelector(state => state.calculation.list)
+    console.log(list)
     const current = useSelector(state => state.currentRow.payment)
     React.useEffect(() => {
         dispatch(fetchServices())
     }, [])
     return (
         <Wrapper>
-            <MoneyOperationDialog/>
             <Row>
                 <Cell
                     style={{
@@ -83,7 +83,7 @@ const PaymentTable = (props) => {
                     Услуга
                 </Cell>
             </Row>
-            {list.map(el =>
+            {list?.map(el =>
                 <PaymentTableRow
                     date_payment={el.date_of_payment && moment(el.date_of_payment).format('DD / MM / YYYY')}
                     operation={el.operation}

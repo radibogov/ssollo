@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentPayment } from '../redux-state/reducers/currentRowReducer';
-import { toggleMoneyOpDialog } from '../redux-state/reducers/DialogsReducer';
+import { setCurrentPayment } from '../../redux-state/reducers/currentRowReducer';
+import { toggleMoneyOpDialog } from '../../redux-state/reducers/DialogsReducer';
 
 
 const Row = styled.div`

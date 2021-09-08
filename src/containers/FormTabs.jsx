@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ContractForm from '../components/ContractForm';
-import PaymentForm from '../components/PaymentForm'
+import PaymentForm from '../components/Payment/PaymentForm'
 import CommentsForm from '../components/CommentsForm'
 
 

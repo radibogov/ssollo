@@ -5,8 +5,10 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDelay, setDeposit, setFuelAfter, setFuelBefore, setMileageAfter, setMileageBefore } from '../redux-state/reducers/calculationReducer';
+import { setDelay, setDeposit, setFuelAfter, setFuelBefore, setMileageAfter, setMileageBefore } from '../../redux-state/reducers/calculationReducer';
 import PaymentTable from './PaymentTable,';
+import MoneyOperationDialog from "./MoneyOperationDialog";
+import PaymentBtnPanel from "./PaymentBtnPanel";
 
 const FormWrapper = styled.form`
 width: 70%;
@@ -22,11 +24,12 @@ margin: 10px 0;
 const PaymentForm = () => {
     const [checked, setChecked] = React.useState(false)
     const calculation = useSelector(state => state.calculation)
+    console.log(calculation)
     const dispatch = useDispatch()
     const handleChange = (event) => {
         setChecked(event.target.checked);
-    };
 
+    };
 
     return <FormWrapper>
         <InputRow>
@@ -95,8 +98,8 @@ const PaymentForm = () => {
                     }
                 }
                 id="filled-basic" label="Дней" variant="filled" style={{ marginRight: '240px' }} />
-            <TextField id="filled-basic" label="Топливо разница" variant="filled" style={{ marginRight: '20px' }} />
-            <TextField id="filled-basic" label="Километраж" variant="filled" style={{ marginRight: '20px' }} />
+            <TextField value={calculation.fuel_before-calculation.fuel_after} id="filled-basic" label="Топливо разница" variant="filled" style={{ marginRight: '20px' }} />
+            <TextField value={calculation.mileage_after-calculation.mileage_before} id="filled-basic" label="Километраж" variant="filled" style={{ marginRight: '20px' }} />
         </InputRow>
         <InputRow>
             <FormControlLabel
@@ -114,18 +117,8 @@ const PaymentForm = () => {
             <TextField id="filled-basic" label="Перепробег" variant="filled" style={{ marginRight: '20px' }} />
         </InputRow>
         <InputRow>
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                Оплата
-            </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                Добавить
-            </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                Открыть
-            </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                Удалить
-            </Button>
+            <PaymentBtnPanel />
+            <MoneyOperationDialog />
             <TextField id="filled-basic" label="За перепробег" variant="filled" style={{ marginLeft: '220px' }} />
         </InputRow>
         <PaymentTable />
