@@ -16,7 +16,7 @@ const CLEAR_FORM = 'CLEAR_FORM'
 
 
 const defaultState = {
-    employee_id: '',
+    employee_id: '1',
     client_id: '',
     car_id: '',
     operation: '',

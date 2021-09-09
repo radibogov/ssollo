@@ -80,13 +80,13 @@ export default function MoneyOperationDialog() {
                                     dispatch(setOperation(event.target.value))
                                 }
                             }
-                            />
+                        />
 
                         <TextField
                             id="standard-basic"
-                            label="Сотрудник" 
+                            label="Сотрудник"
                             disabled
-                            />
+                        />
                     </InputRow>
                     <InputRow>
                         <div
@@ -98,9 +98,9 @@ export default function MoneyOperationDialog() {
                         >
                             <TextField
                                 id="standard-basic"
-                                label="Услуга" 
+                                label="Услуга"
                                 disabled
-                                />
+                            />
                             <IconButton color="primary">
                                 <ArrowDropDownCircleIcon />
                             </IconButton>
@@ -110,9 +110,9 @@ export default function MoneyOperationDialog() {
                     <InputRow>
                         <TextField
                             id="standard-basic"
-                            label="Тариф" 
-                            
-                            />
+                            label="Тариф"
+
+                        />
                         <div
                             style={{
                                 display: 'flex',
