@@ -25,7 +25,7 @@ const SET_DISCOUNDS_PERCENTS = 'SET_DISCOUNDS_PERCENTS'
 const SET_DISCOUNT_SUM = 'SET_DISCOUNT_SUM'
 const SET_DISCOUNT_REASON = 'SET_DISCOUNT_REASON'
 const SET_SUMMA_PROKATA = 'SET_SUMMA_PROKATA'
-const SET_PROKATA_TARIF = 'SET_PROKATA_TARIF'
+const SET_TARIFF = 'SET_TARIFF'
 const SET_FIRM_ID = 'SET_FIRM_ID'
 const SET_TERRITORY = 'SET_TERRITORY'
 const SET_NOTES = 'SET_NOTES'
@@ -59,11 +59,12 @@ const defaultState = {
     is_returned: false,
     days_first: null,
     days_second: null,
+    tariff_list: null,
     discount_percents: null,
     discount_sum: null,
     discount_reason: null,
     summa_prokata: 0,
-    summa_prokata_tarif: 8200,
+    tariff: 0,
     firm_id: null,
     firm_name: '',
     territory: '',
@@ -123,7 +124,7 @@ export const contractFormReducer = (state = defaultState, action) => {
                 ...state,
                 real_auto_id: action.payload.id,
                 gos_number: action.payload.gos_number,
-                auto_name: action.payload.name
+                auto_name: action.payload.name,
             }
         case SET_USER_ID:
             return {
@@ -203,10 +204,10 @@ export const contractFormReducer = (state = defaultState, action) => {
                 ...state,
                 summa_prokata: action.payload
             }
-        case SET_PROKATA_TARIF:
+        case SET_TARIFF:
             return {
                 ...state,
-                summa_prokata_tarif: action.payload
+                tariff: action.payload
             }
         case SET_FIRM_ID:
             return {
@@ -255,11 +256,12 @@ export const contractFormReducer = (state = defaultState, action) => {
                 is_returned: false,
                 days_first: null,
                 days_second: null,
+                tariff_list: null,
                 discount_percents: null,
                 discount_sum: null,
                 discount_reason: null,
                 summa_prokata: 0,
-                summa_prokata_tarif: 8200,
+                tariff: 0,
                 firm_id: null,
                 firm_name: '',
                 territory: '',
@@ -299,7 +301,7 @@ export const setDiscoundsPercents = (payload) => { return { type: SET_DISCOUNDS_
 export const setDiscountSum = (payload) => { return { type: SET_DISCOUNT_SUM, payload } }
 export const setDIscountReason = (payload) => { return { type: SET_DISCOUNT_REASON, payload } }
 export const setSummaProkata = (payload) => { return { type: SET_SUMMA_PROKATA, payload } }
-export const setProkataTarif = (payload) => { return { type: SET_PROKATA_TARIF, payload } }
+export const setTariff = (payload) => { return { type: SET_TARIFF, payload } }
 export const setFirmId = (payload) => { return { type: SET_FIRM_ID, payload } }
 export const setTerritory = (payload) => { return { type: SET_TERRITORY, payload } }
 export const setNotes = (payload) => { return { type: SET_NOTES, payload } }

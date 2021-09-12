@@ -15,7 +15,7 @@ import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCars } from '../../redux-state/async-actions/fetchCars';
-import { setAutomobileId, setRealAutoId } from '../../redux-state/reducers/contractFormReducer';
+import {setAutomobileId, setRealAutoId, setTariff} from '../../redux-state/reducers/contractFormReducer';
 import { toggleAutoDialog } from '../../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
@@ -86,9 +86,10 @@ export default function AutoDialog() {
                                     () => {
                                         dispatch(setRealAutoId({ id: el.id,
                                                                         gos_number: el.gos_number,
-                                                                        name: el.name + ', ' + el.gos_number }))
-                                        dispatch(setAutomobileId(el.tarif.id))
-                                        dispatch(toggleAutoDialog(false))
+                                                                        name: el.name + ', ' + el.gos_number}));
+                                        dispatch(setAutomobileId(el.tarif));
+                                        dispatch(setTariff(el.tarif?.tarif_one_two));
+                                        dispatch(toggleAutoDialog(false));
                                     }
                                 }
                             >

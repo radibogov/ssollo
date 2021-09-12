@@ -21,7 +21,14 @@ import {
     setStartDateTime,
     setUchNumber,
     setNotes,
-    setDiscoundsPercents, setDiscountSum, setDIscountReason, setMarks, setTariffDate, setDepDateTime
+    setDiscoundsPercents,
+    setDiscountSum,
+    setDIscountReason,
+    setMarks,
+    setTariffDate,
+    setDepDateTime,
+    setTariff,
+    setSummaProkata
 } from '../redux-state/reducers/contractFormReducer';
 import { Button } from '@material-ui/core';
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -64,14 +71,31 @@ const ContractForm = () => {
             }))
     }, [contractForm.end_datetime, contractForm.start_datetime]);
 
+    //меняется количество дней - меняется конечная дата, но также может меняться и тариф,
     useEffect(() => {
         dispatch(setDepDateTime(
             {start: contractForm.start_datetime,
                 end: moment(contractForm.start_datetime).add(contractForm.days_first,'days').format('YYYY-MM-DDTHH:mm'),
                 days: contractForm.days_first
-            }))
+            }));
+        if (contractForm.automobile_id) {
+            console.log(contractForm.automobile_id)
+            contractForm.days_first-0 < 3 ? dispatch(setTariff(contractForm.automobile_id?.tarif_one_two))    :
+            contractForm.days_first-0 < 7 ? dispatch(setTariff(contractForm.automobile_id?.tarif_three_six))  :
+            contractForm.days_first-0 < 15? dispatch(setTariff(contractForm.automobile_id?.tarif_seven_four)) :
+            contractForm.days_first-0 < 31? dispatch(setTariff(contractForm.automobile_id?.tarif_five_three)) :
+            // dispatch(setTariff(contractForm.automobile_id?.tarif_one_two_mounth))
+            dispatch(setTariff(contractForm.automobile_id?.tarif_one_two_mounth_sale));
+
+            dispatch(setSummaProkata(contractForm.days_first*(contractForm.tariff-contractForm.discount_sum)))
+        }
+
     }, [contractForm.days_first]);
 
+    useEffect(() => {
+        let summa = contractForm.days_first*(1-contractForm.discount_percents/100)*(contractForm.tariff-contractForm.discount_sum)
+        dispatch(setSummaProkata(Math.ceil(summa)))
+    }, [contractForm.discount_sum,contractForm.discount_percents,contractForm.days_first,contractForm.automobile_id]);
     //заполнение форм, если дата пустая
     useEffect(() => {
         if (contractForm.start_datetime === '') {
@@ -277,8 +301,8 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '40%'
                 }}>
-                    <TextField id="filled-basic" label="Тариф" variant="filled" style={{ width: '65%' }} />
-                    <TariffDialog />
+                    <TextField value={contractForm.tariff} onChange={(event) => dispatch(setTariff(event.target.value))} id="filled-basic" label="Тариф" variant="filled" style={{ width: '65%' }} />
+                    <TariffDialog days={''+contractForm.days_first}/>
                 </div>
                 <div style={{
                     display: 'flex',
@@ -286,11 +310,11 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '20%'
                 }}>
-                    <TextField id="filled-basic" label="Название тарифа" variant="filled" style={{ width: '95%' }} />
+                    <TextField value={''+contractForm.automobile_id?.name} onChange={null} id="filled-basic" label="Название тарифа" variant="filled" style={{ width: '95%' }} />
                 </div>
             </InputRow>
             <InputRow>
-                <TextField id="filled-basic" value={contractForm.discount_percents} onChange={(event) => dispatch(setDiscoundsPercents(event.target.value))} label="Скидка в процентах %" variant="filled" style={{ width: '26%' }} />
+                <TextField id="filled-basic" value={contractForm.discount_percents} onChange={(event) => event.target.value>=0&&event.target.value<=100?dispatch(setDiscoundsPercents(event.target.value)):dispatch(setDiscoundsPercents(contractForm.discount_percents))} label="Скидка в процентах %" variant="filled" style={{ width: '26%' }} />
                 <TextField id="filled-basic" value={contractForm.discount_sum} onChange={(event) => dispatch(setDiscountSum(event.target.value))} label="Скидка абсолютная ₽" variant="filled" style={{ width: '26%', marginLeft: '20px' }} />
                 <TextField id="filled-basic" value={contractForm.discount_reason} onChange={(event) => dispatch(setDIscountReason(event.target.value))} label="Причина скидки" variant="filled" style={{ width: '45%', marginLeft: '20px' }} />
             </InputRow>

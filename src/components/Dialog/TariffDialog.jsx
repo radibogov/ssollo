@@ -38,7 +38,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function TariffDialog() {
     const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.cars)
+    const tarifList = useSelector(state => state.contractForm.automobile_id)
 
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.tariff)
@@ -84,27 +84,25 @@ export default function TariffDialog() {
                 <List>
                     <ListItem style={{ background: 'red' }}>
                         <ListItemText primary="Айди" />
-                        <ListItemText primary="Гос номер" />
-                        <ListItemText primary="Модель машины" />
+                        <ListItemText primary="Тариф" />
+                        <ListItemText primary="За день" />
+                        <ListItemText primary="Просрочка" />
+                        <ListItemText primary="Залог" />
                     </ListItem>
-                    {autoList.map(el =>
-                        <React.Fragment
-                            key={el.id}
-                        >
-                            <ListItem style={{ background: el.red_stat ? 'pink' : 'transparent' }} button
-                                      onClick={
-                                          () => {
-                                          }
-                                      }
-                            >
-                                <ListItemText primary={el.id} />
-                                <ListItemText primary={el.gos_number} />
-                                <ListItemText primary={el.name} />
-                            </ListItem>
-                            <Divider />
-                        </React.Fragment>
-                    )}
-
+                    <ListItem button
+                              onClick={
+                                  () => {
+                                      dispatch(toggleTaiffDialog(false))
+                                  }
+                              }
+                    >
+                        <ListItemText primary={tarifList?.id} />
+                        <ListItemText primary={tarifList?.name} />
+                        <ListItemText primary={tarifList?.tarif_one_two} />
+                        <ListItemText primary={tarifList?.tarif_one_two} />
+                        <ListItemText primary={tarifList?.deposit} />
+                    </ListItem>
+                    <Divider />
 
                 </List>
             </Dialog>
