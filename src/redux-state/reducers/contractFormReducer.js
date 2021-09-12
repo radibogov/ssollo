@@ -13,6 +13,7 @@ const SET_REAL_AUTO_ID = 'SET_REAL_AUTO_ID'
 const SET_USER_ID = 'SET_USER_ID'
 const SET_RESPRESENTATIVE_FIRST = 'SET_RESPRESENTATIVE_FIRST'
 const SET_RESPRESENTATIVE_SECOND = 'SET_RESPRESENTATIVE_SECOND'
+const SET_DEP_DATATIME = 'SET_DEP_DATATIME'
 const SET_START_DATETIME = 'SET_START_DATETIME'
 const SET_END_DATETIME = 'SET_END_DATETIME'
 const SET_TARIFF_DATE = 'SET_TARIFF_DATE'
@@ -71,8 +72,6 @@ const defaultState = {
 }
 
 export const contractFormReducer = (state = defaultState, action) => {
-
-
 
     switch (action.type) {
         case SET_CONTRACT_NUMBER:
@@ -142,15 +141,32 @@ export const contractFormReducer = (state = defaultState, action) => {
                 ...state,
                 representative_second: action.payload
             }
+        case SET_DEP_DATATIME:
+            return {
+                ...state,
+                start_datetime: action.payload.start,
+                end_datetime: action.payload.end,
+                days_first: action.payload.days
+            }
         case SET_START_DATETIME:
             return {
                 ...state,
-                start_datetime: action.payload
+                start_datetime: action.payload,
             }
         case SET_END_DATETIME:
             return {
                 ...state,
                 end_datetime: action.payload
+            }
+        case SET_DAYS_FIRST:
+            return {
+                ...state,
+                days_first: action.payload
+            }
+        case SET_DAYS_SECOND:
+            return {
+                ...state,
+                days_second: action.payload
             }
         case SET_TARIFF_DATE:
             return {
@@ -166,16 +182,6 @@ export const contractFormReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 is_returned: !state.is_returned
-            }
-        case SET_DAYS_FIRST:
-            return {
-                ...state,
-                days_first: action.payload
-            }
-        case SET_DAYS_SECOND:
-            return {
-                ...state,
-                days_second: action.payload
             }
         case SET_DISCOUNDS_PERCENTS:
             return {
@@ -281,6 +287,7 @@ export const setRealAutoId = (payload) => { return { type: SET_REAL_AUTO_ID, pay
 export const setUserID = (payload) => { return { type: SET_USER_ID, payload } }
 export const setRepresentativeFirst = (payload) => { return { type: SET_RESPRESENTATIVE_FIRST, payload } }
 export const setRepresentativeSecond = (payload) => { return { type: SET_RESPRESENTATIVE_SECOND, payload } }
+export const setDepDateTime = (payload) => { return { type: SET_DEP_DATATIME, payload } }
 export const setStartDateTime = (payload) => { return { type: SET_START_DATETIME, payload } }
 export const setEndDatetime = (payload) => { return { type: SET_END_DATETIME, payload } }
 export const setTariffDate = (payload) => { return { type: SET_TARIFF_DATE, payload } }

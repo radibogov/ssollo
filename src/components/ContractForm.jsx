@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -21,9 +21,10 @@ import {
     setStartDateTime,
     setUchNumber,
     setNotes,
-    setDiscoundsPercents, setDiscountSum, setDIscountReason, setMarks
+    setDiscoundsPercents, setDiscountSum, setDIscountReason, setMarks, setTariffDate, setDepDateTime
 } from '../redux-state/reducers/contractFormReducer';
 import { Button } from '@material-ui/core';
+import CancelIcon from "@material-ui/icons/Cancel";
 
 import { createContract } from '../redux-state/async-actions/createContract';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
@@ -35,6 +36,7 @@ import ManagerDialog from "./Dialog/ManagerDialog";
 import PlaceDialog from "./Dialog/PlaceDialog";
 import FirmDialog from './Dialog/firmDialog';
 import TerritoryDialog from "./Dialog/TerritoryDialog";
+import moment from "moment";
 
 const FormWrapper = styled.form`
 width: 80%;
@@ -53,10 +55,36 @@ border-bottom: 1px solid #3f51b5;
 const ContractForm = () => {
     const dispatch = useDispatch()
     const contractForm = useSelector(state => state.contractForm)
-    console.log(contractForm)
+    //пересчет количесвта дней
+    useEffect(() => {
+        dispatch(setDepDateTime(
+            {start: contractForm.start_datetime,
+                    end: contractForm.end_datetime,
+                    days: (moment(contractForm.end_datetime) - moment(contractForm.start_datetime))/3600/24/1000
+            }))
+    }, [contractForm.end_datetime, contractForm.start_datetime]);
+
+    useEffect(() => {
+        dispatch(setDepDateTime(
+            {start: contractForm.start_datetime,
+                end: moment(contractForm.start_datetime).add(contractForm.days_first,'days').format('YYYY-MM-DDTHH:mm'),
+                days: contractForm.days_first
+            }))
+    }, [contractForm.days_first]);
+
+    //заполнение форм, если дата пустая
+    useEffect(() => {
+        if (contractForm.start_datetime === '') {
+            dispatch(setDepDateTime(
+                {start: moment().format('YYYY-MM-DDTHH:mm'),
+                        end: moment().add(1, 'day').format('YYYY-MM-DDTHH:mm'),
+                        days: 1
+                }))
+            dispatch(setTariffDate(moment().format('YYYY-MM-DD')));
+        }
+    });
 
     return <FormWrapper>
-
         <Inner>
             <InputRow>
                 <TextField value={contractForm.contract_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" variant="filled" style={{ marginRight: '20px', width: '120%' }} />
@@ -95,7 +123,7 @@ const ContractForm = () => {
                 </div>
                 <TextField id="filled-basic" value='Новый' variant="filled" style={{ width: '30%' }} />
             </InputRow>
-            {/* <InputRow>
+            <InputRow>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -145,9 +173,8 @@ const ContractForm = () => {
                     <IconButton color="primary">
                         <ArrowDropDownCircleIcon />
                     </IconButton>
-
                 </div>
-            </InputRow> */}
+            </InputRow>
         </Inner>
         <Inner>
             <InputRow>
@@ -155,17 +182,19 @@ const ContractForm = () => {
                     id="datetime-local"
                     label="Начало"
                     type="datetime-local"
+                    defaultValue=""
                     value={contractForm.start_datetime}
                     onChange={
                         (event) => {
                             dispatch(setStartDateTime(event.target.value))
+                            event.target.value < contractForm.end_datetime?dispatch(setStartDateTime(event.target.value)):dispatch(setStartDateTime(contractForm.start_datetime))
                         }
                     }
                     InputLabelProps={{
                         shrink: true,
                     }}
                 />
-                {/* <TextField
+                <TextField
                     id="date"
                     label="Дата тар."
                     type="date"
@@ -178,8 +207,7 @@ const ContractForm = () => {
                     InputLabelProps={{
                         shrink: true,
                     }}
-                    style={{ marginLeft: '20px' }}
-                /> */}
+                    style={{ marginLeft: '20px' }}/>
 
             </InputRow>
             <InputRow>
@@ -190,7 +218,7 @@ const ContractForm = () => {
                     value={contractForm.end_datetime}
                     onChange={
                         (event) => {
-                            dispatch(setEndDatetime(event.target.value))
+                            event.target.value > contractForm.start_datetime?dispatch(setEndDatetime(event.target.value)):dispatch(setEndDatetime(contractForm.end_datetime))
                         }
                     }
                     InputLabelProps={{
@@ -205,6 +233,7 @@ const ContractForm = () => {
                     label="Возвращено"
                     style={{ marginLeft: '20px' }}
                 />
+
             </InputRow>
             <InputRow>
                 {/* НЕ ПОНЯТНО ЧТО С ЭТИМ ПОЛЕМ, РИДОНЛИ ОНО ИЛИ НЕТ, ОТКУДА БРАТЬ ЕГО */}
@@ -222,13 +251,13 @@ const ContractForm = () => {
                 <IconButton color="primary"
                     onClick={
                         () => {
-                            dispatch(setDaysFirst(+contractForm.days_first - 1 >= 0 ? +contractForm.days_first - 1 : 0))
+                            dispatch(setDaysFirst(+contractForm.days_first - 1 >= 1 ? +contractForm.days_first - 1 : 1))
                         }
                     }
                 >
                     <ArrowLeftIcon />
                 </IconButton>
-                <TextField id="filled-basic" label="Дней" variant="filled" value={'' + contractForm.days_first} onChange={(event) => dispatch(setDaysFirst(event.target.value))} type="number" />
+                <TextField id="filled-basic" label="Дней" variant="filled" value={'' + contractForm.days_first} onChange={(event) =>event.target.value>0?dispatch(setDaysFirst(event.target.value)):dispatch(setDaysFirst(1))} type="number" />
                 <IconButton color="primary"
                     onClick={
                         () => {
@@ -239,7 +268,7 @@ const ContractForm = () => {
                     <ArrowRightIcon />
                 </IconButton>
                 <AddIcon />
-                <TextField id="filled-basic" variant="filled" value={contractForm.days_second} onChange={event => dispatch(setDaysSecond(event.target.value))} type="number" style={{ width: '80px', marginLeft: '15px' }} />
+                <TextField id="filled-basic" variant="filled" value={contractForm.days_second} onChange={event => event.target.value>0?dispatch(setDaysSecond(event.target.value)):dispatch(setDaysSecond(0))} type="number" style={{ width: '80px', marginLeft: '15px' }} />
             </InputRow>
             <InputRow>
                 <div style={{
