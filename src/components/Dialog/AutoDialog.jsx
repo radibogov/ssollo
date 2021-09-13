@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -15,7 +14,7 @@ import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCars } from '../../redux-state/async-actions/fetchCars';
-import {setAutomobileId, setRealAutoId, setTariff} from '../../redux-state/reducers/contractFormReducer';
+import {setAutomobileId, setRealAutoId, setTariff, setTariffName} from '../../redux-state/reducers/contractFormReducer';
 import { toggleAutoDialog } from '../../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +88,7 @@ export default function AutoDialog() {
                                                                         name: el.name + ', ' + el.gos_number}));
                                         dispatch(setAutomobileId(el.tarif));
                                         dispatch(setTariff(el.tarif?.tarif_one_two));
+                                        dispatch(setTariffName(el.tarif?.name));
                                         dispatch(toggleAutoDialog(false));
                                     }
                                 }

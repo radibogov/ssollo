@@ -2,6 +2,8 @@ const TOGGLE_CONTRACT_DIALOG = 'TOGGLE_CONTRACT_DIALOG'
 const TOGGLE_AUTO_DIALOG = 'TOGGLE_AUTO_DIALOG'
 const TOGGLE_TARIFF_DIALOG = 'TOGGLE_TARIFF_DIALOG'
 const TOGGLE_CLIENT_DIALOG = 'TOGGLE_CLIENT_DIALOG'
+const TOGGLE_REPRESENTATIVE_1_DIALOG = 'TOGGLE_REPRESENTATIVE_1_DIALOG'
+const TOGGLE_REPRESENTATIVE_2_DIALOG = 'TOGGLE_REPRESENTATIVE_2_DIALOG'
 const TOGGLE_FIRM_DIALOG = 'TOGGLE_FIRM_DIALOG'
 const TOGGLE_TERRITORY_DIALOG = 'TOGGLE_TERRITORY_DIALOG'
 const TOGGLE_MANAGER_PR_DIALOG = 'TOGGLE_MANAGER_PR_DIALOG'
@@ -15,6 +17,8 @@ const defaultState = {
     auto: false,
     tariff: false,
     client: false,
+    representative1: false,
+    representative2: false,
     firm: false,
     place: false,
     territory: false,
@@ -49,6 +53,16 @@ export const dialogReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 client: action.payload
+            }
+        case TOGGLE_REPRESENTATIVE_1_DIALOG:
+            return {
+                ...state,
+                representative1: action.payload
+            }
+        case TOGGLE_REPRESENTATIVE_2_DIALOG:
+            return {
+                ...state,
+                representative2: action.payload
             }
         case TOGGLE_FIRM_DIALOG:
             return {
@@ -99,6 +113,8 @@ export const toggleContractDialog = payload => { return { type: TOGGLE_CONTRACT_
 export const toggleAutoDialog = payload => { return { type: TOGGLE_AUTO_DIALOG, payload } }
 export const toggleTaiffDialog = payload => { return { type: TOGGLE_TARIFF_DIALOG, payload } }
 export const toggleClientDialog = payload => { return { type: TOGGLE_CLIENT_DIALOG, payload } }
+export const toggleRepresentative1Dialog = payload => { return { type: TOGGLE_REPRESENTATIVE_1_DIALOG, payload } }
+export const toggleRepresentative2Dialog = payload => { return { type: TOGGLE_REPRESENTATIVE_2_DIALOG, payload } }
 export const toggleFirmDialog = payload => { return { type: TOGGLE_FIRM_DIALOG, payload } }
 export const toggleTerritoryDialog = payload => { return { type: TOGGLE_TERRITORY_DIALOG, payload } }
 export const toggleManagerPrDialog = payload => { return { type: TOGGLE_MANAGER_PR_DIALOG, payload } }

@@ -17,8 +17,8 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCars } from '../../redux-state/async-actions/fetchCars';
-import { setAutomobileId, setRealAutoId } from '../../redux-state/reducers/contractFormReducer';
-import {toggleAutoDialog, toggleTaiffDialog} from '../../redux-state/reducers/DialogsReducer';
+import { setTariff, setTariffName} from '../../redux-state/reducers/contractFormReducer';
+import { toggleTaiffDialog} from '../../redux-state/reducers/DialogsReducer';
 import CancelIcon from "@material-ui/icons/Cancel";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +64,13 @@ export default function TariffDialog() {
                         }>
                 <ArrowDropDownCircleIcon />
             </IconButton>
-            <IconButton color="secondary">
+            <IconButton color="secondary"
+                        onClick={
+                            () => {
+                                dispatch(setTariff(''))
+                                dispatch(setTariffName(''))
+                            }
+                        }>
                 <CancelIcon />
             </IconButton>
 
@@ -92,6 +98,8 @@ export default function TariffDialog() {
                     <ListItem button
                               onClick={
                                   () => {
+                                      dispatch(setTariff(tarifList?.tarif_one_two))
+                                      dispatch(setTariffName(tarifList?.name))
                                       dispatch(toggleTaiffDialog(false))
                                   }
                               }
@@ -99,7 +107,7 @@ export default function TariffDialog() {
                         <ListItemText primary={tarifList?.id} />
                         <ListItemText primary={tarifList?.name} />
                         <ListItemText primary={tarifList?.tarif_one_two} />
-                        <ListItemText primary={tarifList?.tarif_one_two} />
+                        <ListItemText primary={tarifList?.dalay} />
                         <ListItemText primary={tarifList?.deposit} />
                     </ListItem>
                     <Divider />

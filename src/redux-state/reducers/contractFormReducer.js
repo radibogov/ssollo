@@ -1,6 +1,3 @@
-
-
-
 const SET_MANAGER_OT_ID = 'SET_MANAGER_OT_ID'
 const SET_MANAGER_PR_ID = 'SET_MANAGER_PR_ID'
 const SET_PLACE_OT = 'SET_PLACE_OT'
@@ -26,6 +23,7 @@ const SET_DISCOUNT_SUM = 'SET_DISCOUNT_SUM'
 const SET_DISCOUNT_REASON = 'SET_DISCOUNT_REASON'
 const SET_SUMMA_PROKATA = 'SET_SUMMA_PROKATA'
 const SET_TARIFF = 'SET_TARIFF'
+const SET_TARIFF_NAME = 'SET_TARIFF_NAME'
 const SET_FIRM_ID = 'SET_FIRM_ID'
 const SET_TERRITORY = 'SET_TERRITORY'
 const SET_NOTES = 'SET_NOTES'
@@ -50,8 +48,10 @@ const defaultState = {
     auto_name: '',
     user_id: null,
     client_name: '',
-    representative_first: null,
-    representative_second: null,
+    representative_first_id: null,
+    representative_first_name: '',
+    representative_second_id: null,
+    representative_second_name: '',
     start_datetime: '',
     end_datetime: '',
     tariff_date: null,
@@ -65,6 +65,7 @@ const defaultState = {
     discount_reason: null,
     summa_prokata: 0,
     tariff: 0,
+    tariff_name: '',
     firm_id: null,
     firm_name: '',
     territory: '',
@@ -135,12 +136,14 @@ export const contractFormReducer = (state = defaultState, action) => {
         case SET_RESPRESENTATIVE_FIRST:
             return {
                 ...state,
-                representative_first: action.payload
+                representative_first_id: action.payload.id,
+                representative_first_name: action.payload.name
             }
         case SET_RESPRESENTATIVE_SECOND:
             return {
                 ...state,
-                representative_second: action.payload
+                representative_second_id: action.payload.id,
+                representative_second_name: action.payload.name
             }
         case SET_DEP_DATATIME:
             return {
@@ -209,6 +212,11 @@ export const contractFormReducer = (state = defaultState, action) => {
                 ...state,
                 tariff: action.payload
             }
+        case SET_TARIFF_NAME:
+            return {
+                ...state,
+                tariff_name: action.payload
+            }
         case SET_FIRM_ID:
             return {
                 ...state,
@@ -247,8 +255,10 @@ export const contractFormReducer = (state = defaultState, action) => {
                 auto_name: '',
                 user_id: null,
                 client_name: '',
-                representative_first: null,
-                representative_second: null,
+                representative_first_id: null,
+                representative_first_name: '',
+                representative_second_id: null,
+                representative_second_name: '',
                 start_datetime: '',
                 end_datetime: '',
                 tariff_date: null,
@@ -262,6 +272,7 @@ export const contractFormReducer = (state = defaultState, action) => {
                 discount_reason: null,
                 summa_prokata: 0,
                 tariff: 0,
+                tariff_name: '',
                 firm_id: null,
                 firm_name: '',
                 territory: '',
@@ -297,11 +308,12 @@ export const setIsGiven = (payload) => { return { type: SET_IS_GIVEN, payload } 
 export const setIsReturned = (payload) => { return { type: SET_IS_RETURNED, payload } }
 export const setDaysFirst = (payload) => { return { type: SET_DAYS_FIRST, payload } }
 export const setDaysSecond = (payload) => { return { type: SET_DAYS_SECOND, payload } }
-export const setDiscoundsPercents = (payload) => { return { type: SET_DISCOUNDS_PERCENTS, payload } }
+export const setDiscountsPercents = (payload) => { return { type: SET_DISCOUNDS_PERCENTS, payload } }
 export const setDiscountSum = (payload) => { return { type: SET_DISCOUNT_SUM, payload } }
-export const setDIscountReason = (payload) => { return { type: SET_DISCOUNT_REASON, payload } }
+export const setDiscountReason = (payload) => { return { type: SET_DISCOUNT_REASON, payload } }
 export const setSummaProkata = (payload) => { return { type: SET_SUMMA_PROKATA, payload } }
 export const setTariff = (payload) => { return { type: SET_TARIFF, payload } }
+export const setTariffName = (payload) => { return { type: SET_TARIFF_NAME, payload } }
 export const setFirmId = (payload) => { return { type: SET_FIRM_ID, payload } }
 export const setTerritory = (payload) => { return { type: SET_TERRITORY, payload } }
 export const setNotes = (payload) => { return { type: SET_NOTES, payload } }

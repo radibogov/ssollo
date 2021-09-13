@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
@@ -34,10 +33,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function ClientDialog() {
     const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.users)
+    const usersList = useSelector(state => state.lists.users)
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.client)
-
     const handleClickOpen = () => {
         dispatch(toggleClientDialog(true))
     };
@@ -49,7 +47,6 @@ export default function ClientDialog() {
     React.useEffect(() => {
         dispatch(fetchUsers())
     }, [])
-    // console.log(autoList)
     return (
         <div>
             <IconButton color="primary"
@@ -74,25 +71,27 @@ export default function ClientDialog() {
                 </AppBar>
                 <List>
                     <ListItem style={{ background: 'red' }}>
-                        <ListItemText primary="Айди" />
-                        <ListItemText primary="Полное имя" />
-                        <ListItemText primary="Баланс" />
+                        <ListItemText style={{width: '10%'}} primary="Айди" />
+                        <ListItemText style={{width: '30%', textAlign: 'center'}} primary="Полное имя" />
+                        <ListItemText style={{width: '25%', textAlign: 'center'}} primary="Телефон" />
+                        <ListItemText style={{width: '25%', textAlign: 'center'}} primary="Баланс" />
                     </ListItem>
-                    {autoList.map(el =>
+                    {usersList.map(el =>
                         <React.Fragment
                         key={el.id}
                         >
                             <ListItem button
                                 onClick={
                                     () => {
-                                        dispatch(setUserID({ id: el.id, name: el.full_name }))
+                                        dispatch(setUserID({ id: el.id, name: el.full_name + ', ' + el.phone }))
                                         dispatch(toggleClientDialog(false))
                                     }
                                 }
                             >
-                                <ListItemText primary={el.id} />
-                                <ListItemText primary={el.full_name} />
-                                <ListItemText primary={el.phone_balance} />
+                                <ListItemText style={{width: '10%'}} primary={el.id} />
+                                <ListItemText style={{width: '30%', textAlign: 'center'}} primary={el.full_name} />
+                                <ListItemText style={{width: '25%', textAlign: 'center'}} primary={el.phone} />
+                                <ListItemText style={{width: '25%', textAlign: 'center'}} primary={el.balance} />
                             </ListItem>
                             <Divider />
                         </React.Fragment>

@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
-import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import AddIcon from '@material-ui/icons/Add';
@@ -21,9 +20,9 @@ import {
     setStartDateTime,
     setUchNumber,
     setNotes,
-    setDiscoundsPercents,
+    setDiscountsPercents,
     setDiscountSum,
-    setDIscountReason,
+    setDiscountReason,
     setMarks,
     setTariffDate,
     setDepDateTime,
@@ -31,7 +30,6 @@ import {
     setSummaProkata
 } from '../redux-state/reducers/contractFormReducer';
 import { Button } from '@material-ui/core';
-import CancelIcon from "@material-ui/icons/Cancel";
 
 import { createContract } from '../redux-state/async-actions/createContract';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
@@ -44,6 +42,7 @@ import PlaceDialog from "./Dialog/PlaceDialog";
 import FirmDialog from './Dialog/firmDialog';
 import TerritoryDialog from "./Dialog/TerritoryDialog";
 import moment from "moment";
+import RepresentativeDialog from "./Dialog/RepresentativeDialog";
 
 const FormWrapper = styled.form`
 width: 80%;
@@ -79,23 +78,21 @@ const ContractForm = () => {
                 days: contractForm.days_first
             }));
         if (contractForm.automobile_id) {
-            console.log(contractForm.automobile_id)
             contractForm.days_first-0 < 3 ? dispatch(setTariff(contractForm.automobile_id?.tarif_one_two))    :
             contractForm.days_first-0 < 7 ? dispatch(setTariff(contractForm.automobile_id?.tarif_three_six))  :
             contractForm.days_first-0 < 15? dispatch(setTariff(contractForm.automobile_id?.tarif_seven_four)) :
             contractForm.days_first-0 < 31? dispatch(setTariff(contractForm.automobile_id?.tarif_five_three)) :
             // dispatch(setTariff(contractForm.automobile_id?.tarif_one_two_mounth))
             dispatch(setTariff(contractForm.automobile_id?.tarif_one_two_mounth_sale));
-
-            dispatch(setSummaProkata(contractForm.days_first*(contractForm.tariff-contractForm.discount_sum)))
         }
 
     }, [contractForm.days_first]);
 
+
     useEffect(() => {
         let summa = contractForm.days_first*(1-contractForm.discount_percents/100)*(contractForm.tariff-contractForm.discount_sum)
         dispatch(setSummaProkata(Math.ceil(summa)))
-    }, [contractForm.discount_sum,contractForm.discount_percents,contractForm.days_first,contractForm.automobile_id]);
+    }, [contractForm.discount_sum,contractForm.tariff, contractForm.discount_percents,contractForm.days_first,contractForm.automobile_id]);
     //заполнение форм, если дата пустая
     useEffect(() => {
         if (contractForm.start_datetime === '') {
@@ -140,7 +137,7 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '75%'
+                    width: '77%'
                 }}>
                     <TextField readOnly value={contractForm.client_name} id="filled-basic" label="Клиент" variant="filled" style={{ width: '95%' }} />
                     <ClientDialog />
@@ -152,24 +149,10 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '60%'
+                    width: '77%'
                 }}>
-                    <TextField id="filled-basic" label="Представитель 1" variant="filled" style={{ width: '95%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
-                    <IconButton color="secondary">
-                        <CancelIcon />
-                    </IconButton>
-                </div>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '40%'
-                }}>
-                    <TextField id="filled-basic" label="Организация" variant="filled" style={{ width: '95%' }} />
-
+                    <TextField value={contractForm.representative_first_name}  id="filled-basic" label="Представитель 1" variant="filled" style={{ width: '95%' }} />
+                    <RepresentativeDialog first={true} />
                 </div>
             </InputRow>
             <InputRow>
@@ -177,26 +160,10 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '60%'
+                    width: '77%'
                 }}>
-                    <TextField id="filled-basic" label="Представитель 2" variant="filled" style={{ width: '95%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
-                    <IconButton color="secondary">
-                        <CancelIcon />
-                    </IconButton>
-                </div>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '40%'
-                }}>
-                    <TextField id="filled-basic" label="Водитель" variant="filled" style={{ width: '87%' }} />
-                    <IconButton color="primary">
-                        <ArrowDropDownCircleIcon />
-                    </IconButton>
+                    <TextField value={contractForm.representative_second_name} id="filled-basic" label="Представитель 2" variant="filled" style={{ width: '95%' }} />
+                    <RepresentativeDialog first={false} />
                 </div>
             </InputRow>
         </Inner>
@@ -310,13 +277,13 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '20%'
                 }}>
-                    <TextField value={''+contractForm.automobile_id?.name} onChange={null} id="filled-basic" label="Название тарифа" variant="filled" style={{ width: '95%' }} />
+                    <TextField value={''+contractForm.tariff_name} id="filled-basic" label="Название тарифа" variant="filled" style={{ width: '95%' }} />
                 </div>
             </InputRow>
             <InputRow>
-                <TextField id="filled-basic" value={contractForm.discount_percents} onChange={(event) => event.target.value>=0&&event.target.value<=100?dispatch(setDiscoundsPercents(event.target.value)):dispatch(setDiscoundsPercents(contractForm.discount_percents))} label="Скидка в процентах %" variant="filled" style={{ width: '26%' }} />
-                <TextField id="filled-basic" value={contractForm.discount_sum} onChange={(event) => dispatch(setDiscountSum(event.target.value))} label="Скидка абсолютная ₽" variant="filled" style={{ width: '26%', marginLeft: '20px' }} />
-                <TextField id="filled-basic" value={contractForm.discount_reason} onChange={(event) => dispatch(setDIscountReason(event.target.value))} label="Причина скидки" variant="filled" style={{ width: '45%', marginLeft: '20px' }} />
+                <TextField id="filled-basic" value={contractForm.discount_percents} onChange={(event) => event.target.value>=0&&event.target.value<=100?dispatch(setDiscountsPercents(event.target.value)):dispatch(setDiscountsPercents(contractForm.discount_percents))} label="Скидка в процентах %" variant="filled" style={{ width: '26%' }} />
+                <TextField id="filled-basic" value={contractForm.discount_sum} onChange={(event) => event.target.value>=0?dispatch(setDiscountSum(event.target.value)):dispatch(setDiscountSum(contractForm.discount_sum))} label="Скидка абсолютная ₽" variant="filled" style={{ width: '26%', marginLeft: '20px' }} />
+                <TextField id="filled-basic" value={contractForm.discount_reason} onChange={(event) => dispatch(setDiscountReason(event.target.value))} label="Причина скидки" variant="filled" style={{ width: '45%', marginLeft: '20px' }} />
             </InputRow>
             <InputRow>
                 <TextField readOnly value={contractForm.summa_prokata} id="filled-basic"  label="За прокат"  variant="filled" style={{ width: '27%', marginLeft: '' }} />
