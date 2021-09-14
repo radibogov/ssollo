@@ -14,6 +14,7 @@ const SET_DEP_DATATIME = 'SET_DEP_DATATIME'
 const SET_START_DATETIME = 'SET_START_DATETIME'
 const SET_END_DATETIME = 'SET_END_DATETIME'
 const SET_TARIFF_DATE = 'SET_TARIFF_DATE'
+const SET_PAY_DATE = 'SET_PAY_DATE'
 const SET_IS_GIVEN = 'SET_IS_GIVEN'
 const SET_IS_RETURNED = 'SET_IS_RETURNED'
 const SET_DAYS_FIRST = 'SET_DAYS_FIRST'
@@ -59,7 +60,7 @@ const defaultState = {
     is_returned: false,
     days_first: null,
     days_second: null,
-    tariff_list: null,
+    pay_date: null,
     discount_percents: null,
     discount_sum: null,
     discount_reason: null,
@@ -94,7 +95,9 @@ export const contractFormReducer = (state = defaultState, action) => {
         case SET_AUTOMIBILE_ID:
             return {
                 ...state,
-                automobile_id: action.payload
+                automobile_id: action.payload.id,
+                tariff_name: action.payload.name,
+                tariff: action.payload.tariff
             }
         case SET_MANAGER_OT_ID:
             return {
@@ -176,6 +179,11 @@ export const contractFormReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 tariff_date: action.payload
+            }
+        case SET_PAY_DATE:
+            return {
+                ...state,
+                pay_date: action.payload
             }
         case SET_IS_GIVEN:
             return {
@@ -266,7 +274,7 @@ export const contractFormReducer = (state = defaultState, action) => {
                 is_returned: false,
                 days_first: null,
                 days_second: null,
-                tariff_list: null,
+                pay_date: null,
                 discount_percents: null,
                 discount_sum: null,
                 discount_reason: null,
@@ -304,6 +312,7 @@ export const setDepDateTime = (payload) => { return { type: SET_DEP_DATATIME, pa
 export const setStartDateTime = (payload) => { return { type: SET_START_DATETIME, payload } }
 export const setEndDatetime = (payload) => { return { type: SET_END_DATETIME, payload } }
 export const setTariffDate = (payload) => { return { type: SET_TARIFF_DATE, payload } }
+export const setPayDate = (payload) => { return { type: SET_PAY_DATE, payload } }
 export const setIsGiven = (payload) => { return { type: SET_IS_GIVEN, payload } }
 export const setIsReturned = (payload) => { return { type: SET_IS_RETURNED, payload } }
 export const setDaysFirst = (payload) => { return { type: SET_DAYS_FIRST, payload } }

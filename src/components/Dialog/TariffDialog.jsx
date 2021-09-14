@@ -36,9 +36,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function TariffDialog() {
+export default function TariffDialog({days}) {
     const dispatch = useDispatch()
-    const tarifList = useSelector(state => state.contractForm.automobile_id)
+    const activeCar = useSelector(state => state.lists.active_car)
 
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.tariff)
@@ -98,17 +98,22 @@ export default function TariffDialog() {
                     <ListItem button
                               onClick={
                                   () => {
-                                      dispatch(setTariff(tarifList?.tarif_one_two))
-                                      dispatch(setTariffName(tarifList?.name))
+                                      days-0 < 3 ? dispatch(setTariff(activeCar?.tarif_one_two))    :
+                                          days-0 < 7 ? dispatch(setTariff(activeCar?.tarif_three_six))  :
+                                              days-0 < 15? dispatch(setTariff(activeCar?.tarif_seven_four)) :
+                                                  days-0 < 31? dispatch(setTariff(activeCar?.tarif_five_three)) :
+                                                      // dispatch(setTariff(activeCar?.tarif_one_two_mounth))
+                                                      dispatch(setTariff(activeCar?.tarif_one_two_mounth_sale));
+                                      dispatch(setTariffName(activeCar?.name))
                                       dispatch(toggleTaiffDialog(false))
                                   }
                               }
                     >
-                        <ListItemText primary={tarifList?.id} />
-                        <ListItemText primary={tarifList?.name} />
-                        <ListItemText primary={tarifList?.tarif_one_two} />
-                        <ListItemText primary={tarifList?.dalay} />
-                        <ListItemText primary={tarifList?.deposit} />
+                        <ListItemText primary={activeCar?.id} />
+                        <ListItemText primary={activeCar?.name} />
+                        <ListItemText primary={activeCar?.tarif_one_two} />
+                        <ListItemText primary={activeCar?.dalay? activeCar?.dalay:activeCar?.tarif_one_two} />
+                        <ListItemText primary={activeCar?.deposit} />
                     </ListItem>
                     <Divider />
 

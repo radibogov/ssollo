@@ -27,7 +27,7 @@ import {
     setTariffDate,
     setDepDateTime,
     setTariff,
-    setSummaProkata
+    setSummaProkata, setPayDate
 } from '../redux-state/reducers/contractFormReducer';
 import { Button } from '@material-ui/core';
 
@@ -59,8 +59,9 @@ border-bottom: 1px solid #3f51b5;
 `;
 
 const ContractForm = () => {
-    const dispatch = useDispatch()
-    const contractForm = useSelector(state => state.contractForm)
+    const dispatch = useDispatch();
+    const contractForm = useSelector(state => state.contractForm);
+    const activeCar = useSelector(state => state.lists.active_car)
     //пересчет количесвта дней
     useEffect(() => {
         dispatch(setDepDateTime(
@@ -77,13 +78,13 @@ const ContractForm = () => {
                 end: moment(contractForm.start_datetime).add(contractForm.days_first,'days').format('YYYY-MM-DDTHH:mm'),
                 days: contractForm.days_first
             }));
-        if (contractForm.automobile_id) {
-            contractForm.days_first-0 < 3 ? dispatch(setTariff(contractForm.automobile_id?.tarif_one_two))    :
-            contractForm.days_first-0 < 7 ? dispatch(setTariff(contractForm.automobile_id?.tarif_three_six))  :
-            contractForm.days_first-0 < 15? dispatch(setTariff(contractForm.automobile_id?.tarif_seven_four)) :
-            contractForm.days_first-0 < 31? dispatch(setTariff(contractForm.automobile_id?.tarif_five_three)) :
-            // dispatch(setTariff(contractForm.automobile_id?.tarif_one_two_mounth))
-            dispatch(setTariff(contractForm.automobile_id?.tarif_one_two_mounth_sale));
+        if (activeCar) {
+            contractForm.days_first-0 < 3 ? dispatch(setTariff(activeCar?.tarif_one_two))    :
+            contractForm.days_first-0 < 7 ? dispatch(setTariff(activeCar?.tarif_three_six))  :
+            contractForm.days_first-0 < 15? dispatch(setTariff(activeCar?.tarif_seven_four)) :
+            contractForm.days_first-0 < 31? dispatch(setTariff(activeCar?.tarif_five_three)) :
+            // dispatch(setTariff(activeCar?.tarif_one_two_mounth))
+            dispatch(setTariff(activeCar?.tarif_one_two_mounth_sale));
         }
 
     }, [contractForm.days_first]);
@@ -92,7 +93,7 @@ const ContractForm = () => {
     useEffect(() => {
         let summa = contractForm.days_first*(1-contractForm.discount_percents/100)*(contractForm.tariff-contractForm.discount_sum)
         dispatch(setSummaProkata(Math.ceil(summa)))
-    }, [contractForm.discount_sum,contractForm.tariff, contractForm.discount_percents,contractForm.days_first,contractForm.automobile_id]);
+    }, [contractForm.discount_sum,contractForm.tariff, contractForm.discount_percents,contractForm.days_first,activeCar]);
     //заполнение форм, если дата пустая
     useEffect(() => {
         if (contractForm.start_datetime === '') {
@@ -227,12 +228,12 @@ const ContractForm = () => {
 
             </InputRow>
             <InputRow>
-                {/* НЕ ПОНЯТНО ЧТО С ЭТИМ ПОЛЕМ, РИДОНЛИ ОНО ИЛИ НЕТ, ОТКУДА БРАТЬ ЕГО */}
                 <TextField
                     id="date"
                     label="Оплачено"
                     type="date"
-
+                    value={contractForm.pay_date}
+                    onChange={(event) => dispatch(setPayDate(event.target.value))}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -368,6 +369,7 @@ const ContractForm = () => {
                 <Button variant="contained" color="primary"
                     onClick={
                         () => {
+
                             dispatch(createContract(contractForm))
                             dispatch(fetchTableRows(true))
                         }
