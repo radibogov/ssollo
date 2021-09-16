@@ -83,7 +83,7 @@ export default function TerritoryDialog() {
                             <ListItem button
                                       onClick={
                                           () => {
-                                              dispatch(setTerritory(el.territory_name))
+                                              dispatch(setTerritory({id: el.id,address: el.territory_name}));
                                               dispatch(toggleTerritoryDialog(false))
                                           }
 
@@ -95,7 +95,6 @@ export default function TerritoryDialog() {
                             <Divider />
                         </React.Fragment>
                     )}
-
 
                 </List>
             </Dialog>

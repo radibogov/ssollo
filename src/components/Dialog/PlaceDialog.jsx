@@ -17,8 +17,7 @@ import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPlaceOt, setPlacePr} from '../../redux-state/reducers/contractFormReducer';
 import { fetchPlaces } from '../../redux-state/async-actions/fetchPlaces';
-import { togglePlaceOtDialog, togglePlacePrDialog
-    } from '../../redux-state/reducers/DialogsReducer';
+import { togglePlaceOtDialog, togglePlacePrDialog} from '../../redux-state/reducers/DialogsReducer';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -36,7 +35,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function PlaceDialog({priem}) {
     const dispatch = useDispatch()
     const placesList = useSelector(state => state.lists.places)
-    console.log()
     const classes = useStyles();
     const open = useSelector(state => priem?state.dialogs.place_pr:state.dialogs.place_ot)
 
@@ -86,16 +84,15 @@ export default function PlaceDialog({priem}) {
                                       onClick={
                                           () => {
                                               if (priem) {
-                                                  dispatch(setPlacePr(el));
+                                                  dispatch(setPlacePr({id: el.id, address: el.address}));
                                                   dispatch(togglePlacePrDialog(false));
                                               } else {
-                                                  dispatch(setPlaceOt(el));
+                                                  dispatch(setPlaceOt({id: el.id, address: el.address}));
                                                   dispatch(togglePlaceOtDialog(false));
                                               }
                                           }
 
-                                      }
-                            >
+                                      }>
                                 <ListItemText primary={el.id} />
                                 <ListItemText primary={el.address} />
                             </ListItem>

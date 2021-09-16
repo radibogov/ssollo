@@ -17,6 +17,7 @@ import { fetchCars } from '../../redux-state/async-actions/fetchCars';
 import {setAutomobileId, setRealAutoId, setTariff, setTariffName} from '../../redux-state/reducers/contractFormReducer';
 import { toggleAutoDialog } from '../../redux-state/reducers/DialogsReducer';
 import {setActiveCar} from "../../redux-state/reducers/listsReducer";
+import {setDeposit} from "../../redux-state/reducers/calculationReducer";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -92,6 +93,7 @@ export default function AutoDialog() {
                                             name:  el.tarif?.name,
                                             tariff: el.tarif?.tarif_one_two}));
                                         dispatch(setActiveCar(el.tarif));
+                                        dispatch(setDeposit(el.tarif.deposit));
                                         dispatch(toggleAutoDialog(false));
                                     }
                                 }

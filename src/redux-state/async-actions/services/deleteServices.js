@@ -1,6 +1,4 @@
 import { FETCH_URL } from "../../../configs/urls"
-import { setServices, setUsers } from "../../reducers/listsReducer"
-
 
 
 export const deleteServices = (id) => {

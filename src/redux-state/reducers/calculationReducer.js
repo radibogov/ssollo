@@ -1,6 +1,4 @@
 
-
-
 const SET_ORDER_ID = 'SET_ORDER_ID'
 const SET_DEPOSIT = 'SET_DEPOSIT'
 const SET_DELAY = 'SET_DELAY'
@@ -14,6 +12,7 @@ const SET_CALC_LIST = 'SET_CALC_LIST'
 const defaultState = {
     order_id: null,
     deposit: null,
+    //просроченных дней
     delay: null,
     fuel_before: null,
     fuel_after: null,
@@ -27,49 +26,41 @@ export const calculationReducer = (state = defaultState, action) => {
     switch (action.type) {
         case SET_ORDER_ID:
             return {
-                state,
                 ...state,
                 order_id: action.payload
             }
         case SET_DEPOSIT:
             return {
-                state,
                 ...state,
                 deposit: action.payload
             }
         case SET_DELAY:
             return {
-                state,
                 ...state,
                 delay: action.payload
             }
         case SET_FUEL_BEFORE:
             return {
-                state,
                 ...state,
                 fuel_before: action.payload
             }
         case SET_FUEL_AFTER:
             return {
-                state,
                 ...state,
                 fuel_after: action.payload
             }
         case SET_MILEAGE_BEFORE:
             return {
-                state,
                 ...state,
                 mileage_before: action.payload
             }
         case SET_MILEAGE_AFTER:
             return {
-                state,
                 ...state,
                 mileage_after: action.payload
             }
         case CLEAR_FORM:
             return {
-                state,
                 order_id: null,
                 deposit: null,
                 delay: null,
@@ -80,7 +71,6 @@ export const calculationReducer = (state = defaultState, action) => {
             }
         case SET_CALC_LIST:
             return {
-                state,
                 ...state,
                 list: action.payload
             }

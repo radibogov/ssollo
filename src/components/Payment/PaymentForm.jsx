@@ -24,16 +24,16 @@ margin: 10px 0;
 const PaymentForm = () => {
     const [checked, setChecked] = React.useState(false)
     const calculation = useSelector(state => state.calculation)
-    console.log(calculation)
+    const activeCar = useSelector(state => state.lists.active_car)
     const dispatch = useDispatch()
     const handleChange = (event) => {
         setChecked(event.target.checked);
-
     };
 
     return <FormWrapper>
         <InputRow>
             <TextField
+                type="number"
                 value={calculation.deposit}
                 onChange={
                     (event) => {
@@ -48,6 +48,7 @@ const PaymentForm = () => {
                 Возврат
             </Button>
             <TextField
+                type="number"
                 value={calculation.fuel_before}
                 onChange={
                     (event) => {
@@ -56,6 +57,7 @@ const PaymentForm = () => {
                 }
                 id="filled-basic" label="Топливо в начале" variant="filled" style={{ marginRight: '20px' }} />
             <TextField
+                type="number"
                 value={calculation.mileage_before}
                 onChange={
                     (event) => {
@@ -66,13 +68,15 @@ const PaymentForm = () => {
         </InputRow>
         <InputRow>
             <TextField
-
+                type="number"
+                value={activeCar?.tarif_one_two*calculation?.delay}
                 id="filled-basic" label="Просрочка" variant="filled" style={{ marginRight: '20px' }} />
             <Button variant="contained" color="primary" style={{ marginRight: '20px', width: '200px' }}>
                 Просрочка
             </Button>
 
             <TextField
+                type="number"
                 value={calculation.fuel_after}
                 onChange={
                     (event) => {
@@ -81,6 +85,7 @@ const PaymentForm = () => {
                 }
                 id="filled-basic" label="Топливо в конце" variant="filled" style={{ marginRight: '20px' }} />
             <TextField
+                type="number"
                 value={calculation.mileage_after}
                 onChange={
                     (event) => {
@@ -91,6 +96,7 @@ const PaymentForm = () => {
         </InputRow>
         <InputRow>
             <TextField
+                type="number"
                 value={calculation.delay}
                 onChange={
                     (event) => {
@@ -123,10 +129,14 @@ const PaymentForm = () => {
         </InputRow>
         <PaymentTable />
         <InputRow>
-            <TextField id="filled-basic" label="Дней" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField id="filled-basic" label="Начислено" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField id="filled-basic" label="Оплачено" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField id="filled-basic" label="Баланс" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField
+                type="number" id="filled-basic" label="Дней" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField
+                type="number" id="filled-basic" label="Начислено" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField
+                type="number" id="filled-basic" label="Оплачено" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField
+                type="number" id="filled-basic" label="Баланс" variant="filled" style={{ marginRight: '30px' }} />
         </InputRow>
     </FormWrapper>
 }

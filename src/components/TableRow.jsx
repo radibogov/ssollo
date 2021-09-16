@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setCalcList } from '../redux-state/reducers/calculationReducer';
 import { setCurrentLeft, setCurrentRight } from '../redux-state/reducers/currentRowReducer';
 import { toggleContractDialog } from '../redux-state/reducers/DialogsReducer';
+import moment from "moment";
+import {setContractNumber } from "../redux-state/reducers/contractFormReducer";
 
 const Row = styled.div`
 white-space: nowrap;
@@ -33,14 +35,7 @@ const Cell = styled.div`
 const TableRow = (props) => {
     const dispatch = useDispatch()
     const rowRef = React.useRef()
-
-
-    
     return <>
-
-
-
-
         <Row
             style={{
                 background: props.isCurrent ? 'lightblue' : ''
@@ -58,47 +53,49 @@ const TableRow = (props) => {
             }
             onDoubleClick={
                 () => {
+
+                    dispatch(setContractNumber(props.contract_number))
                     dispatch(setCalcList(props.list))
                     dispatch(toggleContractDialog(true))
                 }
             }
         >
             <Cell>
-                {props.time}
+                {moment(props.start_datetime).format('HH:mm DD-MM-YYYY ')}
             </Cell>
             <Cell>
-                {props.numberAuto}
+                {props.gos_number}
             </Cell>
             <Cell>
-                {props.model}
+                {props.auto_name}
             </Cell>
             <Cell>
-                {props.place}
+                {props.side==='left'?props.address_gave:props.address_received}
             </Cell>
             <Cell>
-                {props.client}
+                {props.client_name}
             </Cell>
             <Cell>
-                {props.payment}
+                {props.summa_prokata}
             </Cell>
             <Cell>
                 {props.balance}
             </Cell>
             <Cell>
-                {props.days}
+                {props.days_first}
             </Cell>
             <Cell>
-                {props.returnDate}
+                {moment(props.end_datetime).format('HH:mm DD-MM-YYYY ')}
             </Cell>
             <Cell>
-                {props.contract}
-            </Cell>
-            {/* <Cell>
-                {props.comment}
+                {props.contract_number}
             </Cell>
             <Cell>
-                {props.mark}
-            </Cell> */}
+                {props.contract_number}
+            </Cell>
+            <Cell>
+                {props.contract_number}
+            </Cell>
         </Row>
     </>
 }

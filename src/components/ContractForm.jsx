@@ -19,7 +19,7 @@ import {
     setRealAutoId,
     setStartDateTime,
     setUchNumber,
-    setNotes,
+    setComment,
     setDiscountsPercents,
     setDiscountSum,
     setDiscountReason,
@@ -32,7 +32,6 @@ import {
 import { Button } from '@material-ui/core';
 
 import { createContract } from '../redux-state/async-actions/createContract';
-import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
 
 import ClientDialog from './Dialog/ClientDialog';
 import AutoDialog from './Dialog/AutoDialog';
@@ -299,7 +298,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField value={contractForm.place_ot} readOnly id="filled-basic" label="Выдача" variant="filled" style={{ width: '87%' }} />
+                    <TextField value={contractForm.address_gave} readOnly id="filled-basic" label="Выдача" variant="filled" style={{ width: '87%' }} />
                     <PlaceDialog priem={false}/>
                 </div>
                 <div style={{
@@ -319,7 +318,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField value={contractForm.place_pr} readOnly id="filled-basic" label="Прием" variant="filled" style={{ width: '87%' }} />
+                    <TextField value={contractForm.address_received} readOnly id="filled-basic" label="Прием" variant="filled" style={{ width: '87%' }} />
                     <PlaceDialog priem={true}/>
                 </div>
                 <div style={{
@@ -364,14 +363,12 @@ const ContractForm = () => {
                     alignItems: 'end',
                     width: '75%'
                 }}>
-                    <TextField value={contractForm.notes} onChange={(event) => dispatch(setNotes(event.target.value))} id="filled-basic" label="Примечание" variant="filled" style={{ width: '100%' }} />
+                    <TextField value={contractForm.comment} onChange={(event) => dispatch(setComment(event.target.value))} id="filled-basic" label="Примечание" variant="filled" style={{ width: '100%' }} />
                 </div>
                 <Button variant="contained" color="primary"
                     onClick={
                         () => {
-
-                            dispatch(createContract(contractForm))
-                            dispatch(fetchTableRows(true))
+                            dispatch(createContract(contractForm));
                         }
                     }>
                     Сохранить

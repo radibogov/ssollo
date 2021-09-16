@@ -1,6 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/core/styles';
@@ -39,7 +37,6 @@ const ContractDialog = () => {
     const handleClose = () => {
         dispatch(toggleContractDialog(false))
     };
-    // console.log(props.list)
 
     return (
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
 import PaymentTableRow from './PaymentTableRow';
 import moment from 'moment';
-import MoneyOperationDialog from './MoneyOperationDialog';
 import { fetchServices } from '../../redux-state/async-actions/services/fetchServices';
 
 const Wrapper = styled.div`
@@ -32,7 +31,6 @@ text-align: center;
 const PaymentTable = (props) => {
     const dispatch = useDispatch()
     const list = useSelector(state => state.calculation.list)
-    console.log(list)
     const current = useSelector(state => state.currentRow.payment)
     React.useEffect(() => {
         dispatch(fetchServices())

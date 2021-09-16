@@ -1,5 +1,5 @@
 import { FETCH_URL } from "../../../configs/urls"
-import { setServices, setUsers } from "../../reducers/listsReducer"
+import { setServices } from "../../reducers/listsReducer"
 
 
 

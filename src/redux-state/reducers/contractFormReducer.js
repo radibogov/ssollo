@@ -27,7 +27,7 @@ const SET_TARIFF = 'SET_TARIFF'
 const SET_TARIFF_NAME = 'SET_TARIFF_NAME'
 const SET_FIRM_ID = 'SET_FIRM_ID'
 const SET_TERRITORY = 'SET_TERRITORY'
-const SET_NOTES = 'SET_NOTES'
+const SET_COMMENT = 'SET_COMMENT'
 const SET_MARKS = 'SET_MARKS'
 const CLEAR_FORM = 'CLEAR_FORM'
 
@@ -38,8 +38,10 @@ const defaultState = {
     manager_ot_name: '',
     manager_pr_id: null,
     manager_pr_name: '',
-    place_ot: '',
-    place_pr: '',
+    address_gave: '',
+    address_gave_id: null,
+    address_received: '',
+    address_received_id: null,
     automobile_id: null,
     contract_number: null,
     uch_number: null,
@@ -69,8 +71,9 @@ const defaultState = {
     tariff_name: '',
     firm_id: null,
     firm_name: '',
+    territory_id: '',
     territory: '',
-    notes: '',
+    comment: '',
     marks:''
 }
 
@@ -115,12 +118,14 @@ export const contractFormReducer = (state = defaultState, action) => {
         case SET_PLACE_OT:
             return {
                 ...state,
-                place_ot: action.payload.address
+                address_gave_id: action.payload.id,
+                address_gave: action.payload.address
             }
         case SET_PLACE_PR:
             return {
                 ...state,
-                place_pr: action.payload.address
+                address_received_id: action.payload.id,
+                address_received: action.payload.address
             }
 
         case SET_REAL_AUTO_ID:
@@ -234,12 +239,13 @@ export const contractFormReducer = (state = defaultState, action) => {
         case SET_TERRITORY:
             return {
                 ...state,
-                territory: action.payload,
+                territory: action.payload.address,
+                territory_id: action.payload.id,
             }
-        case SET_NOTES:
+        case SET_COMMENT:
             return {
                 ...state,
-                notes: action.payload,
+                comment: action.payload,
             }
         case SET_MARKS:
             return {
@@ -252,21 +258,28 @@ export const contractFormReducer = (state = defaultState, action) => {
                 manager_ot_name: '',
                 manager_pr_id: null,
                 manager_pr_name: '',
-                place_ot: '',
-                place_pr: '',
+
+                address_gave: '',
+                address_gave_id: null,
+                address_received: '',
+                address_received_id: null,
+
                 automobile_id: null,
                 contract_number: null,
                 uch_number: null,
                 god_number: null,
+
                 real_auto_id: '',
                 gos_number: '',
                 auto_name: '',
                 user_id: null,
                 client_name: '',
+
                 representative_first_id: null,
                 representative_first_name: '',
                 representative_second_id: null,
                 representative_second_name: '',
+
                 start_datetime: '',
                 end_datetime: '',
                 tariff_date: null,
@@ -274,6 +287,7 @@ export const contractFormReducer = (state = defaultState, action) => {
                 is_returned: false,
                 days_first: null,
                 days_second: null,
+
                 pay_date: null,
                 discount_percents: null,
                 discount_sum: null,
@@ -281,10 +295,12 @@ export const contractFormReducer = (state = defaultState, action) => {
                 summa_prokata: 0,
                 tariff: 0,
                 tariff_name: '',
+
                 firm_id: null,
                 firm_name: '',
                 territory: '',
-                notes: '',
+                territory_id: '',
+                comment: '',
                 marks:''
             }
 
@@ -325,7 +341,7 @@ export const setTariff = (payload) => { return { type: SET_TARIFF, payload } }
 export const setTariffName = (payload) => { return { type: SET_TARIFF_NAME, payload } }
 export const setFirmId = (payload) => { return { type: SET_FIRM_ID, payload } }
 export const setTerritory = (payload) => { return { type: SET_TERRITORY, payload } }
-export const setNotes = (payload) => { return { type: SET_NOTES, payload } }
+export const setComment = (payload) => { return { type: SET_COMMENT, payload } }
 export const setMarks = (payload) => { return { type: SET_MARKS, payload } }
 export const clearContractForm = () => { return { type: CLEAR_FORM } }
 

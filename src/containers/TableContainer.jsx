@@ -19,7 +19,6 @@ const TableContainer = () => {
         dispatch(fetchTableRows(true))
         dispatch(fetchTableRows(false))
     }, [])
-    console.log(tables)
     return <Wrapper>
         <ContractDialog />
         <LeftTable
