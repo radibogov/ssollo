@@ -6,15 +6,15 @@ import { setCalcList } from '../redux-state/reducers/calculationReducer';
 import { setCurrentLeft, setCurrentRight } from '../redux-state/reducers/currentRowReducer';
 import { toggleContractDialog } from '../redux-state/reducers/DialogsReducer';
 import moment from "moment";
-import {setContractNumber } from "../redux-state/reducers/contractFormReducer";
+import {setContractForm} from "../redux-state/reducers/contractFormReducer";
+import {setActiveCar} from "../redux-state/reducers/listsReducer";
 
 const Row = styled.div`
 white-space: nowrap;
-width: 2440px;
+width: 2930px;
 transition: .2s;
     :hover{
         background: #eee;
-
         cursor: pointer;
     }
 `;
@@ -53,15 +53,15 @@ const TableRow = (props) => {
             }
             onDoubleClick={
                 () => {
-
-                    dispatch(setContractNumber(props.contract_number))
+                    dispatch(setActiveCar(props.automobile));
+                    dispatch(setContractForm(props))
                     dispatch(setCalcList(props.list))
                     dispatch(toggleContractDialog(true))
                 }
             }
         >
             <Cell>
-                {moment(props.start_datetime).format('HH:mm DD-MM-YYYY ')}
+                {props.side==='left'?moment(props.start_datetime).format('HH:mm DD-MM-YYYY '):moment(props.end_datetime).format('HH:mm DD-MM-YYYY ')}
             </Cell>
             <Cell>
                 {props.gos_number}
@@ -85,16 +85,16 @@ const TableRow = (props) => {
                 {props.days_first}
             </Cell>
             <Cell>
-                {moment(props.end_datetime).format('HH:mm DD-MM-YYYY ')}
+                {props.side==='right'?moment(props.start_datetime).format('HH:mm DD-MM-YYYY '):moment(props.end_datetime).format('HH:mm DD-MM-YYYY ')}
             </Cell>
             <Cell>
                 {props.contract_number}
             </Cell>
             <Cell>
-                {props.contract_number}
+                {props.comment}
             </Cell>
             <Cell>
-                {props.contract_number}
+                {props.marks}
             </Cell>
         </Row>
     </>

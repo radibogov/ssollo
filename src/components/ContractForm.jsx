@@ -31,7 +31,9 @@ import {
 } from '../redux-state/reducers/contractFormReducer';
 import { Button } from '@material-ui/core';
 
-import { createContract } from '../redux-state/async-actions/createContract';
+import { createContract } from '../redux-state/async-actions/contract/createContract';
+import {updateContract} from "../redux-state/async-actions/contract/updateContract";
+import {fetchTableRows} from "../redux-state/async-actions/fetchTableRows";
 
 import ClientDialog from './Dialog/ClientDialog';
 import AutoDialog from './Dialog/AutoDialog';
@@ -42,6 +44,9 @@ import FirmDialog from './Dialog/firmDialog';
 import TerritoryDialog from "./Dialog/TerritoryDialog";
 import moment from "moment";
 import RepresentativeDialog from "./Dialog/RepresentativeDialog";
+import {setDate} from "../redux-state/reducers/dateReducer";
+import {store} from "../redux-state";
+
 
 const FormWrapper = styled.form`
 width: 80%;
@@ -78,10 +83,10 @@ const ContractForm = () => {
                 days: contractForm.days_first
             }));
         if (activeCar) {
-            contractForm.days_first-0 < 3 ? dispatch(setTariff(activeCar?.tarif_one_two))    :
-            contractForm.days_first-0 < 7 ? dispatch(setTariff(activeCar?.tarif_three_six))  :
-            contractForm.days_first-0 < 15? dispatch(setTariff(activeCar?.tarif_seven_four)) :
-            contractForm.days_first-0 < 31? dispatch(setTariff(activeCar?.tarif_five_three)) :
+            +contractForm.days_first < 3 ? dispatch(setTariff(activeCar?.tarif_one_two))    :
+            +contractForm.days_first < 7 ? dispatch(setTariff(activeCar?.tarif_three_six))  :
+            +contractForm.days_first < 15? dispatch(setTariff(activeCar?.tarif_seven_four)) :
+            +contractForm.days_first < 31? dispatch(setTariff(activeCar?.tarif_five_three)) :
             // dispatch(setTariff(activeCar?.tarif_one_two_mounth))
             dispatch(setTariff(activeCar?.tarif_one_two_mounth_sale));
         }
@@ -174,7 +179,7 @@ const ContractForm = () => {
                     label="Начало"
                     type="datetime-local"
                     defaultValue=""
-                    value={contractForm.start_datetime}
+                    value={moment(contractForm.start_datetime).format('YYYY-MM-DDTHH:mm')}
                     onChange={
                         (event) => {
                             dispatch(setStartDateTime(event.target.value))
@@ -189,7 +194,7 @@ const ContractForm = () => {
                     id="date"
                     label="Дата тар."
                     type="date"
-                    value={contractForm.tariff_date}
+                    value={moment(contractForm.tariff_date).format('YYYY-MM-DD')}
                     onChange={
                         (event) => {
                             dispatch(setTariffDate(event.target.value))
@@ -206,7 +211,7 @@ const ContractForm = () => {
                     id="datetime-local"
                     label="Возврат"
                     type="datetime-local"
-                    value={contractForm.end_datetime}
+                    value={moment(contractForm.end_datetime).format('YYYY-MM-DDTHH:mm')}
                     onChange={
                         (event) => {
                             event.target.value > contractForm.start_datetime?dispatch(setEndDatetime(event.target.value)):dispatch(setEndDatetime(contractForm.end_datetime))
@@ -231,7 +236,7 @@ const ContractForm = () => {
                     id="date"
                     label="Оплачено"
                     type="date"
-                    value={contractForm.pay_date}
+                    value={moment(contractForm.pay_date).format('YYYY-MM-DD')}
                     onChange={(event) => dispatch(setPayDate(event.target.value))}
                     InputLabelProps={{
                         shrink: true,
@@ -268,7 +273,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '40%'
                 }}>
-                    <TextField value={contractForm.tariff} onChange={(event) => dispatch(setTariff(event.target.value))} id="filled-basic" label="Тариф" variant="filled" style={{ width: '65%' }} />
+                    <TextField value={''+contractForm.tariff} onChange={(event) => dispatch(setTariff(event.target.value))} id="filled-basic" label="Тариф" variant="filled" style={{ width: '65%' }} />
                     <TariffDialog days={''+contractForm.days_first}/>
                 </div>
                 <div style={{
@@ -286,7 +291,7 @@ const ContractForm = () => {
                 <TextField id="filled-basic" value={contractForm.discount_reason} onChange={(event) => dispatch(setDiscountReason(event.target.value))} label="Причина скидки" variant="filled" style={{ width: '45%', marginLeft: '20px' }} />
             </InputRow>
             <InputRow>
-                <TextField readOnly value={contractForm.summa_prokata} id="filled-basic"  label="За прокат"  variant="filled" style={{ width: '27%', marginLeft: '' }} />
+                <TextField readOnly value={''+contractForm.summa_prokata} id="filled-basic"  label="За прокат"  variant="filled" style={{ width: '27%', marginLeft: '' }} />
                 <TextField id="filled-basic" value={contractForm.marks} onChange={(event) => dispatch(setMarks(event.target.value))} label="Отметки" variant="filled" style={{ width: '75%', marginLeft: '20px' }} />
             </InputRow>
         </Inner>
@@ -338,7 +343,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '60%'
                 }}>
-                    <TextField value={contractForm.territory} id="filled-basic" label="Территория" variant="filled" style={{ width: '87%' }} />
+                    <TextField value={contractForm.territory_address} id="filled-basic" label="Территория" variant="filled" style={{ width: '87%' }} />
                     <TerritoryDialog />
                 </div>
                 <div style={{
@@ -368,7 +373,15 @@ const ContractForm = () => {
                 <Button variant="contained" color="primary"
                     onClick={
                         () => {
-                            dispatch(createContract(contractForm));
+                            if (contractForm.id) {
+                                dispatch(updateContract(contractForm.id,contractForm));
+                            } else {
+                                dispatch(createContract(contractForm));
+                            }
+                            setTimeout(() => {
+                                dispatch(fetchTableRows(true))
+                                dispatch(fetchTableRows(false))
+                            }, 200)
                         }
                     }>
                     Сохранить

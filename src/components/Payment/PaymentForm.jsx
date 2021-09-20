@@ -6,8 +6,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDelay, setDeposit, setFuelAfter, setFuelBefore, setMileageAfter, setMileageBefore } from '../../redux-state/reducers/calculationReducer';
-import PaymentTable from './PaymentTable,';
-import MoneyOperationDialog from "./MoneyOperationDialog";
+import PaymentTable from './PaymentTable';
+import MoneyOperationDialog from "./Payment-dialogs/MoneyOperationDialog";
 import PaymentBtnPanel from "./PaymentBtnPanel";
 
 const FormWrapper = styled.form`
@@ -40,13 +40,7 @@ const PaymentForm = () => {
                         dispatch(setDeposit(event.target.value))
                     }
                 }
-                id="filled-basic" label="Залог" variant="filled" style={{ marginRight: '20px' }} />
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                Залог
-            </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                Возврат
-            </Button>
+                id="filled-basic" label="Залог" variant="filled" style={{ marginRight: 'auto' }} />
             <TextField
                 type="number"
                 value={calculation.fuel_before}
@@ -64,16 +58,17 @@ const PaymentForm = () => {
                         dispatch(setMileageBefore(event.target.value))
                     }
                 }
-                id="filled-basic" label="Пробег начало" variant="filled" style={{ marginRight: '20px' }} />
+                id="filled-basic" label="Пробег начало" variant="filled"/>
         </InputRow>
-        <InputRow>
-            <TextField
-                type="number"
-                value={activeCar?.tarif_one_two*calculation?.delay}
-                id="filled-basic" label="Просрочка" variant="filled" style={{ marginRight: '20px' }} />
-            <Button variant="contained" color="primary" style={{ marginRight: '20px', width: '200px' }}>
-                Просрочка
-            </Button>
+        <InputRow style={{justifyContent: 'flex-end'}}>
+            <div style={{ marginRight: 'auto' }}>
+                <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                    Залог
+                </Button>
+                <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                    Возврат
+                </Button>
+            </div>
 
             <TextField
                 type="number"
@@ -92,40 +87,19 @@ const PaymentForm = () => {
                         dispatch(setMileageAfter(event.target.value))
                     }
                 }
-                id="filled-basic" label="Пробег конец" variant="filled" style={{ marginRight: '20px' }} />
+                id="filled-basic" label="Пробег конец" variant="filled"/>
         </InputRow>
-        <InputRow>
-            <TextField
-                type="number"
-                value={calculation.delay}
-                onChange={
-                    (event) => {
-                        dispatch(setDelay(event.target.value))
-                    }
-                }
-                id="filled-basic" label="Дней" variant="filled" style={{ marginRight: '240px' }} />
-            <TextField value={calculation.fuel_before-calculation.fuel_after} id="filled-basic" label="Топливо разница" variant="filled" style={{ marginRight: '20px' }} />
-            <TextField value={calculation.mileage_after-calculation.mileage_before} id="filled-basic" label="Километраж" variant="filled" style={{ marginRight: '20px' }} />
+        <InputRow style={{justifyContent: 'flex-end'}}>
+            <TextField value={calculation.fuel_before-calculation.fuel_after} id="filled-basic" label="Топливо разница" variant="filled" style={{ marginLeft: '240px',marginRight: '20px' }} />
+            <TextField value={calculation.mileage_after-calculation.mileage_before} id="filled-basic" label="Километраж" variant="filled" />
         </InputRow>
-        <InputRow>
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={checked}
-                        onChange={handleChange}
-                        name="checkedB"
-                        color="primary"
-                    />
-                }
-                label="Задержан"
-                style={{ marginRight: '600px' }}
-            />
-            <TextField id="filled-basic" label="Перепробег" variant="filled" style={{ marginRight: '20px' }} />
+        <InputRow style={{justifyContent: 'flex-end'}}>
+            <TextField id="filled-basic" value={0} label="Перепробег" variant="filled" />
         </InputRow>
         <InputRow>
             <PaymentBtnPanel />
             <MoneyOperationDialog />
-            <TextField id="filled-basic" label="За перепробег" variant="filled" style={{ marginLeft: '220px' }} />
+            <TextField id="filled-basic" value={0} label="За перепробег" variant="filled" style={{ marginLeft: 'auto' }} />
         </InputRow>
         <PaymentTable />
         <InputRow>

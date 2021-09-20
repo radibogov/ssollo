@@ -1,15 +1,15 @@
 import { FETCH_URL } from "../../../configs/urls"
 
 
-export const createServices = (data) => {
+export const updateServices = (id, data) => {
 
     return dispatch => {
-        fetch(`${FETCH_URL}/services/`, {
+        fetch(`${FETCH_URL}/services/${id}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: 'POST',
+            method: 'PATCH',
             body: JSON.stringify(data)
         })
     }

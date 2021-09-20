@@ -13,9 +13,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFirmId, setUserID } from '../../redux-state/reducers/contractFormReducer';
+import { setFirmId } from '../../redux-state/reducers/contractFormReducer';
 import { fetchFirms } from '../../redux-state/async-actions/fetchFirms';
 import { toggleFirmDialog } from '../../redux-state/reducers/DialogsReducer';
+import {setFirmIdPayment} from "../../redux-state/reducers/paymentReducer";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -33,7 +34,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function FirmDialog() {
     const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.firms)
+    const firmList = useSelector(state => state.lists.firms)
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.firm)
 
@@ -75,7 +76,7 @@ export default function FirmDialog() {
                         <ListItemText primary="Айди" />
                         <ListItemText primary="Название" />
                     </ListItem>
-                    {autoList.map(el =>
+                    {firmList.map(el =>
                         <React.Fragment
                             key={el.id}
                         >
@@ -83,6 +84,7 @@ export default function FirmDialog() {
                                 onClick={
                                     () => {
                                         dispatch(setFirmId(el))
+                                        dispatch(setFirmIdPayment(el))
                                         dispatch(toggleFirmDialog(false))
                                     }
 

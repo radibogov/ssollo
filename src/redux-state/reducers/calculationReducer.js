@@ -61,13 +61,7 @@ export const calculationReducer = (state = defaultState, action) => {
             }
         case CLEAR_FORM:
             return {
-                order_id: null,
-                deposit: null,
-                delay: null,
-                fuel_before: null,
-                fuel_after: null,
-                mileage_before: null,
-                mileage_after: null
+                ...defaultState
             }
         case SET_CALC_LIST:
             return {

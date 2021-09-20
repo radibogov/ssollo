@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -7,16 +7,29 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleMoneyOpDialog } from '../../redux-state/reducers/DialogsReducer';
+import { toggleMoneyOpDialog } from '../../../redux-state/reducers/DialogsReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { setDateOfPayment, setOperation } from '../../redux-state/reducers/paymentReducer';
-import AutoDialog from "../Dialog/AutoDialog";
-import {setContractNumber} from "../../redux-state/reducers/contractFormReducer";
-import ClientDialog from "../Dialog/ClientDialog";
-import FirmDialog from "../Dialog/firmDialog";
+import {
+    setAccruedPayment,
+    setCountPayment,
+    setDateOfPayment,
+    setOperation,
+    setSumOfMoney
+} from '../../../redux-state/reducers/paymentReducer';
+import AutoDialog from "../../Dialog/AutoDialog";
+import {
+    setContractNumber,
+} from "../../../redux-state/reducers/contractFormReducer";
+import ClientDialog from "../../Dialog/ClientDialog";
+import FirmDialog from "../../Dialog/firmDialog";
+import ServicesDialog from "./ServicesDialog";
+import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import moment from "moment";
+import ManagerPaymentDialog from "./ManagerPaymentDialog";
 
 const InputRow = styled.div`
 display: flex;
@@ -45,7 +58,17 @@ export default function MoneyOperationDialog() {
     const open = useSelector(state => state.dialogs.moneyOp)
     const type = useSelector(state => state.dialogs.moneyOpType)
     const contractForm = useSelector(state => state.contractForm)
-    const paymentForm = useSelector(state => state.payment)
+    const paymentForm = useSelector(state => state.paymentForm)
+
+    useEffect(() => {
+        if (paymentForm.date_of_payment === '') {
+            dispatch(setDateOfPayment(moment().format('YYYY-MM-DDTHH:mm')))
+        }
+    });
+    useEffect(() => {
+        let summa = paymentForm.service_price*paymentForm.count
+        dispatch(setAccruedPayment(Math.ceil(summa)))
+    }, [paymentForm.service_price,paymentForm.count]);
 
     const handleClose = () => {
         dispatch(toggleMoneyOpDialog(false))
@@ -61,7 +84,7 @@ export default function MoneyOperationDialog() {
                             id="datetime-local"
                             label="Дата, время"
                             type="datetime-local"
-                            value={paymentForm.dateofPayment}
+                            value={paymentForm.date_of_payment}
                             onChange={
                                 (event) => {
                                     dispatch(setDateOfPayment(event.target.value))
@@ -76,6 +99,7 @@ export default function MoneyOperationDialog() {
                             id="standard-basic"
                             label="Создал" />
                     </InputRow>
+                    {type===1?null:
                     <InputRow>
                         <TextField
                             id="standard-basic"
@@ -87,17 +111,11 @@ export default function MoneyOperationDialog() {
                                 }
                             }
                             />
-
-                        <TextField
-                            id="standard-basic"
-                            label="Сотрудник" 
-                            disabled
-                            />
-                    </InputRow>
+                    </InputRow>}
                     {type===1?
                         <React.Fragment>
                             <InputRow>
-                                <TextField value={contractForm.contract_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" style={{ marginRight: '20px', width: '30%' }} />
+                                <TextField value={contractForm.uch_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" style={{ marginRight: '20px', width: '30%' }} />
                                 <div style={{
                                     display: 'flex',
                                     justifyContent: 'center',
@@ -124,29 +142,38 @@ export default function MoneyOperationDialog() {
                         :null
                     }
                     <InputRow>
+                            <TextField
+                                id="standard-basic"
+                                label="Сотрудник"
+                                style={{width: '90%'}}
+                                value={paymentForm.employee_name}
+                            />
+                            <ManagerPaymentDialog />
+
+                    </InputRow>
+                    <InputRow>
                         <div
                             style={{
                                 display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
+                                width: '100%'
                             }}
                         >
                             <TextField
                                 id="standard-basic"
                                 label="Услуга"
-                                disabled
+                                style={{width: '100%'}}
+                                value={paymentForm.service_name}
                             />
-                            <IconButton color="primary">
-                                <ArrowDropDownCircleIcon />
-                            </IconButton>
+                            {type===1?null:
+                            <ServicesDialog />}
                         </div>
                     </InputRow>
 
                     <InputRow>
                         <TextField
                             id="standard-basic"
-                            label="Тариф" 
-                            
+                            label="Тариф"
+                            value={paymentForm.service_price}
                             />
                         <div style={{
                             display: 'flex',
@@ -154,20 +181,53 @@ export default function MoneyOperationDialog() {
                             alignItems: 'center',
                             width: '50%'
                         }}>
-                            <TextField value={contractForm.firm_name} id="filled-basic" label="Фирма" style={{ width: '87%' }} />
+                            <TextField value={paymentForm.firm_name} id="filled-basic" label="Фирма" style={{ width: '87%' }} />
                             <FirmDialog/>
                         </div>
+                    </InputRow>
+                    <InputRow style={{display: 'flex', justifyContent: 'start'}}>
+                        <IconButton color="primary"
+                                    onClick={
+                                        () => {
+                                            dispatch(setCountPayment(+paymentForm.count - 1 >= 1 ? +paymentForm.count - 1 : 1))
+                                        }
+                                    }
+                        >
+                            <ArrowLeftIcon />
+                        </IconButton>
+                        <TextField id="filled-basic" label={type===1?'Дней':'Количество'} value={'' + paymentForm.count} onChange={(event) =>event.target.value>0?dispatch(setCountPayment(event.target.value)):dispatch(setCountPayment(1))} type="number" />
+                        <IconButton color="primary"
+                                    onClick={
+                                        () => {
+                                            dispatch(setCountPayment(+paymentForm.count + 1))
+                                        }
+                                    }
+                        >
+                            <ArrowRightIcon />
+                        </IconButton>
                     </InputRow>
                     <InputRow>
                         <TextField
                             id="standard-basic"
-                            label="Сумма" />
-                        <IconButton color="primary">
+                            label="Сумма"
+                            value={+paymentForm.sum_of_money}
+                        />
+                        <IconButton color="primary"
+                                    onClick={
+                                        () => {
+                                            dispatch(setSumOfMoney(paymentForm.accrued))
+                                        }
+                                    }
+                        >
                             <ArrowBackIcon />
                         </IconButton>
                         <TextField
                             id="standard-basic"
-                            label="Начислено" />
+                            label="Начислено"
+                            type='number'
+                            value={''+paymentForm.accrued}
+                            onChange={(event) =>dispatch(setAccruedPayment(event.target.value))}
+                        />
                     </InputRow>
                 </DialogContent>
                 <DialogActions>

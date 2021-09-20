@@ -1,4 +1,4 @@
-import { FETCH_URL } from "../../configs/urls"
+import { FETCH_URL } from "../../../configs/urls"
 
 
 export const deleteContract = (id) => {
