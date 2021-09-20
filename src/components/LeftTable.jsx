@@ -79,6 +79,7 @@ const LeftTable = (props) => {
 
                 list={item.calculation}
                 payment={item.payment}
+                automobile={item.automobile}
 
                 contract_number={item.contract_number}
                 uch_number={item.uch_number}

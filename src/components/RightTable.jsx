@@ -32,7 +32,7 @@ const RightTable = (props) => {
     return <Wrapper style={{maxWidth: props.width ? props.width + '%' : '50%'}}>
         <Row>
             <Cell>
-                Время
+                Время возврата
             </Cell>
             <Cell>
                 Автомобиль
@@ -41,7 +41,7 @@ const RightTable = (props) => {
                 Модель автомобиля
             </Cell>
             <Cell>
-                Место выдачи
+                Место возврата
             </Cell>
             <Cell>
                 Клиент
@@ -56,7 +56,7 @@ const RightTable = (props) => {
                 Дней
             </Cell>
             <Cell>
-                Дата возврата
+                Выдано
             </Cell>
             <Cell>
                 Дог. №
@@ -65,8 +65,14 @@ const RightTable = (props) => {
                 Примечание
             </Cell>
             <Cell>
-                Отметки
+                Замечания
             </Cell>
+            {/*<Cell>*/}
+            {/*    Будет продлять*/}
+            {/*</Cell>*/}
+            {/*<Cell>*/}
+            {/*    Будет возвращать*/}
+            {/*</Cell>*/}
         </Row>
         {props.rows.map((item) =>
             <TableRow
@@ -79,11 +85,11 @@ const RightTable = (props) => {
 
                 list={item.calculation}
                 payment={item.payment}
+                automobile={item.automobile}
 
                 contract_number={item.contract_number}
                 uch_number={item.uch_number}
                 god_number={item.god_number}
-
                 manager_ot_id={item.manager_ot?.id}
                 manager_ot_name={item.manager_ot?.full_name}
                 manager_pr_id={item.manager_pr?.id}
@@ -92,7 +98,7 @@ const RightTable = (props) => {
                 address_gave_id={item.address_gave?.id}
                 address_received={item.address_received?.address}
                 address_received_id={item.address_received?.id}
-                automobile_id={item.automobile.id}
+                automobile_id={item.automobile?.id}
                 tariff_name={item.automobile?.name}
                 real_auto_id={item.real_auto?.id}
                 gos_number={item.real_auto?.gos_number}

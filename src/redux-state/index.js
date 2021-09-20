@@ -9,6 +9,7 @@ import { calculationReducer } from "./reducers/calculationReducer";
 import { currentRowReducer } from "./reducers/currentRowReducer";
 import { dialogReducer } from "./reducers/DialogsReducer";
 import { paymentReducer } from "./reducers/paymentReducer";
+import {serviceFormReducer} from "./reducers/serviceFormReduser";
 
 
 const rootReducer = combineReducers({
@@ -19,9 +20,9 @@ const rootReducer = combineReducers({
     calculation: calculationReducer,
     currentRow: currentRowReducer,
     dialogs: dialogReducer,
-    payment: paymentReducer,
+    paymentForm: paymentReducer,
+    serviceForm: serviceFormReducer,
 })
-
 
 
 

@@ -1,7 +1,4 @@
-
-
 const SET_DATE = 'SET_DATE'
-
 
 const defaultState = {
     date: new Date()

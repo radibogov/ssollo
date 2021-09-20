@@ -21,7 +21,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import FormTabs from '../containers/FormTabs'
-import { deleteContract } from '../redux-state/async-actions/deleteContract';
+import { deleteContract } from '../redux-state/async-actions/contract/deleteContract';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
 import { clearContractForm } from '../redux-state/reducers/contractFormReducer';
 
@@ -74,6 +74,7 @@ const TopNav = () => {
   const current = useSelector(state => state.currentRow.left)
   const dispatch = useDispatch()
   const classes = useStyles();
+
   const handleDateChange = (date) => {
     dispatch(setDate(date))
     dispatch(fetchTableRows(true))

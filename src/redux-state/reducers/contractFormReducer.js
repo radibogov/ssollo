@@ -29,6 +29,7 @@ const SET_FIRM_ID = 'SET_FIRM_ID'
 const SET_TERRITORY = 'SET_TERRITORY'
 const SET_COMMENT = 'SET_COMMENT'
 const SET_MARKS = 'SET_MARKS'
+const SET_CONTRACT_FORM = 'SET_CONTRACT_FORM'
 const CLEAR_FORM = 'CLEAR_FORM'
 
 
@@ -72,7 +73,7 @@ const defaultState = {
     firm_id: null,
     firm_name: '',
     territory_id: '',
-    territory: '',
+    territory_address: '',
     comment: '',
     marks:''
 }
@@ -239,7 +240,7 @@ export const contractFormReducer = (state = defaultState, action) => {
         case SET_TERRITORY:
             return {
                 ...state,
-                territory: action.payload.address,
+                territory_address: action.payload.address,
                 territory_id: action.payload.id,
             }
         case SET_COMMENT:
@@ -252,56 +253,55 @@ export const contractFormReducer = (state = defaultState, action) => {
                 ...state,
                 marks: action.payload,
             }
+        case SET_CONTRACT_FORM:
+            return {
+                ...state,
+                id:action.payload.id,
+                manager_ot_id: action.payload.manager_ot_id,
+                manager_ot_name: action.payload.manager_ot_name,
+                manager_pr_id: action.payload.manager_pr_id,
+                manager_pr_name: action.payload.manager_pr_name,
+                address_gave: action.payload.address_gave,
+                address_gave_id: action.payload.address_gave_id,
+                address_received: action.payload.address_received,
+                address_received_id: action.payload.address_received_id,
+                automobile_id: action.payload.automobile_id,
+                contract_number: action.payload.contract_number,
+                uch_number: action.payload.uch_number,
+                god_number: action.payload.god_number,
+                real_auto_id: action.payload.real_auto_id,
+                gos_number: action.payload.gos_number,
+                auto_name: action.payload.auto_name,
+                user_id: action.payload.user_id,
+                client_name: action.payload.client_name,
+                representative_first_id: action.payload.representative_first_id,
+                representative_first_name: action.payload.representative_first_name,
+                representative_second_id: action.payload.representative_second_id,
+                representative_second_name: action.payload.representative_second_name,
+                start_datetime: action.payload.start_datetime,
+                end_datetime: action.payload.end_datetime,
+                tariff_date: action.payload.tariff_date,
+                is_given: action.payload.is_given,
+                is_returned: action.payload.is_returned,
+                days_first: action.payload.days_first,
+                days_second: action.payload.days_second,
+                pay_date: action.payload.pay_date,
+                discount_percents: action.payload.discount_percents,
+                discount_sum: action.payload.discount_sum,
+                discount_reason: action.payload.discount_reason,
+                summa_prokata: action.payload.summa_prokata,
+                tariff: action.payload.tariff,
+                tariff_name: action.payload.tariff_name,
+                firm_id: action.payload.firm_id,
+                firm_name: action.payload.firm_name,
+                territory_id: action.payload.territory_id,
+                territory_address: action.payload.territory_address,
+                comment: action.payload.comment,
+                marks: action.payload.marks
+            }
         case CLEAR_FORM:
             return {
-                manager_ot_id: null,
-                manager_ot_name: '',
-                manager_pr_id: null,
-                manager_pr_name: '',
-
-                address_gave: '',
-                address_gave_id: null,
-                address_received: '',
-                address_received_id: null,
-
-                automobile_id: null,
-                contract_number: null,
-                uch_number: null,
-                god_number: null,
-
-                real_auto_id: '',
-                gos_number: '',
-                auto_name: '',
-                user_id: null,
-                client_name: '',
-
-                representative_first_id: null,
-                representative_first_name: '',
-                representative_second_id: null,
-                representative_second_name: '',
-
-                start_datetime: '',
-                end_datetime: '',
-                tariff_date: null,
-                is_given: false,
-                is_returned: false,
-                days_first: null,
-                days_second: null,
-
-                pay_date: null,
-                discount_percents: null,
-                discount_sum: null,
-                discount_reason: null,
-                summa_prokata: 0,
-                tariff: 0,
-                tariff_name: '',
-
-                firm_id: null,
-                firm_name: '',
-                territory: '',
-                territory_id: '',
-                comment: '',
-                marks:''
+                ...defaultState
             }
 
         default:
@@ -343,5 +343,6 @@ export const setFirmId = (payload) => { return { type: SET_FIRM_ID, payload } }
 export const setTerritory = (payload) => { return { type: SET_TERRITORY, payload } }
 export const setComment = (payload) => { return { type: SET_COMMENT, payload } }
 export const setMarks = (payload) => { return { type: SET_MARKS, payload } }
+export const setContractForm = (payload) => { return { type: SET_CONTRACT_FORM, payload } }
 export const clearContractForm = () => { return { type: CLEAR_FORM } }
 

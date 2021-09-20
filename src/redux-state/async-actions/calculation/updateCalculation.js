@@ -1,6 +1,3 @@
-
-
-
 import { FETCH_URL } from "../../../configs/urls"
 
 

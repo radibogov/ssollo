@@ -13,12 +13,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCars } from '../../redux-state/async-actions/fetchCars';
-import {setAutomobileId, setRealAutoId, setTariff, setTariffName} from '../../redux-state/reducers/contractFormReducer';
-import { toggleAutoDialog } from '../../redux-state/reducers/DialogsReducer';
-import {setActiveCar} from "../../redux-state/reducers/listsReducer";
-import {setDeposit} from "../../redux-state/reducers/calculationReducer";
-import {setCarIdPayment} from "../../redux-state/reducers/paymentReducer";
+import { fetchManagers } from '../../../redux-state/async-actions/fetchManagers';
+import {setEmployeePayment} from "../../../redux-state/reducers/paymentReducer";
+import {toggleManagerPaymentDialog} from "../../../redux-state/reducers/DialogsReducer";
+
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -33,32 +31,32 @@ const useStyles = makeStyles((theme) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-
-export default function AutoDialog() {
-    const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.cars)
+export default function ManagerPaymentDialog() {
+    const dispatch = useDispatch();
+    const managerList = useSelector(state => state.lists.managers)
     const classes = useStyles();
-    const open = useSelector(state => state.dialogs.auto)
+    const open = useSelector(state => state.dialogs.manager_payment)
 
     const handleClickOpen = () => {
-        dispatch(toggleAutoDialog(true))
+        dispatch(toggleManagerPaymentDialog(true))
     };
 
     const handleClose = () => {
-        dispatch(toggleAutoDialog(false))
+        dispatch(toggleManagerPaymentDialog(false))
     };
 
     React.useEffect(() => {
-        dispatch(fetchCars())
+        dispatch(fetchManagers())
     }, [])
+
     return (
         <div>
             <IconButton color="primary"
-                onClick={
-                    () => {
-                        handleClickOpen(true)
-                    }
-                }
+                        onClick={
+                            () => {
+                                handleClickOpen(true)
+                            }
+                        }
             >
                 <ArrowDropDownCircleIcon />
             </IconButton>
@@ -69,40 +67,31 @@ export default function AutoDialog() {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            Автомобили
+                            Сотрудники
                         </Typography>
                     </Toolbar>
                 </AppBar>
                 <List>
                     <ListItem style={{ background: 'red' }}>
                         <ListItemText primary="Айди" />
-                        <ListItemText primary="Гос номер" />
-                        <ListItemText primary="Модель машины" />
+                        <ListItemText primary="Сотрудник" />
                     </ListItem>
-                    {autoList.map(el =>
+                    {managerList?.map(el =>
                         <React.Fragment
                             key={el.id}
                         >
-                            <ListItem style={{ background: el.red_stat ? 'pink' : 'transparent' }} button
-                                onClick={
-                                    () => {
-                                        dispatch(setRealAutoId({ id: el.id,
-                                                                        gos_number: el.gos_number,
-                                                                        name: el.name + ', ' + el.gos_number}));
-                                        dispatch(setCarIdPayment(el.id));
-                                        dispatch(setAutomobileId({
-                                            id: el.tarif?.id,
-                                            name:  el.tarif?.name,
-                                            tariff: el.tarif?.tarif_one_two}));
-                                        dispatch(setActiveCar(el.tarif));
-                                        dispatch(setDeposit(el.tarif.deposit));
-                                        dispatch(toggleAutoDialog(false));
-                                    }
-                                }
+                            <ListItem button
+                                      onClick={
+                                          () => {
+                                              dispatch(setEmployeePayment({id: el.id, name: el.full_name}));
+                                              dispatch(toggleManagerPaymentDialog(false));
+
+                                          }
+
+                                      }
                             >
                                 <ListItemText primary={el.id} />
-                                <ListItemText primary={el.gos_number} />
-                                <ListItemText primary={el.name} />
+                                <ListItemText primary={el.full_name} />
                             </ListItem>
                             <Divider />
                         </React.Fragment>
