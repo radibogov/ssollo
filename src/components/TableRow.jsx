@@ -1,10 +1,13 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import { useDispatch } from 'react-redux';
-import { setCalcList } from '../redux-state/reducers/calculationReducer';
-import { setCurrentLeft, setCurrentRight } from '../redux-state/reducers/currentRowReducer';
-import { toggleContractDialog } from '../redux-state/reducers/DialogsReducer';
+import { useDispatch } from "react-redux";
+import { setCalcList } from "../redux-state/reducers/calculationReducer";
+import {
+  setCurrentLeft,
+  setCurrentRight,
+} from "../redux-state/reducers/currentRowReducer";
+import { toggleContractDialog } from "../redux-state/reducers/DialogsReducer";
 import moment from "moment";
 import {setContractForm} from "../redux-state/reducers/contractFormReducer";
 import {setActiveCar} from "../redux-state/reducers/listsReducer";
@@ -19,18 +22,16 @@ transition: .2s;
     }
 `;
 const Cell = styled.div`
-    white-space: nowrap;
-    display: inline-block;
-    padding: 2px 6px;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
-    overflow: hidden;
-    min-width: 230px;
-    height: 100%;
-    text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+  padding: 2px 6px;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  overflow: hidden;
+  min-width: 230px;
+  height: 100%;
+  text-align: center;
 `;
-
-
 
 const TableRow = (props) => {
     const dispatch = useDispatch()
@@ -98,6 +99,7 @@ const TableRow = (props) => {
             </Cell>
         </Row>
     </>
-}
+  );
+};
 
-export default React.memo(TableRow)
+export default React.memo(TableRow);
