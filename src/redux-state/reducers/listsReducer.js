@@ -6,6 +6,7 @@ const SET_PLACES = "SET_PLACES"
 const SET_TERRITORIES = "SET_TERRITORIES"
 const SET_CARS = "SET_CARS"
 const SET_ACTIVE_CAR = "SET_ACTIVE_CAR"
+const CLEAR_ACTIVE_CAR = "CLEAR_ACTIVE_CAR"
 const SET_SERVICES = "SET_SERVICES"
 
 const defaultState = {
@@ -53,18 +54,21 @@ export const listsReducer = (state = defaultState, action) => {
                 ...state,
                 cars: action.payload
             }
-        case SET_ACTIVE_CAR:
-            return {
-                ...state,
-                active_car: action.payload
-            }
         case SET_SERVICES:
             return {
                 ...state,
                 services: action.payload
             }
-
-
+        case SET_ACTIVE_CAR:
+            return {
+                ...state,
+                active_car: action.payload
+            }
+        case CLEAR_ACTIVE_CAR:
+            return {
+                ...state,
+                active_car: null
+            }
 
         default:
             return state
@@ -80,4 +84,5 @@ export const setPlaces = (payload) => { return { type: SET_PLACES, payload } }
 export const setTerritories = (payload) => { return { type: SET_TERRITORIES, payload } }
 export const setCars = (payload) => { return { type: SET_CARS, payload } }
 export const setActiveCar = (payload) => { return { type: SET_ACTIVE_CAR, payload } }
+export const clearActiveCar = () => { return { type: CLEAR_ACTIVE_CAR } }
 export const setServices = (payload) => { return { type: SET_SERVICES, payload } }
