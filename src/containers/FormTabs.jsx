@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import ContractForm from '../components/ContractForm';
 import PaymentForm from '../components/Payment/PaymentForm'
 import CommentsForm from '../components/CommentsForm'
+import {useSelector} from "react-redux";
 
 
 function TabPanel(props) {
@@ -38,7 +39,7 @@ function a11yProps(index) {
 
 const FormTabs = () => {
     const [value, setValue] = React.useState(0);
-
+    const contractForm = useSelector(state => state.contractForm);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -47,8 +48,8 @@ const FormTabs = () => {
         <Paper square>
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab label="Договор" {...a11yProps(0)} />
-                <Tab label="Расчет" {...a11yProps(1)} />
-                <Tab label="Замечания" {...a11yProps(2)} />
+                <Tab label="Расчет" {...a11yProps(1)} disabled={contractForm.id? false : true} />
+                <Tab label="Замечания" {...a11yProps(2)} disabled={contractForm.id? false : true} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ContractForm/>

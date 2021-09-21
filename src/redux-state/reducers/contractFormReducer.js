@@ -1,3 +1,4 @@
+const SET_ID_CONTRACT = 'SET_ID_CONTRACT'
 const SET_MANAGER_OT_ID = 'SET_MANAGER_OT_ID'
 const SET_MANAGER_PR_ID = 'SET_MANAGER_PR_ID'
 const SET_PLACE_OT = 'SET_PLACE_OT'
@@ -35,6 +36,7 @@ const CLEAR_FORM = 'CLEAR_FORM'
 
 
 const defaultState = {
+    id: '',
     manager_ot_id: null,
     manager_ot_name: '',
     manager_pr_id: null,
@@ -81,6 +83,11 @@ const defaultState = {
 export const contractFormReducer = (state = defaultState, action) => {
 
     switch (action.type) {
+        case SET_ID_CONTRACT:
+            return {
+                ...state,
+                id: action.payload
+            }
         case SET_CONTRACT_NUMBER:
             return {
                 ...state,
@@ -311,7 +318,7 @@ export const contractFormReducer = (state = defaultState, action) => {
 
 }
 
-
+export const setIdContract = (payload) => {return {type: SET_ID_CONTRACT,payload}}
 export const setManagerOtId = (payload) => { return { type: SET_MANAGER_OT_ID, payload } }
 export const setManagerPrId = (payload) => { return { type: SET_MANAGER_PR_ID, payload } }
 export const setPlaceOt = (payload) => { return { type: SET_PLACE_OT, payload } }
