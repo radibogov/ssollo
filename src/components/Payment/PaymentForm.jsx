@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -22,14 +22,14 @@ margin: 10px 0;
 `;
 
 const PaymentForm = () => {
-    const [checked, setChecked] = React.useState(false)
     const calculation = useSelector(state => state.calculation)
     const activeCar = useSelector(state => state.lists.active_car)
     const dispatch = useDispatch()
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
-
+    useEffect(() => {
+        if (activeCar) {
+            dispatch(setDeposit(activeCar.deposit));
+        }
+    },[])
     return <FormWrapper>
         <InputRow>
             <TextField

@@ -24,6 +24,7 @@ import FormTabs from '../containers/FormTabs'
 import { deleteContract } from '../redux-state/async-actions/contract/deleteContract';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
 import { clearContractForm } from '../redux-state/reducers/contractFormReducer';
+import {clearActiveCar} from "../redux-state/reducers/listsReducer";
 
 const Wrapper = styled.div`
 display: flex;
@@ -84,6 +85,7 @@ const TopNav = () => {
   const handleClickOpen = () => {
     setOpen(true);
     dispatch(clearContractForm())
+    dispatch(clearActiveCar())
   };
 
   const handleClose = () => {

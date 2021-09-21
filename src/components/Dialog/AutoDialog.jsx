@@ -95,7 +95,6 @@ export default function AutoDialog() {
                                             name:  el.tarif?.name,
                                             tariff: el.tarif?.tarif_one_two}));
                                         dispatch(setActiveCar(el.tarif));
-                                        dispatch(setDeposit(el.tarif.deposit));
                                         dispatch(toggleAutoDialog(false));
                                     }
                                 }

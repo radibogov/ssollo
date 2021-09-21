@@ -99,7 +99,6 @@ const TableRow = (props) => {
             </Cell>
         </Row>
     </>
-  );
 };
 
 export default React.memo(TableRow);
