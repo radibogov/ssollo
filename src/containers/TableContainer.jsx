@@ -31,21 +31,3 @@ const TableContainer = () => {
 }
 
 export default TableContainer;
-
-
-// [
-//     {
-//         time: '10:20',
-//         numberAuto: '0634BK750',
-//         model: 'Skoda Rapid',
-//         place: 'Москва, ул Маломосковская',
-//         client: 'Алексей Викторович',
-//         payment: '5000.00',
-//         balance: '5000.00',
-//         days: '1',
-//         returnDate: '20.20.2021',
-//         contract: '1-23-45-67',
-//         comment: 'Москва, ул Маломосковская',
-//         mark: 'Москва, ул Маломосковская',
-//     }
-// ]

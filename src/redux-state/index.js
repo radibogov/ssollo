@@ -10,6 +10,7 @@ import { currentRowReducer } from "./reducers/currentRowReducer";
 import { dialogReducer } from "./reducers/DialogsReducer";
 import { paymentReducer } from "./reducers/paymentReducer";
 import {serviceFormReducer} from "./reducers/serviceFormReduser";
+import {placeFormReducer} from "./reducers/placeFormReduser";
 
 
 const rootReducer = combineReducers({
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     dialogs: dialogReducer,
     paymentForm: paymentReducer,
     serviceForm: serviceFormReducer,
+    placeForm: placeFormReducer,
 })
 
 

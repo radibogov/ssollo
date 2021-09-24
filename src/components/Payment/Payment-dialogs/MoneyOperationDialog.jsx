@@ -10,14 +10,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleMoneyOpDialog } from '../../../redux-state/reducers/DialogsReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {
-    setAccruedPayment,
-    setCountPayment,
-    setDateOfPayment,
-    setOperation,
-    setSumOfMoney
+    setAccruedPayment, setCarIdPayment, setClientId, setCountPayment,
+    setDateOfPayment, setDocNumber, setFirmIdPayment, setOrderId, setSumOfMoney
 } from '../../../redux-state/reducers/paymentReducer';
 import AutoDialog from "../../Dialog/AutoDialog";
 import {
@@ -30,6 +26,8 @@ import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import moment from "moment";
 import ManagerPaymentDialog from "./ManagerPaymentDialog";
+import {createPayment} from "../../../redux-state/async-actions/payment/createPayment";
+import {fetchPayment} from "../../../redux-state/async-actions/payment/fetchPayment";
 
 const InputRow = styled.div`
 display: flex;
@@ -59,7 +57,6 @@ export default function MoneyOperationDialog() {
     const type = useSelector(state => state.dialogs.moneyOpType)
     const contractForm = useSelector(state => state.contractForm)
     const paymentForm = useSelector(state => state.paymentForm)
-
     useEffect(() => {
         if (paymentForm.date_of_payment === '') {
             dispatch(setDateOfPayment(moment().format('YYYY-MM-DDTHH:mm')))
@@ -69,6 +66,14 @@ export default function MoneyOperationDialog() {
         let summa = paymentForm.service_price*paymentForm.count
         dispatch(setAccruedPayment(Math.ceil(summa)))
     }, [paymentForm.service_price,paymentForm.count]);
+
+    useEffect(() => {
+        if(contractForm.id){dispatch(setOrderId(contractForm.id))}
+        if(contractForm.real_auto_id){dispatch(setCarIdPayment(contractForm.real_auto_id))}
+        if(contractForm.user_id){dispatch(setClientId(contractForm.user_id))}
+        if(contractForm.firm_id){dispatch(setFirmIdPayment(contractForm.firm_id))}
+        if(contractForm.uch_number){dispatch(setDocNumber(contractForm.uch_number))}
+    },[contractForm,open]);
 
     const handleClose = () => {
         dispatch(toggleMoneyOpDialog(false))
@@ -99,19 +104,6 @@ export default function MoneyOperationDialog() {
                             id="standard-basic"
                             label="Создал" />
                     </InputRow>
-                    {type===1?null:
-                    <InputRow>
-                        <TextField
-                            id="standard-basic"
-                            label="Операция"
-                            value={paymentForm.operation}
-                            onChange={
-                                (event) => {
-                                    dispatch(setOperation(event.target.value))
-                                }
-                            }
-                            />
-                    </InputRow>}
                     {type===1?
                         <React.Fragment>
                             <InputRow>
@@ -149,7 +141,6 @@ export default function MoneyOperationDialog() {
                                 value={paymentForm.employee_name}
                             />
                             <ManagerPaymentDialog />
-
                     </InputRow>
                     <InputRow>
                         <div
@@ -175,15 +166,20 @@ export default function MoneyOperationDialog() {
                             label="Тариф"
                             value={paymentForm.service_price}
                             />
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            width: '50%'
-                        }}>
-                            <TextField value={paymentForm.firm_name} id="filled-basic" label="Фирма" style={{ width: '87%' }} />
-                            <FirmDialog/>
-                        </div>
+                        {type===1?
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'center',
+                                width: '50%'
+                            }}>
+                                <TextField value={contractForm.firm_name} id="filled-basic" label="Фирма" style={{ width: '87%' }} />
+                                <FirmDialog/>
+                            </div>
+                            :
+                            null
+                        }
+
                     </InputRow>
                     <InputRow style={{display: 'flex', justifyContent: 'start'}}>
                         <IconButton color="primary"
@@ -215,7 +211,7 @@ export default function MoneyOperationDialog() {
                         <IconButton color="primary"
                                     onClick={
                                         () => {
-                                            dispatch(setSumOfMoney(paymentForm.accrued))
+                                            dispatch(setSumOfMoney(paymentForm.payment))
                                         }
                                     }
                         >
@@ -225,7 +221,7 @@ export default function MoneyOperationDialog() {
                             id="standard-basic"
                             label="Начислено"
                             type='number'
-                            value={''+paymentForm.accrued}
+                            value={''+paymentForm.payment}
                             onChange={(event) =>dispatch(setAccruedPayment(event.target.value))}
                         />
                     </InputRow>
@@ -234,7 +230,12 @@ export default function MoneyOperationDialog() {
                     <Button onClick={handleClose} color="primary">
                         Отменить
                     </Button>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={()=>{
+                        dispatch(createPayment(paymentForm))
+                        setTimeout(() => {
+                            dispatch(fetchPayment(contractForm.id))
+                        }, 200)
+                    }} color="primary">
                         Записать
                     </Button>
                 </DialogActions>

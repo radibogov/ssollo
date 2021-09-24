@@ -1,5 +1,5 @@
-import { FETCH_URL } from "../../configs/urls"
-import { setPlaces } from "../reducers/listsReducer"
+import { FETCH_URL } from "../../../configs/urls"
+import { setPlaces } from "../../reducers/listsReducer"
 
 
 export const fetchPlaces = () => {

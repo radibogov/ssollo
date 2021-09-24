@@ -31,6 +31,7 @@ text-align: center;
 const PaymentTable = (props) => {
     const dispatch = useDispatch()
     const list = useSelector(state => state.calculation.list)
+    const uch_number = useSelector(state => state.contractForm.uch_number)
     const current = useSelector(state => state.currentRow.payment)
     React.useEffect(() => {
         dispatch(fetchServices())
@@ -50,7 +51,7 @@ const PaymentTable = (props) => {
                         backgroundColor: '#dfdfdf'
                     }}
                 >
-                    Операция
+                    Услуга
                 </Cell>
                 <Cell
                     style={{
@@ -73,19 +74,15 @@ const PaymentTable = (props) => {
                 >
                     Сумма
                 </Cell>
-                <Cell
-                    style={{
-                        backgroundColor: '#dfdfdf'
-                    }}
-                >
-                    Услуга
-                </Cell>
             </Row>
             {list?.map(el =>
                 <PaymentTableRow
-                    date_payment={el.date_of_payment && moment(el.date_of_payment).format('DD / MM / YYYY')}
-                    operation={el.operation}
-                    collichestvo
+                    date_payment={el.date_of_payment && moment(el.date_of_payment).format('HH:mm DD / MM / YYYY')}
+                    operation={el.is_deposit? 'Оплата залога':
+                                el.is_main_payment? 'За прокат по договору №' + uch_number:
+                                el.service?.name
+                    }
+                    count={el.count}
                     nachisleno={el.payment}
                     summa={el.sum_of_money}
                     isCurrent={el.id === current}

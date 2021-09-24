@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFirmId } from '../../redux-state/reducers/contractFormReducer';
 import { fetchFirms } from '../../redux-state/async-actions/fetchFirms';
 import { toggleFirmDialog } from '../../redux-state/reducers/DialogsReducer';
-import {setFirmIdPayment} from "../../redux-state/reducers/paymentReducer";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -83,8 +82,7 @@ export default function FirmDialog() {
                             <ListItem button
                                 onClick={
                                     () => {
-                                        dispatch(setFirmId(el))
-                                        dispatch(setFirmIdPayment(el))
+                                        dispatch(setFirmId(el));
                                         dispatch(toggleFirmDialog(false))
                                     }
 

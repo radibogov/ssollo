@@ -10,14 +10,30 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CreateIcon from '@material-ui/icons/Create';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setPlaceOt, setPlacePr} from '../../redux-state/reducers/contractFormReducer';
-import { fetchPlaces } from '../../redux-state/async-actions/fetchPlaces';
-import { togglePlaceOtDialog, togglePlacePrDialog} from '../../redux-state/reducers/DialogsReducer';
+import { fetchPlaces } from '../../redux-state/async-actions/place/fetchPlaces';
+import {
+    togglePlaceOtDialog,
+    togglePlacePrDialog, toggleTerritoryPlaceFixDialog
+} from '../../redux-state/reducers/DialogsReducer';
+
+import styled from "styled-components";
+import Button from "@material-ui/core/Button";
+import {deletePlace} from "../../redux-state/async-actions/place/deletePlace";
+import {clearPlaceForm, setPlaceForm} from "../../redux-state/reducers/placeFormReduser";
+import PlaceFixDialog from "./PlaceFixDialog";
+
+const RowFlex = styled.div`
+    display: flex;
+`;
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -79,28 +95,59 @@ export default function PlaceDialog({priem}) {
                     {placesList?.map(el =>
                         <React.Fragment
                             key={el.id}
-                        >
-                            <ListItem button
-                                      onClick={
-                                          () => {
-                                              if (priem) {
-                                                  dispatch(setPlacePr({id: el.id, address: el.address}));
-                                                  dispatch(togglePlacePrDialog(false));
-                                              } else {
-                                                  dispatch(setPlaceOt({id: el.id, address: el.address}));
-                                                  dispatch(togglePlaceOtDialog(false));
+                        >   <RowFlex>
+                                <ListItem button
+                                          onClick={
+                                              () => {
+                                                  if (priem) {
+                                                      dispatch(setPlacePr({id: el.id, address: el.address}));
+                                                      dispatch(togglePlacePrDialog(false));
+                                                  } else {
+                                                      dispatch(setPlaceOt({id: el.id, address: el.address}));
+                                                      dispatch(togglePlaceOtDialog(false));
+                                                  }
                                               }
-                                          }
 
-                                      }>
-                                <ListItemText primary={el.id} />
-                                <ListItemText primary={el.address} />
-                            </ListItem>
+                                          }>
+                                    <ListItemText primary={el.id} />
+                                    <ListItemText primary={el.address} />
+                                </ListItem>
+                                <Tooltip title="Изменить адрес">
+                                    <IconButton onClick={
+                                        () => {
+                                            dispatch(setPlaceForm({id: el.id, name: el.address}));
+                                            dispatch(toggleTerritoryPlaceFixDialog({flag: true, type: 'fix', place: 'Aдрес'}))
+
+                                        }
+                                    }>
+                                        <CreateIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Удалить адрес">
+                                    <IconButton onClick={
+                                        () => {
+                                            dispatch(deletePlace(el.id));
+                                            setTimeout(() => {
+                                                dispatch(fetchPlaces())
+                                            }, 200)
+                                        }
+                                    }>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </RowFlex>
                             <Divider />
                         </React.Fragment>
                     )}
-
-
+                    <RowFlex>
+                        <Button onClick={
+                            () => {
+                                dispatch(clearPlaceForm());
+                                dispatch(toggleTerritoryPlaceFixDialog({flag: true, type: 'create', place: 'Aдрес'}))
+                            }
+                        } style={{marginLeft: 'auto',marginRight: '20px', marginTop: '20px'}} variant="outlined">Добавить место</Button>
+                        <PlaceFixDialog />
+                    </RowFlex>
                 </List>
             </Dialog>
         </div>

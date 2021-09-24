@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { setCurrentPayment } from '../../redux-state/reducers/currentRowReducer';
 import { toggleMoneyOpDialog } from '../../redux-state/reducers/DialogsReducer';
+import {getOnePayment} from "../../redux-state/async-actions/payment/getOnePayment";
 
 
 const Row = styled.div`
@@ -10,7 +11,7 @@ white-space: nowrap;
 flex-direction: row;
 transition: .2s;
 cursor: pointer;
-width: 1450px;
+width: 1220px;
 &:hover{
     background-color: #eee;
 }
@@ -29,7 +30,8 @@ height: 100%;
 
 const PaymentTableRow = (props) => {
     const dispatch = useDispatch()
-
+    const active_payment = useSelector(state => state.currentRow.payment_active)
+    console.log(active_payment)
     return (
         <Row
         style={{
@@ -42,6 +44,8 @@ const PaymentTableRow = (props) => {
             }
             onDoubleClick={
                 () => {
+                    dispatch(getOnePayment(props.id))
+
                     dispatch(toggleMoneyOpDialog(true))
                 }
             }
@@ -53,16 +57,13 @@ const PaymentTableRow = (props) => {
                 {props.operation}
             </Cell>
             <Cell>
-                {props.collichestvo}
+                {props.count}
             </Cell>
             <Cell>
                 {props.nachisleno}
             </Cell>
             <Cell>
                 {props.summa}
-            </Cell>
-            <Cell>
-                {props.usluga}
             </Cell>
         </Row>
     )

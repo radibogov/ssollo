@@ -44,8 +44,6 @@ import FirmDialog from './Dialog/firmDialog';
 import TerritoryDialog from "./Dialog/TerritoryDialog";
 import moment from "moment";
 import RepresentativeDialog from "./Dialog/RepresentativeDialog";
-import {setDate} from "../redux-state/reducers/dateReducer";
-import {store} from "../redux-state";
 
 
 const FormWrapper = styled.form`
@@ -96,8 +94,7 @@ const ContractForm = () => {
                 +contractForm.days_first < 7 ? dispatch(setTariff(activeCar?.tarif_three_six)) :
                     +contractForm.days_first < 15 ? dispatch(setTariff(activeCar?.tarif_seven_four)) :
                         +contractForm.days_first < 31 ? dispatch(setTariff(activeCar?.tarif_five_three)) :
-                            // dispatch(setTariff(activeCar?.tarif_one_two_mounth))
-                            dispatch(setTariff(activeCar?.tarif_one_two_mounth_sale));
+                            dispatch(setTariff(activeCar?.tarif_one_two_mounth))
         }
     }, [contractForm.days_first]);
 

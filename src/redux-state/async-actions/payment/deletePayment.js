@@ -1,11 +1,10 @@
 import { FETCH_URL } from "../../../configs/urls"
 
 
-export const deletePayment = (data) => {
-
+export const deletePayment = (id) => {
 
     return dispatch => {
-        fetch(`${FETCH_URL}/payment/`, {
+        fetch(`${FETCH_URL}/payment/${id}`, {
             method: 'DELETE',
         })
     }

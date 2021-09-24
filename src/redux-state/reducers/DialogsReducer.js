@@ -14,6 +14,7 @@ const TOGGLE_MANAGER_PAYMENT_DIALOG = 'TOGGLE_MANAGER_PAYMENT_DIALOG'
 const TOGGLE_PLACE_PR_DIALOG = 'TOGGLE_PLACE_PR_DIALOG'
 const TOGGLE_PLACE_OT_DIALOG = 'TOGGLE_PLACE_OT_DIALOG'
 const TOGGLE_MONEY_OP_DIALOG = 'TOGGLE_MONEY_OP_DIALOG'
+const TOGGLE_TERRITORY_PLACE_FIX_DIALOG = 'TOGGLE_TERRITORY_PLACE_FIX_DIALOG'
 
 const defaultState = {
     contract: false,
@@ -25,8 +26,11 @@ const defaultState = {
     firm: false,
     services: false,
     services_fix: false,
-    services_fix_type: false,
+    services_fix_type: '',
     place: false,
+    place_fix: false,
+    place_fix_type: '',
+    kind_place: '',
     territory: false,
     manager_pr: false,
     manager_ot: false,
@@ -112,6 +116,13 @@ export const dialogReducer = (state = defaultState, action) => {
                 ...state,
                 place_ot: action.payload
             }
+        case TOGGLE_TERRITORY_PLACE_FIX_DIALOG:
+            return {
+                ...state,
+                place_fix: action.payload.flag,
+                place_fix_type: action.payload.type,
+                kind_place: action.payload.place,
+            }
         case TOGGLE_PLACE_PR_DIALOG:
             return {
                 ...state,
@@ -142,6 +153,7 @@ export const toggleFirmDialog = payload => { return { type: TOGGLE_FIRM_DIALOG, 
 export const toggleServicesDialog = payload => { return { type: TOGGLE_SERVICES_DIALOG, payload } }
 export const toggleServicesFixDialog = payload => { return { type: TOGGLE_SERVICES_FIX_DIALOG, payload } }
 export const toggleTerritoryDialog = payload => { return { type: TOGGLE_TERRITORY_DIALOG, payload } }
+export const toggleTerritoryPlaceFixDialog = payload => { return { type: TOGGLE_TERRITORY_PLACE_FIX_DIALOG, payload } }
 export const toggleManagerPrDialog = payload => { return { type: TOGGLE_MANAGER_PR_DIALOG, payload } }
 export const toggleManagerOtDialog = payload => { return { type: TOGGLE_MANAGER_OT_DIALOG, payload } }
 export const toggleManagerPaymentDialog = payload => { return { type: TOGGLE_MANAGER_PAYMENT_DIALOG, payload } }

@@ -56,7 +56,7 @@ const TableRow = (props) => {
                 () => {
                     dispatch(setActiveCar(props.automobile));
                     dispatch(setContractForm(props))
-                    dispatch(setCalcList(props.list))
+                    dispatch(setCalcList(props.payments))
                     dispatch(toggleContractDialog(true))
                 }
             }

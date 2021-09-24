@@ -89,7 +89,6 @@ export default function AutoDialog() {
                                         dispatch(setRealAutoId({ id: el.id,
                                                                         gos_number: el.gos_number,
                                                                         name: el.name + ', ' + el.gos_number}));
-                                        dispatch(setCarIdPayment(el.id));
                                         dispatch(setAutomobileId({
                                             id: el.tarif?.id,
                                             name:  el.tarif?.name,

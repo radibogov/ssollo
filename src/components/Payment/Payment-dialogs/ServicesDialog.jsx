@@ -106,7 +106,6 @@ export default function ServicesDialog() {
                                     <ListItemText style={{display: 'flex',width: '25%'}}  primary={el.id} />
                                     <ListItemText style={{display: 'flex',width: '50%', margin: 'auto'}}  primary={el.name} />
                                     <ListItemText style={{display: 'flex',width: '15%', margin: 'auto'}} primary={el.price} />
-
                                 </ListItem>
                                 <Tooltip title="Изменить услугу">
                                     <IconButton onClick={

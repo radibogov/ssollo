@@ -7,10 +7,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {clearServiceForm, setServiceName, setServicePrice} from "../../../redux-state/reducers/serviceFormReduser";
+import {setServiceName, setServicePrice} from "../../../redux-state/reducers/serviceFormReduser";
 import {createServices} from "../../../redux-state/async-actions/services/createServices";
 import {updateServices} from "../../../redux-state/async-actions/services/updateServices";
-import {fetchTableRows} from "../../../redux-state/async-actions/fetchTableRows";
 import {fetchServices} from "../../../redux-state/async-actions/services/fetchServices";
 
 const InputRow = styled.div`

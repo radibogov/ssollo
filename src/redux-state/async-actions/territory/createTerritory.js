@@ -1,10 +1,9 @@
 import { FETCH_URL } from "../../../configs/urls"
 
 
-export const createPayment = (data) => {
-
+export const createTerritory = (data) => {
     return dispatch => {
-        fetch(`${FETCH_URL}/payment/`, {
+        fetch(`${FETCH_URL}/territory`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
