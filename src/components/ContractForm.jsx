@@ -143,7 +143,7 @@ const ContractForm = () => {
                 <TextField required value={contractForm.god_number}
                            onChange={(event) => dispatch(setGodNumber(event.target.value))} id="filled-basic"
                            label="№ год." variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField value={contractForm.real_auto_id} onChange={
+                <TextField required value={contractForm.real_auto_id} onChange={
                     (event) => dispatch(setRealAutoId({
                         id: event.target.value,
                         gos_number: contractForm.gos_number,

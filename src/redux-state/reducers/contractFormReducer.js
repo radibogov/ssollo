@@ -74,7 +74,7 @@ const defaultState = {
     tariff_name: '',
     firm_id: null,
     firm_name: '',
-    territory_id: '',
+    territory_id: null,
     territory_address: '',
     comment: '',
     marks:''

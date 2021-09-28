@@ -11,6 +11,9 @@ import { dialogReducer } from "./reducers/DialogsReducer";
 import { paymentReducer } from "./reducers/paymentReducer";
 import {serviceFormReducer} from "./reducers/serviceFormReduser";
 import {placeFormReducer} from "./reducers/placeFormReduser";
+import {commentReducer} from "./reducers/commentReducer";
+import {commentsRowsReducer} from "./reducers/commentRowsReducer";
+import {errorReducer} from "./reducers/errorReducer";
 
 
 const rootReducer = combineReducers({
@@ -22,10 +25,12 @@ const rootReducer = combineReducers({
     currentRow: currentRowReducer,
     dialogs: dialogReducer,
     paymentForm: paymentReducer,
+    commentsRow: commentsRowsReducer,
+    commentsForm: commentReducer,
     serviceForm: serviceFormReducer,
     placeForm: placeFormReducer,
+    error: errorReducer
 })
-
 
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))

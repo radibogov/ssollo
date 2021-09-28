@@ -214,11 +214,11 @@ const PaymentForm = () => {
         <InputRow>
             <TextField
                 type="number" id="filled-basic" value={''+calculation.delay} label="Дней" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField value={calculation.sum_one}
+            <TextField value={+calculation.sum_one}
                 type="number" id="filled-basic" label="Начислено" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField value={calculation.sum_two}
+            <TextField value={+calculation.sum_two}
                 type="number" id="filled-basic" label="Оплачено" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField value={calculation.balance}
+            <TextField value={+calculation.balance}
                 type="number" id="filled-basic" label="Баланс" variant="filled" style={{ marginRight: '30px' }} />
         </InputRow>
         <Button type='submit' style={{marginLeft: 'auto'}} variant="contained" color="primary">

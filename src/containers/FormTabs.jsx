@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ContractForm from '../components/ContractForm';
 import PaymentForm from '../components/Payment/PaymentForm'
-import CommentsForm from '../components/CommentsForm'
+import CommentsForm from '../components/Comments/CommentsForm'
 import {useSelector} from "react-redux";
 
 
