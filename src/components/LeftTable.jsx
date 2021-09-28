@@ -74,10 +74,9 @@ const LeftTable = (props) => {
                 id={item.id}
                 isCurrent={current == item.id}
                 side='left'
-
                 balance={item.user?.balance}
 
-                list={item.calculation}
+                list={item.calculation[0]}
                 payments={item.payments}
                 automobile={item.automobile}
 

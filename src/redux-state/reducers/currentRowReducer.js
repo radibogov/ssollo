@@ -1,7 +1,7 @@
 const SET_CURRENT_LEFT = 'SET_CURRENT_LEFT'
 const SET_CURRENT_RIGHT = 'SET_CURRENT_RIGHT'
 const SET_CURRENT_PAYMENT = 'SET_CURRENT_PAYMENT'
-const SET_ACTIVE_PAYMENT = 'SET_ACTIVE_PAYMENT'
+const SET_CURRENT_ACTIVE_PAYMENT = 'SET_ACTIVE_PAYMENT'
 
 const defaultState = {
     left: -1,
@@ -28,7 +28,7 @@ export const currentRowReducer = (state = defaultState, action) => {
                 ...state,
                 payment: action.payload
             }
-        case SET_ACTIVE_PAYMENT:
+        case SET_CURRENT_ACTIVE_PAYMENT:
             return {
                 ...state,
                 payment_active: action.payload
@@ -41,4 +41,4 @@ export const currentRowReducer = (state = defaultState, action) => {
 export const setCurrentRight = (payload) => { return { type: SET_CURRENT_RIGHT, payload } }
 export const setCurrentLeft = (payload) => { return { type: SET_CURRENT_LEFT, payload } }
 export const setCurrentPayment = (payload) => { return { type: SET_CURRENT_PAYMENT, payload } }
-export const setActivePayment = (payload) => { return { type: SET_ACTIVE_PAYMENT, payload } }
+export const setCurrentActivePayment = (payload) => { return { type: SET_CURRENT_ACTIVE_PAYMENT, payload } }

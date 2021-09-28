@@ -1,7 +1,9 @@
 
-const SET_ORDER_ID = 'SET_ORDER_ID'
+const SET_ORDER_ID_CALC = 'SET_ORDER_ID_CALC'
 const SET_DEPOSIT = 'SET_DEPOSIT'
 const SET_DELAY = 'SET_DELAY'
+const SET_SUM = 'SET_SUM'
+const SET_CALC_FORM = 'SET_CALC_FORM'
 const SET_FUEL_BEFORE = 'SET_FUEL_BEFORE'
 const SET_FUEL_AFTER = 'SET_FUEL_AFTER'
 const SET_MILEAGE_BEFORE = 'SET_MILEAGE_BEFORE'
@@ -18,14 +20,31 @@ const defaultState = {
     fuel_after: null,
     mileage_before: null,
     mileage_after: null,
-    mileage_price: null,
+    sum_for_mileage_over: 0,
+    sum_one: null,
+    sum_two: null,
+    balance: null,
     list: []
 }
 
 export const calculationReducer = (state = defaultState, action) => {
 
     switch (action.type) {
-        case SET_ORDER_ID:
+        case SET_CALC_FORM:
+            return {
+                ...state,
+                id: action.payload.id,
+                sum_for_mileage_over: action.payload.sum_for_mileage_over,
+                order_id: action.payload.order_id,
+                deposit: action.payload.deposit,
+                delay: action.payload.delay,
+                fuel_before: action.payload.fuel_before,
+                fuel_after: action.payload.fuel_after,
+                mileage_before: action.payload.mileage_before,
+                mileage_after: action.payload.mileage_after,
+                list: action.payload.list
+            }
+        case SET_ORDER_ID_CALC:
             return {
                 ...state,
                 order_id: action.payload
@@ -39,6 +58,13 @@ export const calculationReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 delay: action.payload
+            }
+        case SET_SUM:
+            return {
+                ...state,
+                sum_one: action.payload.sum_one,
+                sum_two: action.payload.sum_two,
+                balance: action.payload.balance
             }
         case SET_FUEL_BEFORE:
             return {
@@ -63,7 +89,7 @@ export const calculationReducer = (state = defaultState, action) => {
         case SET_MILEAGE_PRICE:
             return {
                 ...state,
-                mileage_price: action.payload
+                sum_for_mileage_over: action.payload
             }
         case SET_CALC_LIST:
             return {
@@ -81,8 +107,10 @@ export const calculationReducer = (state = defaultState, action) => {
 }
 
 
-export const setOrderId = (payload) => { return { type: SET_ORDER_ID, payload } }
+export const setOrderIdCalc = (payload) => { return { type: SET_ORDER_ID_CALC, payload } }
 export const setDeposit = (payload) => { return { type: SET_DEPOSIT, payload } }
+export const setSum = (payload) => { return { type: SET_SUM, payload } }
+export const setCalcForm = (payload) => { return { type: SET_CALC_FORM, payload } }
 export const setDelay = (payload) => { return { type: SET_DELAY, payload } }
 export const setFuelBefore = (payload) => { return { type: SET_FUEL_BEFORE, payload } }
 export const setFuelAfter = (payload) => { return { type: SET_FUEL_AFTER, payload } }

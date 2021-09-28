@@ -2,16 +2,15 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    setDelay,
     setDeposit,
     setFuelAfter,
     setFuelBefore,
     setMileageAfter,
     setMileageBefore,
-    setMileagePrice
+    setMileagePrice, setOrderIdCalc
 } from '../../redux-state/reducers/calculationReducer';
 import PaymentTable from './PaymentTable';
 import MoneyOperationDialog from "./Payment-dialogs/MoneyOperationDialog";
@@ -20,6 +19,11 @@ import {setOrderId} from "../../redux-state/reducers/paymentReducer";
 import {fetchPayment} from "../../redux-state/async-actions/payment/fetchPayment";
 import {createPayment} from "../../redux-state/async-actions/payment/createPayment";
 import moment from "moment";
+import {createCalculation} from "../../redux-state/async-actions/calculation/createCalculation";
+import {updateCalculation} from "../../redux-state/async-actions/calculation/updateCalculation";
+import {fetchTableRows} from "../../redux-state/async-actions/fetchTableRows";
+import {updateContract} from "../../redux-state/async-actions/contract/updateContract";
+import {createContract} from "../../redux-state/async-actions/contract/createContract";
 
 const FormWrapper = styled.form`
 width: 70%;
@@ -41,7 +45,9 @@ const PaymentForm = () => {
     useEffect(() => {
         if (activeCar) {
             dispatch(setDeposit(activeCar.deposit));
+            dispatch(setDelay(contractForm.days_first));
             dispatch(setOrderId(contractForm.id));
+            dispatch(setOrderIdCalc(contractForm.id));
             dispatch(fetchPayment(contractForm.id))
         }
     },[])
@@ -52,9 +58,23 @@ const PaymentForm = () => {
             dispatch(setMileagePrice(over*activeCar.over_millage_price))
         }
     },[calculation.mileage_after,calculation.mileage_before])
-    return <FormWrapper>
+
+    const formSubmit = (e) => {
+        e.preventDefault()
+        if (calculation.id) {
+            dispatch(updateCalculation(calculation.id,calculation));
+        } else {
+            dispatch(createCalculation(calculation));
+        }
+        setTimeout(() => {
+            dispatch(fetchTableRows(true))
+            dispatch(fetchTableRows(false))
+        }, 200)
+    };
+
+    return <FormWrapper onSubmit={formSubmit}>
         <InputRow>
-            <TextField
+            <TextField required
                 type="number"
                 value={calculation.deposit}
                 onChange={
@@ -63,7 +83,7 @@ const PaymentForm = () => {
                     }
                 }
                 id="filled-basic" label="Залог" variant="filled" style={{ marginRight: 'auto' }} />
-            <TextField
+            <TextField required
                 type="number"
                 value={calculation.fuel_before}
                 onChange={
@@ -72,7 +92,7 @@ const PaymentForm = () => {
                     }
                 }
                 id="filled-basic" label="Топливо в начале" variant="filled" style={{ marginRight: '20px' }} />
-            <TextField
+            <TextField required
                 type="number"
                 value={calculation.mileage_before}
                 onChange={
@@ -88,11 +108,12 @@ const PaymentForm = () => {
                     dispatch(createPayment({
                         client_id: contractForm.user_id,
                         car_id: contractForm.real_auto_id,
-                        operation: '0',
+                        operation: 'Залог',
                         payment: calculation.deposit,
                         count: 1,
                         is_deposit: true,
                         is_main_payment: false,
+                        service_name: 'Оплата залога',
                         service_price: calculation.deposit,
                         sum_of_money: calculation.deposit,
                         doc_number: contractForm.uch_number,
@@ -106,12 +127,35 @@ const PaymentForm = () => {
                 }} variant="contained" color="primary" style={{ marginRight: '20px' }}>
                     Залог
                 </Button>
-                <Button variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                <Button onClick={()=>{
+                    dispatch(createPayment({
+                        client_id: contractForm.user_id,
+                        car_id: contractForm.real_auto_id,
+                        operation: 'Возврат залога',
+                        payment: calculation.deposit,
+                        count: 1,
+                        is_deposit: false,
+                        is_deposit_return: true,
+                        is_main_payment: false,
+                        service_name: 'Возврат залога',
+                        service_price: calculation.deposit,
+                        sum_of_money: calculation.deposit,
+                        doc_number: contractForm.uch_number,
+                        firm_id: contractForm.firm_id,
+                        date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
+                        order_id: contractForm.id
+                    }))
+                    setTimeout(() => {
+                        dispatch(fetchPayment(contractForm.id))
+                    }, 200)
+                }}
+
+                    variant="contained" color="primary" style={{ marginRight: '20px' }}>
                     Возврат
                 </Button>
             </div>
 
-            <TextField
+            <TextField required
                 type="number"
                 value={calculation.fuel_after}
                 onChange={
@@ -120,7 +164,7 @@ const PaymentForm = () => {
                     }
                 }
                 id="filled-basic" label="Топливо в конце" variant="filled" style={{ marginRight: '20px' }} />
-            <TextField
+            <TextField required
                 type="number"
                 value={calculation.mileage_after}
                 onChange={
@@ -135,24 +179,51 @@ const PaymentForm = () => {
             <TextField value={calculation.mileage_after-calculation.mileage_before} id="filled-basic" label="Километраж" variant="filled" />
         </InputRow>
         <InputRow style={{justifyContent: 'flex-end'}}>
+            {(calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first)>=0?
+                <Button onClick={()=>{
+                    dispatch(createPayment({
+                        client_id: contractForm.user_id,
+                        car_id: contractForm.real_auto_id,
+                        operation: 'Оплата за перепробег',
+                        payment: calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first,
+                        count: 1,
+                        service_name: 'Оплата за перепробег',
+                        service_price: calculation.deposit,
+                        sum_of_money: calculation.sum_for_mileage_over,
+                        doc_number: contractForm.uch_number,
+                        firm_id: contractForm.firm_id,
+                        date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
+                        order_id: contractForm.id
+                    }))
+                    setTimeout(() => {
+                        dispatch(fetchPayment(contractForm.id))
+                    }, 200)
+                }} variant="contained" color="primary" style={{ marginRight: '20px' }}>
+                    Оплата за перепробег
+                </Button>:null
+            }
+
                 <TextField id="filled-basic" value={(calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first)>=0?calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first:0} label="Перепробег" variant="filled" />
         </InputRow>
         <InputRow>
             <PaymentBtnPanel />
             <MoneyOperationDialog />
-            <TextField id="filled-basic" value={+calculation.mileage_price} label="За перепробег" variant="filled" style={{ marginLeft: 'auto' }} />
+            <TextField id="filled-basic" value={+calculation.sum_for_mileage_over} label="За перепробег" variant="filled" style={{ marginLeft: 'auto' }} />
         </InputRow>
         <PaymentTable />
         <InputRow>
             <TextField
-                type="number" id="filled-basic" label="Дней" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField
+                type="number" id="filled-basic" value={''+calculation.delay} label="Дней" variant="filled" style={{ marginRight: '30px' }} />
+            <TextField value={calculation.sum_one}
                 type="number" id="filled-basic" label="Начислено" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField
+            <TextField value={calculation.sum_two}
                 type="number" id="filled-basic" label="Оплачено" variant="filled" style={{ marginRight: '30px' }} />
-            <TextField
+            <TextField value={calculation.balance}
                 type="number" id="filled-basic" label="Баланс" variant="filled" style={{ marginRight: '30px' }} />
         </InputRow>
+        <Button type='submit' style={{marginLeft: 'auto'}} variant="contained" color="primary">
+            Сохранить
+        </Button>
     </FormWrapper>
 }
 

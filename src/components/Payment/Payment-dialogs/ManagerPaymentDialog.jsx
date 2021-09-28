@@ -83,7 +83,7 @@ export default function ManagerPaymentDialog() {
                             <ListItem button
                                       onClick={
                                           () => {
-                                              dispatch(setEmployeePayment({id: el.id, name: el.full_name}));
+                                              dispatch(setEmployeePayment({id: el.id, full_name: el.full_name}));
                                               dispatch(toggleManagerPaymentDialog(false));
 
                                           }

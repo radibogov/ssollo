@@ -28,6 +28,7 @@ import moment from "moment";
 import ManagerPaymentDialog from "./ManagerPaymentDialog";
 import {createPayment} from "../../../redux-state/async-actions/payment/createPayment";
 import {fetchPayment} from "../../../redux-state/async-actions/payment/fetchPayment";
+import {updatePayment} from "../../../redux-state/async-actions/payment/updatePayment";
 
 const InputRow = styled.div`
 display: flex;
@@ -62,7 +63,7 @@ export default function MoneyOperationDialog() {
             dispatch(setDateOfPayment(moment().format('YYYY-MM-DDTHH:mm')))
         }
     });
-    useEffect(() => {
+    useEffect((render) => {
         let summa = paymentForm.service_price*paymentForm.count
         dispatch(setAccruedPayment(Math.ceil(summa)))
     }, [paymentForm.service_price,paymentForm.count]);
@@ -76,13 +77,14 @@ export default function MoneyOperationDialog() {
     },[contractForm,open]);
 
     const handleClose = () => {
-        dispatch(toggleMoneyOpDialog(false))
+        dispatch(toggleMoneyOpDialog({flag:false, type:0}))
     };
 
     return (
         <React.Fragment>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">{type===1?'Оплата по договору':type===2?'Операция с деньгами':null}</DialogTitle>
+                <form>
                 <DialogContent>
                     <InputRow>
                         <TextField
@@ -230,15 +232,22 @@ export default function MoneyOperationDialog() {
                     <Button onClick={handleClose} color="primary">
                         Отменить
                     </Button>
-                    <Button onClick={()=>{
-                        dispatch(createPayment(paymentForm))
+                    <Button onClick={() => {
+                        if (paymentForm.id) {
+                            console.log(paymentForm)
+                            dispatch(updatePayment(paymentForm.id,paymentForm))
+                        } else {
+                            dispatch(createPayment(paymentForm))
+                        }
                         setTimeout(() => {
                             dispatch(fetchPayment(contractForm.id))
                         }, 200)
+
                     }} color="primary">
                         Записать
                     </Button>
                 </DialogActions>
+                </form>
             </Dialog>
         </React.Fragment>
     );

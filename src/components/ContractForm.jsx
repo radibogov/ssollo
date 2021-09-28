@@ -118,17 +118,29 @@ const ContractForm = () => {
         }
         firstRenderRef.current = false;
     });
+    const formSubmit = (e) => {
+        e.preventDefault()
+        if (contractForm.id) {
+            dispatch(updateContract(contractForm.id,contractForm));
+        } else {
+            dispatch(createContract(contractForm));
+        }
+        setTimeout(() => {
+            dispatch(fetchTableRows(true))
+            dispatch(fetchTableRows(false))
+        }, 200)
+    };
 
-    return <FormWrapper>
+    return <FormWrapper onSubmit={formSubmit}>
         <Inner>
             <InputRow>
-                <TextField value={contractForm.contract_number}
+                <TextField required value={contractForm.contract_number}
                            onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic"
                            label="Договор №" variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField value={contractForm.uch_number}
+                <TextField required value={contractForm.uch_number}
                            onChange={(event) => dispatch(setUchNumber(event.target.value))} id="filled-basic"
                            label="Уч №" variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField value={contractForm.god_number}
+                <TextField required value={contractForm.god_number}
                            onChange={(event) => dispatch(setGodNumber(event.target.value))} id="filled-basic"
                            label="№ год." variant="filled" style={{marginRight: '20px', width: '120%'}}/>
                 <TextField value={contractForm.real_auto_id} onChange={
@@ -152,11 +164,11 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '30%'
                 }}>
-                    <TextField value={'' + contractForm.gos_number} readOnly id="filled-basic" label="Автомобиль"
+                    <TextField required value={'' + contractForm.gos_number} readOnly id="filled-basic" label="Автомобиль"
                                variant="filled" style={{width: '90%', background: "#f0ff008c"}}/>
                     <AutoDialog/>
                 </div>
-                <TextField id="filled-basic" value={contractForm.auto_name} variant="filled" style={{width: '70%', background: "#f0ff008c"}}/>
+                <TextField required id="filled-basic" value={contractForm.auto_name} variant="filled" style={{width: '70%', background: "#f0ff008c"}}/>
             </InputRow>
             <InputRow>
                 <div style={{
@@ -165,7 +177,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '77%'
                 }}>
-                    <TextField readOnly value={contractForm.client_name?contractForm.client_name:''} id="filled-basic" label="Клиент"
+                    <TextField required readOnly value={contractForm.client_name?contractForm.client_name:''} id="filled-basic" label="Клиент"
                                variant="filled" style={{width: '95%', background: "#f0ff008c"}}/>
                     <ClientDialog/>
                 </div>
@@ -305,7 +317,7 @@ const ContractForm = () => {
                     width: '40%'
                 }}>
                     <TextField value={'' + contractForm.tariff}
-                               onChange={(event) => dispatch(setTariff(event.target.value))} id="filled-basic"
+                               onChange={(event) => {event.target.value<=1000000?dispatch(setTariff(event.target.value)):dispatch(setTariff(contractForm.tariff))}} id="filled-basic"
                                label="Тариф" variant="filled" style={{width: '65%'}}/>
                     <TariffDialog days={'' + contractForm.days_first}/>
                 </div>
@@ -400,7 +412,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '50%'
                 }}>
-                    <TextField value={contractForm.firm_name ? contractForm.firm_name : ''} readOnly
+                    <TextField required value={contractForm.firm_name ? contractForm.firm_name : ''} readOnly
                                id="filled-basic" label="Фирма" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
                     <FirmDialog/>
                 </div>
@@ -421,20 +433,7 @@ const ContractForm = () => {
                                onChange={(event) => dispatch(setComment(event.target.value))} id="filled-basic"
                                label="Примечание" variant="filled" style={{width: '100%'}}/>
                 </div>
-                <Button variant="contained" color="primary"
-                    onClick={
-                        () => {
-                            if (contractForm.id) {
-                                dispatch(updateContract(contractForm.id,contractForm));
-                            } else {
-                                dispatch(createContract(contractForm));
-                            }
-                            setTimeout(() => {
-                                dispatch(fetchTableRows(true))
-                                dispatch(fetchTableRows(false))
-                            }, 200)
-                        }
-                    }>
+                <Button type={'submit'} variant="contained" color="primary">
                     Сохранить
                 </Button>
             </InputRow>

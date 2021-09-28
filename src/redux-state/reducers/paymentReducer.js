@@ -13,12 +13,13 @@ const SET_DATE_OF_PAYMENT = 'SET_DATE_OF_PAYMENT'
 const SET_ORDER_ID_PAYMENT = 'SET_ORDER_ID_PAYMENT'
 const SET_TYPE_PAYMENT = 'SET_TYPE_PAYMENT'
 const CLEAR_FORM_PAYMENT = 'CLEAR_FORM_PAYMENT'
-
+const SET_ALL_PAYMENT = 'SET_ALL_PAYMENT'
 
 
 
 
 const defaultState = {
+    id: null,
     employee_id: '',
     employee_name: '',
     client_id: null,
@@ -27,6 +28,7 @@ const defaultState = {
     payment: null,
     count: null,
     is_deposit: false,
+    is_deposit_return: false,
     is_main_payment: false,
     service_id: '',
     service_name: '',
@@ -42,11 +44,15 @@ const defaultState = {
 export const paymentReducer = (state = defaultState, action) => {
 
     switch (action.type) {
+        case SET_ALL_PAYMENT:
+            return {
+                ...action.payload
+            }
         case SET_EMPLOYEE_ID_PAYMENT:
             return {
                 ...state,
                 employee_id: action.payload.id,
-                employee_name: action.payload.name
+                employee_name: action.payload.full_name
             }
         case SET_CLIENT_ID_PAYMENT:
             return {
@@ -121,6 +127,7 @@ export const paymentReducer = (state = defaultState, action) => {
 }
 
 
+export const setAllPayment = payload => { return { type: SET_ALL_PAYMENT, payload } }
 export const setEmployeePayment = payload => { return { type: SET_EMPLOYEE_ID_PAYMENT, payload } }
 export const setClientId = payload => { return { type: SET_CLIENT_ID_PAYMENT, payload } }
 export const setCarIdPayment = payload => { return { type: SET_CAR_ID_PAYMENT, payload } }

@@ -1,5 +1,5 @@
 import { FETCH_URL } from "../../../configs/urls"
-import {setActivePayment} from "../../reducers/currentRowReducer";
+import {setCurrentActivePayment} from "../../reducers/currentRowReducer";
 
 
 export const getOnePayment = (id) => {
@@ -10,8 +10,7 @@ export const getOnePayment = (id) => {
         })
             .then(response => response.json())
             .then(response => {
-                console.log(response,'sss')
-                dispatch(setActivePayment(response))
+                dispatch(setCurrentActivePayment(response))
             })
     }
 }

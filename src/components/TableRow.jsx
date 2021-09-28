@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { useDispatch } from "react-redux";
-import { setCalcList } from "../redux-state/reducers/calculationReducer";
+import { setCalcForm } from "../redux-state/reducers/calculationReducer";
 import {
   setCurrentLeft,
   setCurrentRight,
@@ -56,7 +56,20 @@ const TableRow = (props) => {
                 () => {
                     dispatch(setActiveCar(props.automobile));
                     dispatch(setContractForm(props))
-                    dispatch(setCalcList(props.payments))
+                    if (props.list) {
+                        dispatch(setCalcForm({
+                            id: props.list.id? props.list?.id : null,
+                            sum_for_mileage_over: props.list?.sum_for_mileage_over?props.list?.sum_for_mileage_over:0,
+                            order_id: props.id,
+                            deposit: props.list.deposit?props.list.deposit:props,
+                            delay: props.list?.delay,
+                            fuel_before: props.list?.fuel_before?props.list?.fuel_before:null,
+                            fuel_after: props.list?.fuel_after?props.list?.fuel_after:null,
+                            mileage_before: props.list?.mileage_before?props.list?.mileage_before:null,
+                            mileage_after: props.list?.mileage_after?props.list?.mileage_after:null,
+                            list: props.payments
+                        }))
+                    }
                     dispatch(toggleContractDialog(true))
                 }
             }

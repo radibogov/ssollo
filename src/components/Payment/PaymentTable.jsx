@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import PaymentTableRow from './PaymentTableRow';
 import moment from 'moment';
 import { fetchServices } from '../../redux-state/async-actions/services/fetchServices';
+import {setSum} from "../../redux-state/reducers/calculationReducer";
 
 const Wrapper = styled.div`
 max-width: 100%;
@@ -33,6 +34,9 @@ const PaymentTable = (props) => {
     const list = useSelector(state => state.calculation.list)
     const uch_number = useSelector(state => state.contractForm.uch_number)
     const current = useSelector(state => state.currentRow.payment)
+    let sum_one = 0;
+    let sum_two = 0;
+
     React.useEffect(() => {
         dispatch(fetchServices())
     }, [])
@@ -75,20 +79,22 @@ const PaymentTable = (props) => {
                     Сумма
                 </Cell>
             </Row>
-            {list?.map(el =>
+            {list?.map((el,index) =>
                 <PaymentTableRow
                     date_payment={el.date_of_payment && moment(el.date_of_payment).format('HH:mm DD / MM / YYYY')}
-                    operation={el.is_deposit? 'Оплата залога':
-                                el.is_main_payment? 'За прокат по договору №' + uch_number:
-                                el.service?.name
-                    }
+                    operation={el.service_name}
+                    type={el.is_main_payment? 1:2}
                     count={el.count}
                     nachisleno={el.payment}
                     summa={el.sum_of_money}
                     isCurrent={el.id === current}
                     id={el.id}
                     key={el.id}
-                />
+                >
+                    {el.is_deposit||el.is_deposit_return?null:sum_one += el.payment}
+                    {el.is_deposit||el.is_deposit_return?null:sum_two += el.sum_of_money}
+                    {list.length-1===index?dispatch(setSum({sum_one: sum_one, sum_two: sum_two, balance: sum_one - sum_two})):null }
+                </PaymentTableRow>
             )}
         </Wrapper>
     )
