@@ -32,14 +32,13 @@ text-align: center;
 const PaymentTable = (props) => {
     const dispatch = useDispatch()
     const list = useSelector(state => state.calculation.list)
-    const uch_number = useSelector(state => state.contractForm.uch_number)
     const current = useSelector(state => state.currentRow.payment)
     let sum_one = 0;
     let sum_two = 0;
 
     React.useEffect(() => {
         dispatch(fetchServices())
-    }, [])
+    }, [dispatch])
     return (
         <Wrapper>
             <Row>

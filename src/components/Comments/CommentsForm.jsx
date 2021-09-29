@@ -3,15 +3,10 @@ import styled from 'styled-components'
 import testImage from '../../images/testimg.jpg'
 import CommentsFormBottom from './CommentsFormBottom'
 import {useDispatch, useSelector} from "react-redux";
-import {fetchTableRows} from "../../redux-state/async-actions/fetchTableRows";
 import {fetchComment} from "../../redux-state/async-actions/comments/fetchComment";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import {setServiceForm} from "../../redux-state/reducers/serviceFormReduser";
-import {toggleServicesFixDialog} from "../../redux-state/reducers/DialogsReducer";
 import CreateIcon from "@material-ui/icons/Create";
-import {deleteServices} from "../../redux-state/async-actions/services/deleteServices";
-import {fetchServices} from "../../redux-state/async-actions/services/fetchServices";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {deleteComment} from "../../redux-state/async-actions/comments/deleteComment";
 import {setAllComment} from "../../redux-state/reducers/commentReducer";
@@ -71,7 +66,7 @@ const CommentsForm = () => {
 
     React.useEffect(() => {
         dispatch(fetchComment(id))
-    }, []);
+    }, [dispatch, id]);
 
 
     return <Wrapper>

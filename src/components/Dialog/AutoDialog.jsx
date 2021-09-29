@@ -14,11 +14,9 @@ import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCars } from '../../redux-state/async-actions/fetchCars';
-import {setAutomobileId, setRealAutoId, setTariff, setTariffName} from '../../redux-state/reducers/contractFormReducer';
+import {setAutomobileId, setRealAutoId} from '../../redux-state/reducers/contractFormReducer';
 import { toggleAutoDialog } from '../../redux-state/reducers/DialogsReducer';
 import {setActiveCar} from "../../redux-state/reducers/listsReducer";
-import {setDeposit} from "../../redux-state/reducers/calculationReducer";
-import {setCarIdPayment} from "../../redux-state/reducers/paymentReducer";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {

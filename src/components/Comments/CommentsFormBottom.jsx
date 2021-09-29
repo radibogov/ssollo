@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import moment from "moment";
 import {useDispatch, useSelector} from "react-redux";
-import {setTariffDate} from "../../redux-state/reducers/contractFormReducer";
 import {
     clearCommentForm,
     setActionComment,
@@ -115,7 +114,7 @@ const CommentsFormBottom = () => {
                         () => {
                             hiddenInp.current.click()
                         }
-                    } style={{height: '100px'}} src={commentsForm.image_url} alt={null}/>
+                    } style={{height: '100px'}} src={commentsForm.image_url} alt={'img'}/>
                     :
                     null
                 }
@@ -137,7 +136,7 @@ const CommentsFormBottom = () => {
                         () => {
                             hiddenInp.current.click()
                         }
-                    } style={{height: '100px'}} src={commentsForm.image? commentsForm.image : null} alt={null}/>
+                    } style={{height: '100px'}} src={commentsForm.image? commentsForm.image : null} alt={'img'}/>
                 }
                 <HiddenFileInput
                     onChange={fileHandler}

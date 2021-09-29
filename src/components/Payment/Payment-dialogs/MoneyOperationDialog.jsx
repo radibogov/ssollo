@@ -62,7 +62,7 @@ export default function MoneyOperationDialog() {
         if (paymentForm.date_of_payment === '') {
             dispatch(setDateOfPayment(moment().format('YYYY-MM-DDTHH:mm')))
         }
-    });
+    },[dispatch]);
     useEffect((render) => {
         let summa = paymentForm.service_price*paymentForm.count
         dispatch(setAccruedPayment(Math.ceil(summa)))

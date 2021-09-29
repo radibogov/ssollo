@@ -49,7 +49,7 @@ export default function ManagerDialog({priem}) {
 
     React.useEffect(() => {
         dispatch(fetchManagers())
-    }, [])
+    }, [dispatch])
     return (
         <div>
             <IconButton color="primary"

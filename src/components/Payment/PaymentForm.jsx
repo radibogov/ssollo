@@ -22,8 +22,7 @@ import moment from "moment";
 import {createCalculation} from "../../redux-state/async-actions/calculation/createCalculation";
 import {updateCalculation} from "../../redux-state/async-actions/calculation/updateCalculation";
 import {fetchTableRows} from "../../redux-state/async-actions/fetchTableRows";
-import {updateContract} from "../../redux-state/async-actions/contract/updateContract";
-import {createContract} from "../../redux-state/async-actions/contract/createContract";
+
 
 const FormWrapper = styled.form`
 width: 70%;

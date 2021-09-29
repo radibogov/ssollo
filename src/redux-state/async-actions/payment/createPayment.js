@@ -13,7 +13,7 @@ export const createPayment = (data) => {
             method: 'POST',
             body: JSON.stringify(data)
         }).then(response => response.json()).then(response => {
-            if (!response.ok) {
+            if (response.ok === false) {
                 throw(response)
             }})
             .catch(reason =>

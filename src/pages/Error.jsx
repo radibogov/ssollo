@@ -8,7 +8,7 @@ const Error = () => {
     const dispatch = useDispatch();
     const error = useSelector(state => state.error.error)
     const open = useSelector(state => state.error.open)
-    console.log(error)
+
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} onClose={handleClose} />;
 
@@ -16,7 +16,7 @@ const Error = () => {
     function reasonEr() {
         let resp = []
         for (let key in error) {
-            resp.push(<div>{error[key]}</div>)
+            resp.push(<div key={key}>{error[key]}</div>)
         }
         return resp
     }

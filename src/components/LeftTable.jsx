@@ -72,7 +72,7 @@ const LeftTable = (props) => {
             <TableRow
                 key={item.id}
                 id={item.id}
-                isCurrent={current == item.id}
+                isCurrent={current === item.id}
                 side='left'
                 balance={item.user?.balance}
 

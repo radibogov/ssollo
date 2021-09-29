@@ -14,9 +14,10 @@ export const createContract = (data) => {
               },
             method: 'POST',
             body: JSON.stringify(data)
-        }).then(response => response.json())
-            .then(response => {
-                if (!response.ok) {
+        }).then(response =>
+            response.json()
+        ).then(response => {
+                if (response.ok === false) {
                     throw(response)
                 }
                 dispatch(setIdContract(response.id))

@@ -78,7 +78,7 @@ const RightTable = (props) => {
             <TableRow
                 key={item.id}
                 id={item.id}
-                isCurrent={current == item.id}
+                isCurrent={current === item.id}
                 side='right'
 
                 balance={item.user?.balance}

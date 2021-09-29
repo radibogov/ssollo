@@ -18,7 +18,7 @@ const TableContainer = () => {
     React.useEffect(() => {
         dispatch(fetchTableRows(true))
         dispatch(fetchTableRows(false))
-    }, [])
+    }, [dispatch])
     return <Wrapper>
         <ContractDialog />
         <LeftTable

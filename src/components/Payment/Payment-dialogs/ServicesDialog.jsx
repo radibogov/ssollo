@@ -25,7 +25,6 @@ import {deleteServices} from "../../../redux-state/async-actions/services/delete
 import ServicesFixDialog from "./ServicesFixDialog";
 import {clearServiceForm, setServiceForm} from "../../../redux-state/reducers/serviceFormReduser";
 import styled from "styled-components";
-import {setServices} from "../../../redux-state/reducers/listsReducer";
 
 
 const RowFlex = styled.div`
@@ -60,7 +59,7 @@ export default function ServicesDialog() {
 
     React.useEffect(() => {
         dispatch(fetchServices())
-    }, [])
+    }, [dispatch])
     return (
         <>
             <IconButton color="primary"
