@@ -10,6 +10,7 @@ const CLEAR_COMMENT_FORM = 'CLEAR_COMMENT_FORM'
 const defaultState = {
     order_id: null,
     image: null,
+    img_flag: false,
     action: '',
     date: '',
     comment: ''
@@ -24,6 +25,7 @@ export const commentReducer = (state = defaultState, action) => {
                 order_id: action.payload.order_id,
                 action: action.payload.action,
                 image: action.payload.image,
+                img_flag: false,
                 date: action.payload.date,
                 comment: action.payload.comment
             }
@@ -35,7 +37,8 @@ export const commentReducer = (state = defaultState, action) => {
         case SET_IMAGE_COMMENT:
             return {
                 ...state,
-                image: action.payload,
+                image: action.payload.img,
+                img_flag: action.payload.flag
             }
         case SET_ACTION_COMMENT:
             return {

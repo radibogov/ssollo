@@ -15,7 +15,8 @@ import {
     setActionComment,
     setCommentComment,
     setDateComment,
-    setImageComment, setOrderIdComment
+    setImageComment,
+    setOrderIdComment
 } from "../../redux-state/reducers/commentReducer";
 import {createComment} from "../../redux-state/async-actions/comments/createComment";
 import {updateComment} from "../../redux-state/async-actions/comments/updateComment";
@@ -53,10 +54,10 @@ const CommentsFormBottom = () => {
     const hiddenInp = React.useRef()
     const id = useSelector(state => state.contractForm.id);
     const commentsForm = useSelector(state => state.commentsForm);
-    console.log(commentsForm)
+
     useEffect(() => {
         if (commentsForm.date === '') {
-            dispatch(setDateComment(moment().format('YYYY-MM-DDTHH:mm')))
+            dispatch(setDateComment(moment().format('YYYY-MM-DD')))
         }
         if (commentsForm.order_id === null) {
             dispatch(setOrderIdComment(id))
@@ -65,36 +66,57 @@ const CommentsFormBottom = () => {
 
     const fileHandler = event => {
         let reader = new FileReader();
-        reader.onload = function(e) {
-            dispatch(setImageComment(e.target.result))
+        reader.onload = function (e) {
+            dispatch(setImageComment({img: e.target.result, flag: true}))
         };
         reader.readAsDataURL(event.target.files[0]);
     };
 
+    const formSubmit = (e) => {
+        e.preventDefault()
 
-    return <Wrapper id={'comment-form'}>
+        if (commentsForm.id) {
+            commentsForm.img_flag ?
+                dispatch(updateComment(commentsForm.id, commentsForm))
+                :
+                dispatch(updateComment(commentsForm.id, {
+                    order_id: commentsForm.order_id,
+                    action: commentsForm.action,
+                    date: commentsForm.date,
+                    comment: commentsForm.comment
+                }))
+        } else {
+            dispatch(createComment(commentsForm))
+        }
+        setTimeout(() => {
+            dispatch(fetchComment(id))
+            dispatch(clearCommentForm())
+        }, 200)
+    }
+    return <Wrapper id={'comment-form'} onSubmit={formSubmit}>
         <InputRow>
-            <TextField
-                id="filled-disabled"
-                label="Комментарий"
-                style={{width: '75%'}}
-                value={commentsForm.comment}
-                onChange={(event => {
-                    dispatch(setCommentComment(event.target.value))
-                })}
+            <TextField required
+                       id="filled-disabled"
+                       variant="filled"
+                       label="Комментарий"
+                       style={{width: '75%'}}
+                       value={commentsForm.comment}
+                       onChange={(event => {
+                           dispatch(setCommentComment(event.target.value))
+                       })}
             />
-            <TextField
-                id="datetime-local"
-                label="Дата"
-                type="datetime-local"
-                value={commentsForm.date}
-                onChange={
-                    (event) => {
-                        dispatch(setDateComment(event.target.value))
-                    }
-                }
-                InputLabelProps={{
-                    shrink: true,
+            <TextField required
+                       id="date"
+                       label="Дата"
+                       type="date"
+                       value={commentsForm.date}
+                       onChange={
+                           (event) => {
+                               dispatch(setDateComment(event.target.value))
+                           }
+                       }
+                       InputLabelProps={{
+                           shrink: true,
                 }}
             />
         </InputRow>
@@ -109,15 +131,6 @@ const CommentsFormBottom = () => {
                 <FormControlLabel style={{color: 'black'}} value="extend" control={<Radio />} label="Будет продлевать" />
             </RadioGroup>
             <InputImg>
-                {commentsForm.image_url?
-                    <img onClick={
-                        () => {
-                            hiddenInp.current.click()
-                        }
-                    } style={{height: '100px'}} src={commentsForm.image_url} alt={'img'}/>
-                    :
-                    null
-                }
                 {!commentsForm.image?
                     <Button
                         variant="contained"
@@ -147,18 +160,8 @@ const CommentsFormBottom = () => {
             <Button
                 variant="contained"
                 color="primary"
-                startIcon={<SaveIcon />}
-                onClick={()=>{
-                    if (commentsForm.id) {
-                        dispatch(updateComment(commentsForm.id, commentsForm))
-                    } else {
-                        dispatch(createComment(commentsForm))
-                    }
-                    setTimeout(() => {
-                        dispatch(fetchComment(id))
-                        dispatch(clearCommentForm())
-                    }, 200)
-                }}
+                startIcon={<SaveIcon/>}
+                type='submit'
             >
                 Сохранить
             </Button>

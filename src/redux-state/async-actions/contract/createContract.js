@@ -1,7 +1,6 @@
-import { FETCH_URL } from "../../../configs/urls"
+import {FETCH_URL} from "../../../configs/urls"
 import {setIdContract} from "../../reducers/contractFormReducer";
 import {setError} from "../../reducers/errorReducer";
-
 
 
 export const createContract = (data) => {
@@ -11,10 +10,11 @@ export const createContract = (data) => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-              },
+            },
             method: 'POST',
             body: JSON.stringify(data)
-        }).then((response) => {
+        })
+            .then((response) => {
                 if (response.ok) {
                     return response.json();
                 } else {

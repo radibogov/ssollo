@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import testImage from '../../images/testimg.jpg'
+import moment from "moment";
 import CommentsFormBottom from './CommentsFormBottom'
 import {useDispatch, useSelector} from "react-redux";
 import {fetchComment} from "../../redux-state/async-actions/comments/fetchComment";
@@ -70,58 +70,10 @@ const CommentsForm = () => {
 
 
     return <Wrapper>
-        <Row>
-            <Image
-                src={testImage}
-            />
-            <FormText>
-                <Header>Комментарий</Header>
-                <Text>
-                    очень длинный комментарий
-                    очень длинный комментарий
-                    очень длинный комментарий
-                    очень длинный комментарий
-                </Text>
-                <Text style={{fontWeight: 'bold', marginBottom: '10px'}}>Будет возвращать</Text>
-            </FormText>
-            <FormDate>
-                <div></div>
-                {2}
-            </FormDate>
-            <FormBtn >
-                <Tooltip title="Изменить">
-                    <IconButton onClick={
-                        () => {
-
-                            try {
-                                const el = document.getElementById('comment-form');
-                                el.scrollIntoView({behavior: "smooth"});
-                            } catch {
-
-                            }
-                        }
-                    }>
-                        <CreateIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Удалить">
-                    <IconButton onClick={
-                        () => {
-                            dispatch(deleteComment(1));
-                            setTimeout(() => {
-                                dispatch(fetchComment(id))
-                            }, 200)
-                        }
-                    }>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            </FormBtn>
-        </Row>
         {commentsRow.comments?.map((item) =>
                 <Row key={item.id}>
                     <Image
-                        src={item.image_url}
+                        src={item.image}
                     />
                     <FormText>
                         <Header>Комментарий</Header>
@@ -138,7 +90,7 @@ const CommentsForm = () => {
                         }</Text>
                     </FormText>
                     <FormDate>
-                        {item.date}
+                        {moment(item.date).format('DD-MM-YYYY')}
                     </FormDate>
                     <FormBtn >
                         <Tooltip title="Изменить">
@@ -147,7 +99,7 @@ const CommentsForm = () => {
                                     dispatch(setAllComment({
                                         id: item.id,
                                         order_id: item.order_id,
-                                        image_url: item.image_url,
+                                        image: item.image,
                                         date: item.date,
                                         action: item.action,
                                         comment: item.comment

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {toggleMoneyOpDialog} from "../../redux-state/reducers/DialogsReducer";
 import {
     clearPaymentForm,
-    setAccruedPayment, setAllPayment,
+    setAccruedPayment,
     setCountPayment,
     setService,
     setTypePayment
@@ -49,33 +49,7 @@ const PaymentBtnPanel = () => {
                 onClick={
                     () => {
                         dispatch(getOnePayment(current))
-                        setTimeout(() => {
-                            dispatch(setAllPayment(
-                            {
-                                id: activePayment?.id,
-                                employee_id: activePayment?.employee?.id,
-                                employee_name: activePayment?.employee?.full_name,
-                                // client_id: activePayment?.client?.id,
-                                // car_id: activePayment?.real_auto?.id,
-                                // operation: '0',
-                                payment: activePayment?.payment,
-                                count: activePayment?.count,
-                                is_deposit: activePayment?.is_deposit,
-                                is_deposit_return: activePayment?.is_deposit_return,
-                                is_main_payment: activePayment?.is_main_payment,
-                                service_id: activePayment?.service?.id,
-                                service_name: activePayment?.service_name ,
-                                service_price: activePayment?.service_price,
-                                sum_of_money: activePayment?.sum_of_money,
-                                // doc_number: activePayment?.doc_number,
-                                // firm_id: activePayment?.firm?.id,
-                                date_of_payment: activePayment?.date_of_payment,
-                                // order_id: activePayment?.order?.id
-                            }
-                        ))}, 300)
-                        setTimeout(() => {
-                            dispatch(toggleMoneyOpDialog({flag: true, type: activePayment?.is_main_payment? 1 : 2} ))
-                        }, 300)
+                        dispatch(toggleMoneyOpDialog({flag: true, type: activePayment?.is_main_payment ? 1 : 2}))
                     }
                 }
             >

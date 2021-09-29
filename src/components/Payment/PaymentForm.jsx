@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
     setDelay,
     setDeposit,
@@ -10,7 +10,8 @@ import {
     setFuelBefore,
     setMileageAfter,
     setMileageBefore,
-    setMileagePrice, setOrderIdCalc
+    setMileagePrice,
+    setOrderIdCalc
 } from '../../redux-state/reducers/calculationReducer';
 import PaymentTable from './PaymentTable';
 import MoneyOperationDialog from "./Payment-dialogs/MoneyOperationDialog";
@@ -185,10 +186,10 @@ const PaymentForm = () => {
                             client_id: contractForm.user_id,
                             car_id: contractForm.real_auto_id,
                             operation: 'Оплата за перепробег',
-                            payment: calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first,
+                            payment: calculation.mileage_after - calculation.mileage_before - activeCar.millage * contractForm.days_first,
                             count: 1,
                             service_name: 'Оплата за перепробег',
-                            service_price: calculation.deposit,
+                            service_price: calculation.mileage_after - calculation.mileage_before - activeCar.millage * contractForm.days_first,
                             sum_of_money: calculation.sum_for_mileage_over,
                             doc_number: contractForm.uch_number,
                             firm_id: contractForm.firm_id,

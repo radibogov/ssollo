@@ -1,5 +1,6 @@
-import { FETCH_URL } from "../../../configs/urls"
+import {FETCH_URL} from "../../../configs/urls"
 import {setCommentRow} from "../../reducers/commentRowsReducer";
+import {setError} from "../../reducers/errorReducer";
 
 
 export const fetchComment = (id) => {
@@ -7,9 +8,20 @@ export const fetchComment = (id) => {
         fetch(`${FETCH_URL}/comment?order_id=${id}`, {
             method: 'GET'
         })
-            .then(response => response.json())
             .then(response => {
-                dispatch(setCommentRow(response))
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw response.json();
+                }
+            })
+            .then((json) => {
+                dispatch(setCommentRow(json))
+            })
+            .catch((error) => {
+                error.then((error) =>
+                    dispatch(setError({open: true, error: error}))
+                )
             })
     }
 }

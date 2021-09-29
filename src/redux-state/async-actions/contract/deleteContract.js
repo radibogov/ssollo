@@ -1,4 +1,5 @@
-import { FETCH_URL } from "../../../configs/urls"
+import {FETCH_URL} from "../../../configs/urls"
+import {setError} from "../../reducers/errorReducer";
 
 
 export const deleteContract = (id) => {
@@ -7,5 +8,15 @@ export const deleteContract = (id) => {
         fetch(`${FETCH_URL}/contract/${id}`, {
             method: 'DELETE'
         })
+            .then((response) => {
+                if (!response.ok) {
+                    throw response.json();
+                }
+            })
+            .catch((error) => {
+                error.then((error) =>
+                    dispatch(setError({open: true, error: error}))
+                )
+            })
     }
 }

@@ -1,5 +1,6 @@
-import { FETCH_URL } from "../../../configs/urls"
+import {FETCH_URL} from "../../../configs/urls"
 import {setCalcList} from "../../reducers/calculationReducer";
+import {setError} from "../../reducers/errorReducer";
 
 
 export const fetchPayment = (id) => {
@@ -8,9 +9,20 @@ export const fetchPayment = (id) => {
         fetch(`${FETCH_URL}/payment?order_id=${id}`, {
             method: 'GET'
         })
-            .then(response => response.json())
-            .then(response => {
-                dispatch(setCalcList(response))
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw response.json();
+                }
+            })
+            .then(json => {
+                dispatch(setCalcList(json))
+            })
+            .catch((error) => {
+                error.then((error) =>
+                    dispatch(setError({open: true, error: error}))
+                )
             })
     }
 }
