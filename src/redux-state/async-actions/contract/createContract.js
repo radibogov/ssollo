@@ -14,16 +14,20 @@ export const createContract = (data) => {
               },
             method: 'POST',
             body: JSON.stringify(data)
-        }).then(response =>
-            response.json()
-        ).then(response => {
-                if (response.ok === false) {
-                    throw(response)
+        }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw response.json();
                 }
-                dispatch(setIdContract(response.id))
             })
-            .catch(reason =>
-                dispatch(setError({open: true, error: reason}))
-            )
+            .then((json) => {
+                dispatch(setIdContract(json.id))
+            })
+            .catch((error) => {
+                error.then((error) =>
+                    dispatch(setError({open: true, error: error}))
+                )
+            })
     }
 }

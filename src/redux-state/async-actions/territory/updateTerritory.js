@@ -12,12 +12,17 @@ export const updateTerritory = (id, data) => {
             },
             method: 'PATCH',
             body: JSON.stringify(data)
-        }).then(response => response.json()).then(response => {
-            if (response.ok === false) {
-                throw(response)
-            }})
-            .catch(reason =>
-                dispatch(setError({open: true, error: reason}))
-            )
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw response.json();
+            }
+        })
+            .catch((error) => {
+                error.then((error) =>
+                    dispatch(setError({open: true, error: error}))
+                )
+            })
     }
 }

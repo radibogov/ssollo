@@ -58,11 +58,12 @@ export default function MoneyOperationDialog() {
     const type = useSelector(state => state.dialogs.moneyOpType)
     const contractForm = useSelector(state => state.contractForm)
     const paymentForm = useSelector(state => state.paymentForm)
+
     useEffect(() => {
         if (paymentForm.date_of_payment === '') {
             dispatch(setDateOfPayment(moment().format('YYYY-MM-DDTHH:mm')))
         }
-    },[dispatch]);
+    },[open]);
     useEffect((render) => {
         let summa = paymentForm.service_price*paymentForm.count
         dispatch(setAccruedPayment(Math.ceil(summa)))
@@ -80,173 +81,175 @@ export default function MoneyOperationDialog() {
         dispatch(toggleMoneyOpDialog({flag:false, type:0}))
     };
 
+    const formSubmit = (e) => {
+        e.preventDefault()
+
+        if (paymentForm.id) {
+            dispatch(updatePayment(paymentForm.id,paymentForm))
+        } else {
+            dispatch(createPayment(paymentForm))
+        }
+        setTimeout(() => {
+            dispatch(fetchPayment(contractForm.id))
+        }, 200)
+    }
+
     return (
         <React.Fragment>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">{type===1?'Оплата по договору':type===2?'Операция с деньгами':null}</DialogTitle>
-                <form>
-                <DialogContent>
-                    <InputRow>
-                        <TextField
-                            id="datetime-local"
-                            label="Дата, время"
-                            type="datetime-local"
-                            value={paymentForm.date_of_payment}
-                            onChange={
-                                (event) => {
-                                    dispatch(setDateOfPayment(event.target.value))
+                <form onSubmit={formSubmit}>
+                    <DialogContent>
+                        <InputRow>
+                            <TextField required
+                                id="datetime-local"
+                                label="Дата, время"
+                                type="datetime-local"
+                                value={moment(paymentForm.date_of_payment).format('YYYY-MM-DDTHH:mm')}
+                                onChange={
+                                    (event) => {
+                                        dispatch(setDateOfPayment(event.target.value))
+                                    }
                                 }
-                            }
-                            className={classes.textField}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                        <TextField
-                            id="standard-basic"
-                            label="Создал" />
-                    </InputRow>
-                    {type===1?
-                        <React.Fragment>
-                            <InputRow>
-                                <TextField value={contractForm.uch_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" style={{ marginRight: '20px', width: '30%' }} />
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    width: '75%'
-                                }}>
-                                    <TextField readOnly value={contractForm.client_name} id="filled-basic" label="Клиент" style={{ width: '95%' }} />
-                                    <ClientDialog />
-                                </div>
-                            </InputRow>
-                            <InputRow>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    width: '30%'
-                                }}>
-                                    <TextField value={contractForm.gos_number} readOnly id="filled-basic" label="Автомобиль"  style={{ width: '90%' }} />
-                                    <AutoDialog />
-                                </div>
-                                <TextField id="filled-basic" value={contractForm.auto_name} style={{ width: '70%', marginTop: 'auto' }} />
-                            </InputRow>
-                        </React.Fragment>
-                        :null
-                    }
-                    <InputRow>
+                                className={classes.textField}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
                             <TextField
                                 id="standard-basic"
-                                label="Сотрудник"
-                                style={{width: '90%'}}
-                                value={paymentForm.employee_name}
-                            />
-                            <ManagerPaymentDialog />
-                    </InputRow>
-                    <InputRow>
-                        <div
-                            style={{
-                                display: 'flex',
-                                width: '100%'
-                            }}
-                        >
-                            <TextField
-                                id="standard-basic"
-                                label="Услуга"
-                                style={{width: '100%'}}
-                                value={paymentForm.service_name}
-                            />
-                            {type===1?null:
-                            <ServicesDialog />}
-                        </div>
-                    </InputRow>
-
-                    <InputRow>
-                        <TextField
-                            id="standard-basic"
-                            label="Тариф"
-                            value={paymentForm.service_price}
-                            />
+                                label="Создал" />
+                        </InputRow>
                         {type===1?
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                alignItems: 'center',
-                                width: '50%'
-                            }}>
-                                <TextField value={contractForm.firm_name} id="filled-basic" label="Фирма" style={{ width: '87%' }} />
-                                <FirmDialog/>
+                            <React.Fragment>
+                                <InputRow>
+                                    <TextField value={contractForm.uch_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" style={{ marginRight: '20px', width: '30%' }} />
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '75%'
+                                    }}>
+                                        <TextField readOnly value={contractForm.client_name} id="filled-basic" label="Клиент" style={{ width: '95%' }} />
+                                        <ClientDialog />
+                                    </div>
+                                </InputRow>
+                                <InputRow>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        width: '30%'
+                                    }}>
+                                        <TextField value={contractForm.gos_number} readOnly id="filled-basic" label="Автомобиль"  style={{ width: '90%' }} />
+                                        <AutoDialog />
+                                    </div>
+                                    <TextField id="filled-basic" value={contractForm.auto_name} style={{ width: '70%', marginTop: 'auto' }} />
+                                </InputRow>
+                            </React.Fragment>
+                            :null
+                        }
+                        <InputRow>
+                                <TextField
+                                    id="standard-basic"
+                                    label="Сотрудник"
+                                    style={{width: '90%'}}
+                                    value={paymentForm.employee_name}
+                                />
+                                <ManagerPaymentDialog />
+                        </InputRow>
+                        <InputRow>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    width: '100%'
+                                }}
+                            >
+                                <TextField
+                                    id="standard-basic"
+                                    label="Услуга"
+                                    style={{width: '100%'}}
+                                    value={paymentForm.service_name}
+                                />
+                                {type===1?null:
+                                <ServicesDialog />}
                             </div>
-                            :
-                            null
-                        }
+                        </InputRow>
 
-                    </InputRow>
-                    <InputRow style={{display: 'flex', justifyContent: 'start'}}>
-                        <IconButton color="primary"
-                                    onClick={
-                                        () => {
-                                            dispatch(setCountPayment(+paymentForm.count - 1 >= 1 ? +paymentForm.count - 1 : 1))
-                                        }
-                                    }
-                        >
-                            <ArrowLeftIcon />
-                        </IconButton>
-                        <TextField id="filled-basic" label={type===1?'Дней':'Количество'} value={'' + paymentForm.count} onChange={(event) =>event.target.value>0?dispatch(setCountPayment(event.target.value)):dispatch(setCountPayment(1))} type="number" />
-                        <IconButton color="primary"
-                                    onClick={
-                                        () => {
-                                            dispatch(setCountPayment(+paymentForm.count + 1))
-                                        }
-                                    }
-                        >
-                            <ArrowRightIcon />
-                        </IconButton>
-                    </InputRow>
-                    <InputRow>
-                        <TextField
-                            id="standard-basic"
-                            label="Сумма"
-                            value={+paymentForm.sum_of_money}
-                        />
-                        <IconButton color="primary"
-                                    onClick={
-                                        () => {
-                                            dispatch(setSumOfMoney(paymentForm.payment))
-                                        }
-                                    }
-                        >
-                            <ArrowBackIcon />
-                        </IconButton>
-                        <TextField
-                            id="standard-basic"
-                            label="Начислено"
-                            type='number'
-                            value={''+paymentForm.payment}
-                            onChange={(event) =>dispatch(setAccruedPayment(event.target.value))}
-                        />
-                    </InputRow>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Отменить
-                    </Button>
-                    <Button onClick={() => {
-                        if (paymentForm.id) {
-                            console.log(paymentForm)
-                            dispatch(updatePayment(paymentForm.id,paymentForm))
-                        } else {
-                            dispatch(createPayment(paymentForm))
-                        }
-                        setTimeout(() => {
-                            dispatch(fetchPayment(contractForm.id))
-                        }, 200)
+                        <InputRow>
+                            <TextField required
+                                id="standard-basic"
+                                label="Тариф"
+                                value={paymentForm.service_price}
+                                />
+                            {type===1?
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'center',
+                                    width: '50%'
+                                }}>
+                                    <TextField value={contractForm.firm_name} id="filled-basic" label="Фирма" style={{ width: '87%' }} />
+                                    <FirmDialog/>
+                                </div>
+                                :
+                                null
+                            }
 
-                    }} color="primary">
-                        Записать
-                    </Button>
-                </DialogActions>
+                        </InputRow>
+                        <InputRow style={{display: 'flex', justifyContent: 'start'}}>
+                            <IconButton color="primary"
+                                        onClick={
+                                            () => {
+                                                dispatch(setCountPayment(+paymentForm.count - 1 >= 1 ? +paymentForm.count - 1 : 1))
+                                            }
+                                        }
+                            >
+                                <ArrowLeftIcon />
+                            </IconButton>
+                            <TextField id="filled-basic" label={type===1?'Дней':'Количество'} value={'' + paymentForm.count} onChange={(event) =>event.target.value>0?dispatch(setCountPayment(event.target.value)):dispatch(setCountPayment(1))} type="number" />
+                            <IconButton color="primary"
+                                        onClick={
+                                            () => {
+                                                dispatch(setCountPayment(+paymentForm.count + 1))
+                                            }
+                                        }
+                            >
+                                <ArrowRightIcon />
+                            </IconButton>
+                        </InputRow>
+                        <InputRow>
+                            <TextField
+                                id="standard-basic"
+                                label="Сумма"
+                                value={+paymentForm.sum_of_money}
+                            />
+                            <IconButton color="primary"
+                                        onClick={
+                                            () => {
+                                                dispatch(setSumOfMoney(paymentForm.payment))
+                                            }
+                                        }
+                            >
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <TextField
+                                id="standard-basic"
+                                label="Начислено"
+                                type='number'
+                                value={''+paymentForm.payment}
+                                onChange={(event) =>dispatch(setAccruedPayment(event.target.value))}
+                            />
+                        </InputRow>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Отменить
+                        </Button>
+                        <Button type='submit' color="primary">
+                            Записать
+                        </Button>
+                    </DialogActions>
                 </form>
             </Dialog>
         </React.Fragment>

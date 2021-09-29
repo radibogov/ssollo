@@ -8,16 +8,20 @@ export const getOnePayment = (id) => {
     return dispatch => {
         fetch(`${FETCH_URL}/payment/${id}`, {
             method: 'GET'
-        })
-            .then(response => response.json())
-            .then(response => {
-                if (response.ok === false) {
-                    throw(response)
+        }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw response.json();
                 }
-                dispatch(setCurrentActivePayment(response))
             })
-            .catch(reason =>
-                dispatch(setError({open: true, error: reason}))
-            )
+            .then((json) => {
+                dispatch(setCurrentActivePayment(json))
+            })
+            .catch((error) => {
+                error.then((error) =>
+                    dispatch(setError({open: true, error: error}))
+                )
+            })
     }
 }
