@@ -92,6 +92,7 @@ export default function MoneyOperationDialog() {
         setTimeout(() => {
             dispatch(fetchPayment(contractForm.id))
         }, 200)
+        dispatch(toggleMoneyOpDialog({flag: false, type: null} ))
     }
 
     return (
@@ -150,7 +151,7 @@ export default function MoneyOperationDialog() {
                             :null
                         }
                         <InputRow>
-                                <TextField
+                                <TextField required
                                     id="standard-basic"
                                     label="Сотрудник"
                                     style={{width: '90%'}}
@@ -219,7 +220,7 @@ export default function MoneyOperationDialog() {
                             </IconButton>
                         </InputRow>
                         <InputRow>
-                            <TextField
+                            <TextField required
                                 id="standard-basic"
                                 label="Сумма"
                                 value={+paymentForm.sum_of_money}

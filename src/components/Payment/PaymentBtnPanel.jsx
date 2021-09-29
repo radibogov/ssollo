@@ -20,7 +20,6 @@ const PaymentBtnPanel = () => {
     const activePayment = useSelector(state => state.currentRow.payment_active)
     const current = useSelector(state => state.currentRow.payment)
 
-
     const handleClickPayment = () => {
         dispatch(clearPaymentForm());
         dispatch(setTypePayment({is_deposit: false, is_main_payment: true}))
@@ -65,7 +64,7 @@ const PaymentBtnPanel = () => {
                                 is_deposit_return: activePayment?.is_deposit_return,
                                 is_main_payment: activePayment?.is_main_payment,
                                 service_id: activePayment?.service?.id,
-                                service_name: activePayment?.service?.name ,
+                                service_name: activePayment?.service_name ,
                                 service_price: activePayment?.service_price,
                                 sum_of_money: activePayment?.sum_of_money,
                                 // doc_number: activePayment?.doc_number,
