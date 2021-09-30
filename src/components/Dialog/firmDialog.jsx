@@ -23,8 +23,6 @@ import CreateIcon from "@material-ui/icons/Create"
 import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import PlaceFixDialog from "./PlaceFixDialog";
-import {deleteTerritory} from "../../redux-state/async-actions/territory/deleteTerritory";
-import {fetchTerritories} from "../../redux-state/async-actions/territory/fetchTerritories";
 import {deleteFirm} from "../../redux-state/async-actions/firm/deleteFirm";
 
 const RowFlex = styled.div`
