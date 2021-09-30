@@ -14,6 +14,9 @@ import {fetchPlaces} from "../../redux-state/async-actions/place/fetchPlaces";
 import {fetchTerritories} from "../../redux-state/async-actions/territory/fetchTerritories";
 import {createTerritory} from "../../redux-state/async-actions/territory/createTerritory";
 import {updateTerritory} from "../../redux-state/async-actions/territory/updateTerritory";
+import {createFirm} from "../../redux-state/async-actions/firm/createFirm";
+import {updateFirm} from "../../redux-state/async-actions/firm/updateTerritory";
+import {fetchFirms} from "../../redux-state/async-actions/firm/fetchFirms";
 
 const InputRow = styled.div`
 display: flex;
@@ -31,9 +34,11 @@ export default function PlaceFixDialog() {
     const type = useSelector(state => state.dialogs.place_fix_type)
     const kindPlace = useSelector(state => state.dialogs.kind_place)
     const placeForm = useSelector(state => state.placeForm)
+
     const handleClose = () => {
         dispatch(toggleTerritoryPlaceFixDialog({flag: false}))
     };
+
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{type === 'create' ? 'Создание новой записи'  : 'Изменение записи'} </DialogTitle>
@@ -63,6 +68,16 @@ export default function PlaceFixDialog() {
                             }
                             setTimeout(() => {
                                 dispatch(fetchTerritories())
+                            }, 200);
+                        }
+                        if (kindPlace==='Фирма') {
+                            if (type === 'create') {
+                                dispatch(createFirm({name: placeForm.name}))
+                            } else {
+                                dispatch(updateFirm(placeForm.id, {name: placeForm.name}))
+                            }
+                            setTimeout(() => {
+                                dispatch(fetchFirms())
                             }, 200);
                         }
                         dispatch(toggleTerritoryPlaceFixDialog({flag: false}))

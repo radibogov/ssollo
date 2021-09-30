@@ -15,7 +15,7 @@ import {
     setActionComment,
     setCommentComment,
     setDateComment,
-    setImageComment,
+    setImageComment, setMarkComment,
     setOrderIdComment
 } from "../../redux-state/reducers/commentReducer";
 import {createComment} from "../../redux-state/async-actions/comments/createComment";
@@ -98,7 +98,7 @@ const CommentsFormBottom = () => {
             <TextField required
                        id="filled-disabled"
                        variant="filled"
-                       label="Комментарий"
+                       label="Замечания"
                        style={{width: '75%'}}
                        value={commentsForm.comment}
                        onChange={(event => {
@@ -118,6 +118,18 @@ const CommentsFormBottom = () => {
                        InputLabelProps={{
                            shrink: true,
                 }}
+            />
+        </InputRow>
+        <InputRow>
+            <TextField required
+                       id="filled-disabled"
+                       variant="filled"
+                       label="Примечания"
+                       style={{width: '75%'}}
+                       value={commentsForm.mark}
+                       onChange={(event => {
+                           dispatch(setMarkComment(event.target.value))
+                       })}
             />
         </InputRow>
         <InputRow>

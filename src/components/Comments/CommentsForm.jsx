@@ -76,9 +76,13 @@ const CommentsForm = () => {
                         src={item.image}
                     />
                     <FormText>
-                        <Header>Комментарий</Header>
+                        <Header>Замечания</Header>
                         <Text>
                             {item.comment}
+                        </Text>
+                        <Header>Примечания</Header>
+                        <Text>
+                            {item.mark}
                         </Text>
                         <Text style={{fontWeight: 'bold', marginBottom: '10px'}}>{
                             item.action==="return"?

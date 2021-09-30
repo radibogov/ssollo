@@ -1,6 +1,6 @@
-import {FETCH_URL} from "../../configs/urls"
-import {setFirms} from "../reducers/listsReducer"
-import {setError} from "../reducers/errorReducer";
+import {FETCH_URL} from "../../../configs/urls"
+import {setFirms} from "../../reducers/listsReducer"
+import {setError} from "../../reducers/errorReducer";
 
 
 export const fetchFirms = () => {

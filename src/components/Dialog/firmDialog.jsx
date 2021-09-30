@@ -14,8 +14,22 @@ import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFirmId } from '../../redux-state/reducers/contractFormReducer';
-import { fetchFirms } from '../../redux-state/async-actions/fetchFirms';
-import { toggleFirmDialog } from '../../redux-state/reducers/DialogsReducer';
+import { fetchFirms } from '../../redux-state/async-actions/firm/fetchFirms';
+import {toggleFirmDialog, toggleTerritoryPlaceFixDialog} from '../../redux-state/reducers/DialogsReducer';
+import styled from "styled-components";
+import Tooltip from "@material-ui/core/Tooltip";
+import {clearPlaceForm, setPlaceForm} from "../../redux-state/reducers/placeFormReduser";
+import CreateIcon from "@material-ui/icons/Create"
+import DeleteIcon from "@material-ui/icons/Delete";
+import Button from "@material-ui/core/Button";
+import PlaceFixDialog from "./PlaceFixDialog";
+import {deleteTerritory} from "../../redux-state/async-actions/territory/deleteTerritory";
+import {fetchTerritories} from "../../redux-state/async-actions/territory/fetchTerritories";
+import {deleteFirm} from "../../redux-state/async-actions/firm/deleteFirm";
+
+const RowFlex = styled.div`
+    display: flex;
+`;
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -79,23 +93,54 @@ export default function FirmDialog() {
                         <React.Fragment
                             key={el.id}
                         >
-                            <ListItem button
-                                onClick={
-                                    () => {
-                                        dispatch(setFirmId(el));
-                                        dispatch(toggleFirmDialog(false))
-                                    }
+                            <RowFlex>
+                                <ListItem button
+                                          onClick={
+                                              () => {
+                                                  dispatch(setFirmId(el));
+                                                  dispatch(toggleFirmDialog(false))
+                                              }
 
-                                }
-                            >
-                                <ListItemText primary={el.id} />
-                                <ListItemText primary={el.name} />
-                            </ListItem>
+                                          }
+                                >
+                                    <ListItemText primary={el.id} />
+                                    <ListItemText primary={el.name} />
+                                </ListItem>
+                                <Tooltip title="Изменить место">
+                                    <IconButton onClick={
+                                        () => {
+                                            dispatch(setPlaceForm({id: el.id, name: el.name}));
+                                            dispatch(toggleTerritoryPlaceFixDialog({flag: true, type: 'fix', place: 'Фирма'}))
+                                        }
+                                    }>
+                                        <CreateIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Удалить место">
+                                    <IconButton onClick={
+                                        () => {
+                                            dispatch(deleteFirm(el.id));
+                                            setTimeout(() => {
+                                                dispatch(fetchFirms())
+                                            }, 200)
+                                        }
+                                    }>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </RowFlex>
                             <Divider />
                         </React.Fragment>
                     )}
-
-
+                    <RowFlex>
+                        <Button onClick={
+                            () => {
+                                dispatch(clearPlaceForm());
+                                dispatch(toggleTerritoryPlaceFixDialog({flag: true, type: 'create', place: 'Фирма'}))
+                            }
+                        } style={{marginLeft: 'auto',marginRight: '20px', marginTop: '20px'}} variant="outlined">Добавить фирму</Button>
+                        <PlaceFixDialog />
+                    </RowFlex>
                 </List>
             </Dialog>
         </div>
