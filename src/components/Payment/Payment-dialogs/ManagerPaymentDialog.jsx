@@ -85,7 +85,6 @@ export default function ManagerPaymentDialog() {
                                           () => {
                                               dispatch(setEmployeePayment({id: el.id, full_name: el.full_name}));
                                               dispatch(toggleManagerPaymentDialog(false));
-
                                           }
 
                                       }

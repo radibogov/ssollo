@@ -20,14 +20,12 @@ export const fetchUsers = () => {
                 dispatch(setUsers(response))
             })
             .catch((error) => {
-                try {
-                    error.then((error) =>
-                        dispatch(setError({open: true, error: error}))
-                    )
-                } catch (e) {
-
+                if(typeof error.then === "function") {
+                    error
+                        .then((error) =>
+                            dispatch(setError({open: true, error: error}))
+                        )
                 }
-
             })
     }
 }

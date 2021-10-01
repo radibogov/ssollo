@@ -134,16 +134,16 @@ const ContractForm = () => {
     return <FormWrapper onSubmit={formSubmit}>
         <Inner>
             <InputRow>
-                <TextField required value={+contractForm.contract_number}
+                <TextField value={contractForm.contract_number}
                            onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic"
                            label="Договор №" variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField required value={+contractForm.uch_number}
+                <TextField required value={contractForm.uch_number}
                            onChange={(event) => dispatch(setUchNumber(event.target.value))} id="filled-basic"
                            label="Уч №" variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField required value={+contractForm.god_number}
+                <TextField required value={contractForm.god_number}
                            onChange={(event) => dispatch(setGodNumber(event.target.value))} id="filled-basic"
                            label="№ год." variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField required value={+contractForm.real_auto_id} onChange={
+                <TextField required value={contractForm.real_auto_id} onChange={
                     (event) => dispatch(setRealAutoId({
                         id: event.target.value,
                         gos_number: contractForm.gos_number,

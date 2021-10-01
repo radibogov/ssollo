@@ -85,13 +85,10 @@ export default function MoneyOperationDialog() {
         e.preventDefault()
 
         if (paymentForm.id) {
-            dispatch(updatePayment(paymentForm.id,paymentForm))
+            dispatch(updatePayment(paymentForm.id,paymentForm,contractForm.id))
         } else {
-            dispatch(createPayment(paymentForm))
+            dispatch(createPayment(paymentForm,contractForm.id))
         }
-        setTimeout(() => {
-            dispatch(fetchPayment(contractForm.id))
-        }, 200)
         dispatch(toggleMoneyOpDialog({flag: false, type: null} ))
     }
 

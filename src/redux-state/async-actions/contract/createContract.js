@@ -18,6 +18,7 @@ export const createContract = (data) => {
                 if (response.ok) {
                     return response.json();
                 } else {
+                    console.log(response.json())
                     throw response.json();
                 }
             })
@@ -25,9 +26,12 @@ export const createContract = (data) => {
                 dispatch(setIdContract(json.id))
             })
             .catch((error) => {
-                error.then((error) =>
-                    dispatch(setError({open: true, error: error}))
-                )
+                if(typeof error.then === "function") {
+                    error
+                        .then((error) =>
+                            dispatch(setError({open: true, error: error}))
+                        )
+                } 
             })
     }
 }

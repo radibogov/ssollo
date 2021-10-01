@@ -1,8 +1,9 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
+import {fetchPayment} from "./fetchPayment";
 
 
-export const updatePayment = (id, data) => {
+export const updatePayment = (id, data, cfid) => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/payment/${id}`, {
@@ -20,10 +21,16 @@ export const updatePayment = (id, data) => {
                     throw response.json();
                 }
             })
+            .then(json => {
+                fetchPayment(cfid)
+            })
             .catch((error) => {
-                error.then((error) =>
-                    dispatch(setError({open: true, error: error}))
-                )
+                if(typeof error.then === "function") {
+                    error
+                        .then((error) =>
+                            dispatch(setError({open: true, error: error}))
+                        )
+                }
             })
     }
 }

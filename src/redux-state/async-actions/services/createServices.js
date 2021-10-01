@@ -21,9 +21,12 @@ export const createServices = (data) => {
                 }
             })
             .catch((error) => {
-                error.then((error) =>
-                    dispatch(setError({open: true, error: error}))
-                )
+                if(typeof error.then === "function") {
+                    error
+                        .then((error) =>
+                            dispatch(setError({open: true, error: error}))
+                        )
+                }
             })
     }
 }
