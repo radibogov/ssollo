@@ -125,16 +125,12 @@ const ContractForm = () => {
         } else {
             dispatch(createContract(contractForm));
         }
-        setTimeout(() => {
-            dispatch(fetchTableRows(true))
-            dispatch(fetchTableRows(false))
-        }, 200)
     };
 
     return <FormWrapper onSubmit={formSubmit}>
         <Inner>
             <InputRow>
-                <TextField value={contractForm.contract_number}
+                <TextField required value={contractForm.contract_number}
                            onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic"
                            label="Договор №" variant="filled" style={{marginRight: '20px', width: '120%'}}/>
                 <TextField required value={contractForm.uch_number}

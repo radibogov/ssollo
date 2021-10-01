@@ -1,5 +1,6 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
+import {fetchTableRows} from "../fetchTableRows";
 
 
 export const deleteContract = (id) => {
@@ -13,6 +14,9 @@ export const deleteContract = (id) => {
                     throw response.json();
                 }
             })
+            .then(()=>
+                dispatch(fetchTableRows(true))
+            )
             .catch((error) => {
                 if(typeof error.then === "function") {
                     error

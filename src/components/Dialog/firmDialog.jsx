@@ -118,9 +118,6 @@ export default function FirmDialog() {
                                     <IconButton onClick={
                                         () => {
                                             dispatch(deleteFirm(el.id));
-                                            setTimeout(() => {
-                                                dispatch(fetchFirms())
-                                            }, 200)
                                         }
                                     }>
                                         <DeleteIcon />

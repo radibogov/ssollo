@@ -127,9 +127,6 @@ export default function PlaceDialog({priem}) {
                                     <IconButton onClick={
                                         () => {
                                             dispatch(deletePlace(el.id));
-                                            setTimeout(() => {
-                                                dispatch(fetchPlaces())
-                                            }, 200)
                                         }
                                     }>
                                         <DeleteIcon />

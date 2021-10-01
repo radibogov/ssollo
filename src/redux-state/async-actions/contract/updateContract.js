@@ -1,5 +1,6 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
+import {fetchTableRows} from "../fetchTableRows";
 
 
 export const updateContract = (id, data) => {
@@ -19,6 +20,10 @@ export const updateContract = (id, data) => {
                 } else {
                     throw response.json();
                 }
+            })
+            .then(() => {
+                dispatch(fetchTableRows(true))
+                dispatch(fetchTableRows(false))
             })
             .catch((error) => {
                 if(typeof error.then === "function") {

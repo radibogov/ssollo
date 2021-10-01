@@ -3,7 +3,7 @@ import {setError} from "../../reducers/errorReducer";
 import {fetchComment} from "./fetchComment";
 
 
-export const createComment = (data) => {
+export const createComment = (data,cfid) => {
 
 
     return dispatch => {
@@ -23,7 +23,7 @@ export const createComment = (data) => {
                 }
             })
             .then(() => {
-                    dispatch(fetchComment(data.order_id))
+                    dispatch(fetchComment(cfid))
                 }
             )
             .catch((error) => {

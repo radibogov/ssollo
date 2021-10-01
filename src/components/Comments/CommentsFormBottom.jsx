@@ -77,21 +77,18 @@ const CommentsFormBottom = () => {
 
         if (commentsForm.id) {
             commentsForm.img_flag ?
-                dispatch(updateComment(commentsForm.id, commentsForm))
+                dispatch(updateComment(commentsForm.id, commentsForm,id))
                 :
                 dispatch(updateComment(commentsForm.id, {
                     order_id: commentsForm.order_id,
                     action: commentsForm.action,
                     date: commentsForm.date,
                     comment: commentsForm.comment
-                }))
+                },id))
         } else {
-            dispatch(createComment(commentsForm))
+            dispatch(createComment(commentsForm,id))
         }
-        setTimeout(() => {
-            dispatch(fetchComment(id))
-            dispatch(clearCommentForm())
-        }, 200)
+        dispatch(clearCommentForm())
     }
     return <Wrapper id={'comment-form'} onSubmit={formSubmit}>
         <InputRow>

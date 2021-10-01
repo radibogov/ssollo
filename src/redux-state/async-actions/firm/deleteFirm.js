@@ -1,5 +1,6 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
+import {fetchFirms} from "./fetchFirms";
 
 
 export const deleteFirm = (id) => {
@@ -12,6 +13,9 @@ export const deleteFirm = (id) => {
                 if (!response.ok) {
                     throw response.json();
                 }
+            })
+            .then(()=>{
+                dispatch(fetchFirms())
             })
             .catch((error) => {
                 if(typeof error.then === "function") {

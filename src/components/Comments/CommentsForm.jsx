@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {deleteComment} from "../../redux-state/async-actions/comments/deleteComment";
-import {setAllComment} from "../../redux-state/reducers/commentReducer";
+import {clearCommentForm, setAllComment} from "../../redux-state/reducers/commentReducer";
 
 const Wrapper = styled.div`
 width: 90%;
@@ -68,6 +68,10 @@ const CommentsForm = () => {
         dispatch(fetchComment(id))
     }, [dispatch, id]);
 
+    React.useEffect(() => {
+        return () => dispatch(clearCommentForm())
+    },[]);
+
 
     return <Wrapper>
         {commentsRow.comments?.map((item) =>
@@ -122,10 +126,7 @@ const CommentsForm = () => {
                         <Tooltip title="Удалить">
                             <IconButton onClick={
                                 () => {
-                                    dispatch(deleteComment(item.id));
-                                    setTimeout(() => {
-                                        dispatch(fetchComment(id))
-                                    }, 200)
+                                    dispatch(deleteComment(item.id,id));
                                 }
                             }>
                                 <DeleteIcon />

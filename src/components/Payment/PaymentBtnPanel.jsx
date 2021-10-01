@@ -10,7 +10,6 @@ import {
     setTypePayment
 } from "../../redux-state/reducers/paymentReducer";
 import {deletePayment} from "../../redux-state/async-actions/payment/deletePayment";
-import {fetchPayment} from "../../redux-state/async-actions/payment/fetchPayment";
 import {getOnePayment} from "../../redux-state/async-actions/payment/getOnePayment";
 
 const PaymentBtnPanel = () => {
@@ -58,10 +57,7 @@ const PaymentBtnPanel = () => {
             <Button variant="contained" color="primary" style={{ marginRight: '20px' }}
                 onClick={
                     ()=> {
-                        dispatch(deletePayment(currentRowPayment))
-                        setTimeout(() => {
-                            dispatch(fetchPayment(contractForm.id))
-                        }, 200)
+                        dispatch(deletePayment(currentRowPayment,contractForm.id))
                     }
                 }
             >

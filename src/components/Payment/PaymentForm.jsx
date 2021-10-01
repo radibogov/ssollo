@@ -66,10 +66,6 @@ const PaymentForm = () => {
         } else {
             dispatch(createCalculation(calculation));
         }
-        setTimeout(() => {
-            dispatch(fetchTableRows(true))
-            dispatch(fetchTableRows(false))
-        }, 200)
     };
 
     return  <div>
@@ -121,10 +117,8 @@ const PaymentForm = () => {
                             firm_id: contractForm.firm_id,
                             date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
                             order_id: contractForm.id
-                        }))
-                        setTimeout(() => {
-                            dispatch(fetchPayment(contractForm.id))
-                        }, 200)
+                        },contractForm.id))
+
                     }} variant="contained" color="primary" style={{ marginRight: '20px' }}>
                         Залог
                     </Button>
@@ -145,10 +139,7 @@ const PaymentForm = () => {
                             firm_id: contractForm.firm_id,
                             date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
                             order_id: contractForm.id
-                        }))
-                        setTimeout(() => {
-                            dispatch(fetchPayment(contractForm.id))
-                        }, 200)
+                        },contractForm.id))
                     }}
 
                             variant="contained" color="primary" style={{ marginRight: '20px' }}>
@@ -195,10 +186,7 @@ const PaymentForm = () => {
                             firm_id: contractForm.firm_id,
                             date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
                             order_id: contractForm.id
-                        }))
-                        setTimeout(() => {
-                            dispatch(fetchPayment(contractForm.id))
-                        }, 200)
+                        },contractForm.id))
                     }} variant="contained" color="primary" style={{ marginRight: '20px' }}>
                         Оплата за перепробег
                     </Button>:null

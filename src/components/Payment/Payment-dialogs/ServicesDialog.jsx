@@ -120,9 +120,6 @@ export default function ServicesDialog() {
                                     <IconButton onClick={
                                         () => {
                                             dispatch(deleteServices(el.id));
-                                            setTimeout(() => {
-                                                dispatch(fetchServices())
-                                            }, 200)
                                         }
                                     }>
                                         <DeleteIcon />

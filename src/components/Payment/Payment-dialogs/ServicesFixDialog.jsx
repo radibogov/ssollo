@@ -47,9 +47,6 @@ export default function ServicesFixDialog() {
                             } else {
                                 dispatch(updateServices(serviceForm.id,{name: serviceForm.name, price: serviceForm.price}))
                             }
-                            setTimeout(() => {
-                                dispatch(fetchServices())
-                            }, 200);
                             dispatch(toggleServicesFixDialog(false))}
                     } style={{marginRight: '50px', marginTop: '20px'}} variant="contained" >
                             {type==='create'?'Добавить услугу':'Изменить услугу'}

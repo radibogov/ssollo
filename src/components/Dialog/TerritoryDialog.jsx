@@ -122,9 +122,6 @@ export default function TerritoryDialog() {
                                     <IconButton onClick={
                                         () => {
                                             dispatch(deleteTerritory(el.id));
-                                            setTimeout(() => {
-                                                dispatch(fetchTerritories())
-                                            }, 200)
                                         }
                                     }>
                                         <DeleteIcon />

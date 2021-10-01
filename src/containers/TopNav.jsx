@@ -124,9 +124,6 @@ const TopNav = () => {
           onClick={
             () => {
               dispatch(deleteContract(current))
-              setTimeout(() => {
-                dispatch(fetchTableRows(true))
-              }, 200)
             }
           }
           aria-label="delete" color="primary">

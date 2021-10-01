@@ -1,5 +1,6 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
+import {fetchTerritories} from "./fetchTerritories";
 
 
 export const createTerritory = (data) => {
@@ -18,6 +19,9 @@ export const createTerritory = (data) => {
                 } else {
                     throw response.json();
                 }
+            })
+            .then(()=> {
+                dispatch(fetchTerritories())
             })
             .catch((error) => {
                 if(typeof error.then === "function") {

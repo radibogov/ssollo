@@ -56,9 +56,7 @@ export default function PlaceFixDialog() {
                             } else {
                                 dispatch(updatePlace(placeForm.id, {address: placeForm.name}))
                             }
-                            setTimeout(() => {
-                                dispatch(fetchPlaces())
-                            }, 200);
+
                         }
                         if (kindPlace==='Территория') {
                             if (type === 'create') {
@@ -66,9 +64,6 @@ export default function PlaceFixDialog() {
                             } else {
                                 dispatch(updateTerritory(placeForm.id, {territory_name: placeForm.name}))
                             }
-                            setTimeout(() => {
-                                dispatch(fetchTerritories())
-                            }, 200);
                         }
                         if (kindPlace==='Фирма') {
                             if (type === 'create') {
@@ -76,9 +71,6 @@ export default function PlaceFixDialog() {
                             } else {
                                 dispatch(updateFirm(placeForm.id, {name: placeForm.name}))
                             }
-                            setTimeout(() => {
-                                dispatch(fetchFirms())
-                            }, 200);
                         }
                         dispatch(toggleTerritoryPlaceFixDialog({flag: false}))
                     }} style={{marginRight: '50px', marginTop: '20px'}} variant="contained">

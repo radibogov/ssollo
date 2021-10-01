@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setIdContract} from "../../reducers/contractFormReducer";
 import {setError} from "../../reducers/errorReducer";
+import {fetchTableRows} from "../fetchTableRows";
 
 
 export const createContract = (data) => {
@@ -24,6 +25,8 @@ export const createContract = (data) => {
             })
             .then((json) => {
                 dispatch(setIdContract(json.id))
+                dispatch(fetchTableRows(true))
+                dispatch(fetchTableRows(false))
             })
             .catch((error) => {
                 if(typeof error.then === "function") {
@@ -31,7 +34,7 @@ export const createContract = (data) => {
                         .then((error) =>
                             dispatch(setError({open: true, error: error}))
                         )
-                } 
+                }
             })
     }
 }
