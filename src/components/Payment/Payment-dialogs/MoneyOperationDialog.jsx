@@ -27,7 +27,6 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import moment from "moment";
 import ManagerPaymentDialog from "./ManagerPaymentDialog";
 import {createPayment} from "../../../redux-state/async-actions/payment/createPayment";
-import {fetchPayment} from "../../../redux-state/async-actions/payment/fetchPayment";
 import {updatePayment} from "../../../redux-state/async-actions/payment/updatePayment";
 
 const InputRow = styled.div`

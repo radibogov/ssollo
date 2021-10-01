@@ -22,7 +22,7 @@ export const updatePayment = (id, data, cfid) => {
                 }
             })
             .then(json => {
-                fetchPayment(cfid)
+                dispatch(fetchPayment(cfid))
             })
             .catch((error) => {
                 if(typeof error.then === "function") {

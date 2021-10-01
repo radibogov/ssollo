@@ -22,7 +22,6 @@ import {createPayment} from "../../redux-state/async-actions/payment/createPayme
 import moment from "moment";
 import {createCalculation} from "../../redux-state/async-actions/calculation/createCalculation";
 import {updateCalculation} from "../../redux-state/async-actions/calculation/updateCalculation";
-import {fetchTableRows} from "../../redux-state/async-actions/fetchTableRows";
 
 
 const FormWrapper = styled.form`
