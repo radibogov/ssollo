@@ -13,12 +13,9 @@ import {
     setDaysFirst,
     setDaysSecond,
     setEndDatetime,
-    setGodNumber,
     setIsGiven,
     setIsReturned,
-    setRealAutoId,
     setStartDateTime,
-    setUchNumber,
     setComment,
     setDiscountsPercents,
     setDiscountSum,
@@ -33,7 +30,6 @@ import {Button} from '@material-ui/core';
 
 import {createContract} from '../redux-state/async-actions/contract/createContract';
 import {updateContract} from "../redux-state/async-actions/contract/updateContract";
-import {fetchTableRows} from "../redux-state/async-actions/fetchTableRows";
 
 import ClientDialog from './Dialog/ClientDialog';
 import AutoDialog from './Dialog/AutoDialog';
@@ -44,6 +40,7 @@ import FirmDialog from './Dialog/firmDialog';
 import TerritoryDialog from "./Dialog/TerritoryDialog";
 import moment from "moment";
 import RepresentativeDialog from "./Dialog/RepresentativeDialog";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const FormWrapper = styled.form`
@@ -63,6 +60,7 @@ border-bottom: 1px solid #3f51b5;
 const ContractForm = () => {
     const dispatch = useDispatch();
     const contractForm = useSelector(state => state.contractForm);
+    const calculation = useSelector(state => state.calculation);
     const activeCar = useSelector(state => state.lists.active_car)
     const firstRenderRef = useRef(true);
     //пересчет количесвта дней
@@ -122,6 +120,7 @@ const ContractForm = () => {
         e.preventDefault()
         if (contractForm.id) {
             dispatch(updateContract(contractForm.id,contractForm));
+
         } else {
             dispatch(createContract(contractForm));
         }
@@ -133,25 +132,16 @@ const ContractForm = () => {
                 <TextField required value={contractForm.contract_number}
                            onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic"
                            label="Договор №" variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField required value={contractForm.uch_number}
-                           onChange={(event) => dispatch(setUchNumber(event.target.value))} id="filled-basic"
-                           label="Уч №" variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField required value={contractForm.god_number}
-                           onChange={(event) => dispatch(setGodNumber(event.target.value))} id="filled-basic"
-                           label="№ год." variant="filled" style={{marginRight: '20px', width: '120%'}}/>
-                <TextField required value={contractForm.real_auto_id} onChange={
-                    (event) => dispatch(setRealAutoId({
-                        id: event.target.value,
-                        gos_number: contractForm.gos_number,
-                        name: contractForm.name
-                    }))} id="filled-basic" label="№ автом" variant="filled"
-                           style={{marginRight: '20px', width: '120%'}}/>
-                <FormControlLabel
-                    control={<Checkbox checked={contractForm.is_given}
-                                       onChange={(event) => dispatch(setIsGiven(event.target.checked))}
-                                       name="checkedA"/>}
-                    label="Автомобиль выдан"
-                />
+                <Tooltip title={calculation.fuel_before==null&&calculation.mileage_before==null?
+                    "Пока не заполнены топливо и(или) пробег в начале нельзя нажать":''}>
+                    <FormControlLabel
+                        disabled={calculation.fuel_before==null&&calculation.mileage_before==null? true : false}
+                        control={<Checkbox checked={contractForm.is_given}
+                                           onChange={(event) => dispatch(setIsGiven(event.target.checked))}
+                                           name="checkedA"/>}
+                        label="Автомобиль выдан"
+                    />
+                </Tooltip>
             </InputRow>
             <InputRow>
                 <div style={{
@@ -256,14 +246,17 @@ const ContractForm = () => {
                         shrink: true,
                     }}
                 />
-                <FormControlLabel
-                    control={<Checkbox checked={contractForm.is_returned} onChange={() => {
-                        dispatch(setIsReturned())
-                    }
-                    } name="checkedA"/>}
-                    label="Возвращено"
-                    style={{marginLeft: '20px'}}
-                />
+                <Tooltip title={(calculation.fuel_after===null && calculation.mileage_after===null)? "Пока не заполнены топливо и(или) пробег в конце - нельзя нажать" : ''}
+                    >
+                    <FormControlLabel
+                        disabled={(calculation.fuel_after===null && calculation.mileage_after===null)? true : false}
+                        control={<Checkbox checked={contractForm.is_returned} onChange={() => {
+                            dispatch(setIsReturned())
+                        }} name="checkedA"/>}
+                        label="Возвращено"
+                        style={{marginLeft: '20px'}}
+                    />
+                </Tooltip>
 
             </InputRow>
             <InputRow>
@@ -365,7 +358,7 @@ const ContractForm = () => {
                     width: '50%'
                 }}>
                     <TextField value={contractForm.manager_pr_name ? contractForm.manager_pr_name : ''} readOnly
-                               id="filled-basic" label="Менеджер приема" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
+                               id="filled-basic" label="Менеджер выдачи" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
                     <ManagerDialog priem={true}/>
                 </div>
             </InputRow>
@@ -387,7 +380,7 @@ const ContractForm = () => {
                     width: '50%'
                 }}>
                     <TextField value={contractForm.manager_ot_name ? contractForm.manager_ot_name : ''} readOnly
-                               id="filled-basic" label="Менеджер возврата " variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
+                               id="filled-basic" label="Менеджер приема " variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
                     <ManagerDialog priem={false}/>
                 </div>
             </InputRow>

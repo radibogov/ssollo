@@ -23,8 +23,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import FormTabs from '../containers/FormTabs'
 import { deleteContract } from '../redux-state/async-actions/contract/deleteContract';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
-import { clearContractForm } from '../redux-state/reducers/contractFormReducer';
+import {clearContractForm} from '../redux-state/reducers/contractFormReducer';
 import {clearActiveCar} from "../redux-state/reducers/listsReducer";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import moment from "moment";
+import {ArrowLeftIcon} from "@material-ui/pickers/_shared/icons/ArrowLeftIcon";
+import {clearCalculateForm} from "../redux-state/reducers/calculationReducer";
+import {clearCommentForm} from "../redux-state/reducers/commentReducer";
 
 const Wrapper = styled.div`
 display: flex;
@@ -81,10 +86,17 @@ const TopNav = () => {
     dispatch(fetchTableRows(true))
     dispatch(fetchTableRows(false))
   };
+  const addDays = (flag) => {
+    dispatch(setDate(moment(date).add(flag+1, 'days').format('YYYY-MM-DD')))
+    dispatch(fetchTableRows(true));
+    dispatch(fetchTableRows(false));
+  }
   const [open, setOpen] = React.useState(false)
   const handleClickOpen = () => {
     setOpen(true);
     dispatch(clearContractForm())
+    dispatch(clearCalculateForm())
+    dispatch(clearCommentForm())
     dispatch(clearActiveCar())
   };
 
@@ -114,11 +126,7 @@ const TopNav = () => {
           </AppBar>
           <FormTabs />
         </Dialog>
-        {/* <Tooltip title="Открыть договор">
-          <IconButton aria-label="delete" color="primary">
-            <NoteIcon />
-          </IconButton>
-        </Tooltip> */}
+
         <Tooltip title="Удалить договор">
           <IconButton 
           onClick={
@@ -133,6 +141,15 @@ const TopNav = () => {
       </Inner>
       <Inner>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <IconButton color="primary"
+                      onClick={
+                        () => {
+                          addDays('-')
+                        }
+                      }
+          >
+            <ArrowLeftIcon/>
+          </IconButton>
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
@@ -146,6 +163,15 @@ const TopNav = () => {
               'aria-label': 'change date',
             }}
           />
+          <IconButton color="primary"
+                      onClick={
+                        () => {
+                          addDays('+')
+                        }
+                      }
+          >
+            <ArrowRightIcon/>
+          </IconButton>
         </MuiPickersUtilsProvider>
       </Inner>
       <Inner>

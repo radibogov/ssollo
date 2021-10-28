@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {
     setAccruedPayment, setCarIdPayment, setClientId, setCountPayment,
-    setDateOfPayment, setDocNumber, setFirmIdPayment, setOrderId, setSumOfMoney
+    setDateOfPayment, setDocNumber, setFirmIdPayment, setOrderId, setSumOfMoney, setUserInfo
 } from '../../../redux-state/reducers/paymentReducer';
 import AutoDialog from "../../Dialog/AutoDialog";
 import {
@@ -25,7 +25,6 @@ import ServicesDialog from "./ServicesDialog";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import moment from "moment";
-import ManagerPaymentDialog from "./ManagerPaymentDialog";
 import {createPayment} from "../../../redux-state/async-actions/payment/createPayment";
 import {updatePayment} from "../../../redux-state/async-actions/payment/updatePayment";
 
@@ -57,6 +56,7 @@ export default function MoneyOperationDialog() {
     const type = useSelector(state => state.dialogs.moneyOpType)
     const contractForm = useSelector(state => state.contractForm)
     const paymentForm = useSelector(state => state.paymentForm)
+    const user = useSelector(state => state.user)
 
     useEffect(() => {
         if (paymentForm.date_of_payment === '') {
@@ -69,12 +69,15 @@ export default function MoneyOperationDialog() {
     }, [paymentForm.service_price,paymentForm.count]);
 
     useEffect(() => {
+        if (paymentForm.user_id === null) {
+            dispatch(setUserInfo({id: user.id, full_name: user.full_name }))
+        }
         if(contractForm.id){dispatch(setOrderId(contractForm.id))}
         if(contractForm.real_auto_id){dispatch(setCarIdPayment(contractForm.real_auto_id))}
         if(contractForm.user_id){dispatch(setClientId(contractForm.user_id))}
         if(contractForm.firm_id){dispatch(setFirmIdPayment(contractForm.firm_id))}
-        if(contractForm.uch_number){dispatch(setDocNumber(contractForm.uch_number))}
-    },[contractForm,open]);
+        if(contractForm.id){dispatch(setDocNumber(contractForm.id))}
+    },[contractForm, open]);
 
     const handleClose = () => {
         dispatch(toggleMoneyOpDialog({flag:false, type:0}))
@@ -114,13 +117,14 @@ export default function MoneyOperationDialog() {
                                 }}
                             />
                             <TextField
+                                value={paymentForm.user_full_name}
                                 id="standard-basic"
                                 label="Создал" />
                         </InputRow>
                         {type===1?
                             <React.Fragment>
                                 <InputRow>
-                                    <TextField value={contractForm.uch_number} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" style={{ marginRight: '20px', width: '30%' }} />
+                                    <TextField value={contractForm.id} onChange={(event) => dispatch(setContractNumber(event.target.value))} id="filled-basic" label="Договор №" style={{ marginRight: '20px', width: '30%' }} />
                                     <div style={{
                                         display: 'flex',
                                         justifyContent: 'center',
@@ -141,20 +145,11 @@ export default function MoneyOperationDialog() {
                                         <TextField value={contractForm.gos_number} readOnly id="filled-basic" label="Автомобиль"  style={{ width: '90%' }} />
                                         <AutoDialog />
                                     </div>
-                                    <TextField id="filled-basic" value={contractForm.auto_name} style={{ width: '70%', marginTop: 'auto' }} />
+                                    <TextField id="filled-basFic" value={contractForm.auto_name} style={{ width: '70%', marginTop: 'auto' }} />
                                 </InputRow>
                             </React.Fragment>
                             :null
                         }
-                        <InputRow>
-                                <TextField required
-                                    id="standard-basic"
-                                    label="Сотрудник"
-                                    style={{width: '90%'}}
-                                    value={paymentForm.employee_name}
-                                />
-                                <ManagerPaymentDialog />
-                        </InputRow>
                         <InputRow>
                             <div
                                 style={{

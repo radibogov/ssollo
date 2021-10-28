@@ -14,6 +14,8 @@ import {placeFormReducer} from "./reducers/placeFormReduser";
 import {commentReducer} from "./reducers/commentReducer";
 import {commentsRowsReducer} from "./reducers/commentRowsReducer";
 import {errorReducer} from "./reducers/errorReducer";
+import {successReducer} from "./reducers/successReducer";
+import {userReducer} from "./reducers/userReducer";
 
 
 const rootReducer = combineReducers({
@@ -29,7 +31,9 @@ const rootReducer = combineReducers({
     commentsForm: commentReducer,
     serviceForm: serviceFormReducer,
     placeForm: placeFormReducer,
-    error: errorReducer
+    error: errorReducer,
+    success: successReducer,
+    user: userReducer
 })
 
 

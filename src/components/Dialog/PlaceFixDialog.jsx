@@ -10,13 +10,10 @@ import Button from "@material-ui/core/Button";
 import {setPlaceNameForm} from "../../redux-state/reducers/placeFormReduser";
 import {createPlace} from "../../redux-state/async-actions/place/createPlace";
 import {updatePlace} from "../../redux-state/async-actions/place/updatePlace";
-import {fetchPlaces} from "../../redux-state/async-actions/place/fetchPlaces";
-import {fetchTerritories} from "../../redux-state/async-actions/territory/fetchTerritories";
 import {createTerritory} from "../../redux-state/async-actions/territory/createTerritory";
 import {updateTerritory} from "../../redux-state/async-actions/territory/updateTerritory";
 import {createFirm} from "../../redux-state/async-actions/firm/createFirm";
 import {updateFirm} from "../../redux-state/async-actions/firm/updateFirm";
-import {fetchFirms} from "../../redux-state/async-actions/firm/fetchFirms";
 
 const InputRow = styled.div`
 display: flex;

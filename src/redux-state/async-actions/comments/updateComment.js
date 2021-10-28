@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchComment} from "./fetchComment";
+import {setSuccess} from "../../reducers/successReducer";
 
 
 export const updateComment = (id,data) => {
@@ -23,6 +24,8 @@ export const updateComment = (id,data) => {
             })
             .then(() => {
                 dispatch(fetchComment(data.order_id))
+                dispatch(setSuccess({open: true}))
+
             })
             .catch((error) => {
                 if(typeof error.then === "function") {

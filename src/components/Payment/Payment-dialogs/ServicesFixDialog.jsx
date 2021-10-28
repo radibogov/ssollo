@@ -10,7 +10,6 @@ import Button from "@material-ui/core/Button";
 import {setServiceName, setServicePrice} from "../../../redux-state/reducers/serviceFormReduser";
 import {createServices} from "../../../redux-state/async-actions/services/createServices";
 import {updateServices} from "../../../redux-state/async-actions/services/updateServices";
-import {fetchServices} from "../../../redux-state/async-actions/services/fetchServices";
 
 const InputRow = styled.div`
 display: flex;

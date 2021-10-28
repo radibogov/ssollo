@@ -22,7 +22,7 @@ const PaymentBtnPanel = () => {
     const handleClickPayment = () => {
         dispatch(clearPaymentForm());
         dispatch(setTypePayment({is_deposit: false, is_main_payment: true}))
-        dispatch(setService({id: null,name: 'За прокат по договору № '+contractForm.uch_number,price: contractForm.tariff}));
+        dispatch(setService({id: null,name: 'За прокат по договору № '+contractForm.id,price: contractForm.tariff}));
         dispatch(setCountPayment(contractForm.days_first));
         dispatch(setAccruedPayment(contractForm.summa_prokata))
         handleClickOpen(true, 1);

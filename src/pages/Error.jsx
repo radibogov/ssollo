@@ -27,7 +27,7 @@ const Error = () => {
     return (
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="error">
-                Запрос не удался, причина: <br/>
+                Запрос не удался, {reasonEr().length > 0? ', причина:':null} <br/>
                 {reasonEr()}
             </Alert>
         </Snackbar>

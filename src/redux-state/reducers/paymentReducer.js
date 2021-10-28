@@ -1,5 +1,3 @@
-
-const SET_EMPLOYEE_ID_PAYMENT = 'SET_EMPLOYEE_ID_PAYMENT'
 const SET_CLIENT_ID_PAYMENT = 'SET_CLIENT_ID_PAYMENT'
 const SET_CAR_ID_PAYMENT = 'SET_CAR_ID_PAYMENT'
 const SET_OPERATION_PAYMENT = 'SET_OPERATION_PAYMENT'
@@ -14,14 +12,11 @@ const SET_ORDER_ID_PAYMENT = 'SET_ORDER_ID_PAYMENT'
 const SET_TYPE_PAYMENT = 'SET_TYPE_PAYMENT'
 const CLEAR_FORM_PAYMENT = 'CLEAR_FORM_PAYMENT'
 const SET_ALL_PAYMENT = 'SET_ALL_PAYMENT'
-
-
+const SET_USER_INFO = 'SET_USER_INFO'
 
 
 const defaultState = {
     id: null,
-    employee_id: '',
-    employee_name: '',
     client_id: null,
     car_id: null,
     operation: '0',
@@ -37,7 +32,9 @@ const defaultState = {
     doc_number: '',
     firm_id: '',
     date_of_payment: '',
-    order_id: ''
+    order_id: '',
+    user_id: null,
+    user_full_name: ''
 }
 
 
@@ -46,13 +43,14 @@ export const paymentReducer = (state = defaultState, action) => {
     switch (action.type) {
         case SET_ALL_PAYMENT:
             return {
+                ...state,
                 ...action.payload
             }
-        case SET_EMPLOYEE_ID_PAYMENT:
+        case SET_USER_INFO:
             return {
                 ...state,
-                employee_id: action.payload.id,
-                employee_name: action.payload.full_name
+                user_id: action.payload.id,
+                user_full_name: action.payload.full_name
             }
         case SET_CLIENT_ID_PAYMENT:
             return {
@@ -128,10 +126,10 @@ export const paymentReducer = (state = defaultState, action) => {
 
 
 export const setAllPayment = payload => { return { type: SET_ALL_PAYMENT, payload } }
-export const setEmployeePayment = payload => { return { type: SET_EMPLOYEE_ID_PAYMENT, payload } }
 export const setClientId = payload => { return { type: SET_CLIENT_ID_PAYMENT, payload } }
 export const setCarIdPayment = payload => { return { type: SET_CAR_ID_PAYMENT, payload } }
 export const setService = payload => { return { type: SET_SERVICE_PAYMENT, payload } }
+export const setUserInfo = payload => { return { type: SET_USER_INFO, payload } }
 export const setCountPayment = payload => { return { type: SET_COUNT_PAYMENT, payload } }
 export const setAccruedPayment = payload => { return { type: SET_ACCRUED_PAYMENT, payload } }
 export const setSumOfMoney = payload => { return { type: SET_SUM_OF_MONEY_PAYMENT, payload } }

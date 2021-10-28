@@ -43,7 +43,9 @@ const PaymentForm = () => {
 
     useEffect(() => {
         if (activeCar) {
-            dispatch(setDeposit(activeCar.deposit));
+            if (!calculation.deposit) {
+                dispatch(setDeposit(activeCar.deposit));
+            }
             dispatch(setDelay(contractForm.days_first));
             dispatch(setOrderId(contractForm.id));
             dispatch(setOrderIdCalc(contractForm.id));
@@ -70,7 +72,7 @@ const PaymentForm = () => {
     return  <div>
         <FormWrapper onSubmit={formSubmit}>
             <InputRow>
-                <TextField required
+                <TextField
                            type="number"
                            value={calculation.deposit}
                            onChange={
@@ -79,16 +81,19 @@ const PaymentForm = () => {
                                }
                            }
                            id="filled-basic" label="Залог" variant="filled" style={{ marginRight: 'auto' }} />
-                <TextField required
+                <TextField
                            type="number"
                            value={calculation.fuel_before}
                            onChange={
                                (event) => {
-                                   dispatch(setFuelBefore(event.target.value))
+                                   0 <= event.target.value &&  event.target.value <= 100 ?
+                                       dispatch(setFuelBefore(event.target.value))
+                                   :
+                                       dispatch(setFuelBefore(100))
                                }
                            }
-                           id="filled-basic" label="Топливо в начале" variant="filled" style={{ marginRight: '20px' }} />
-                <TextField required
+                           id="filled-basic" label="Топливо в начале, %" variant="filled" style={{ marginRight: '20px' }} />
+                <TextField
                            type="number"
                            value={calculation.mileage_before}
                            onChange={
@@ -112,7 +117,7 @@ const PaymentForm = () => {
                             service_name: 'Оплата залога',
                             service_price: calculation.deposit,
                             sum_of_money: calculation.deposit,
-                            doc_number: contractForm.uch_number,
+                            doc_number: contractForm.id,
                             firm_id: contractForm.firm_id,
                             date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
                             order_id: contractForm.id
@@ -133,8 +138,8 @@ const PaymentForm = () => {
                             is_main_payment: false,
                             service_name: 'Возврат залога',
                             service_price: calculation.deposit,
-                            sum_of_money: calculation.deposit,
-                            doc_number: contractForm.uch_number,
+                            sum_of_money: calculation.deposit, 
+                            doc_number: contractForm.id,
                             firm_id: contractForm.firm_id,
                             date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
                             order_id: contractForm.id
@@ -146,16 +151,19 @@ const PaymentForm = () => {
                     </Button>
                 </div>
 
-                <TextField required
+                <TextField
                            type="number"
                            value={calculation.fuel_after}
                            onChange={
                                (event) => {
-                                   dispatch(setFuelAfter(event.target.value))
+                                   0 <= event.target.value &&  event.target.value <= 100 ?
+                                       dispatch(setFuelAfter(event.target.value))
+                                       :
+                                       dispatch(setFuelAfter(100))
                                }
                            }
-                           id="filled-basic" label="Топливо в конце" variant="filled" style={{ marginRight: '20px' }} />
-                <TextField required
+                           id="filled-basic" label="Топливо в конце,%" variant="filled" style={{ marginRight: '20px' }} />
+                <TextField
                            type="number"
                            value={calculation.mileage_after}
                            onChange={
@@ -181,7 +189,6 @@ const PaymentForm = () => {
                             service_name: 'Оплата за перепробег',
                             service_price: calculation.mileage_after - calculation.mileage_before - activeCar.millage * contractForm.days_first,
                             sum_of_money: calculation.sum_for_mileage_over,
-                            doc_number: contractForm.uch_number,
                             firm_id: contractForm.firm_id,
                             date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
                             order_id: contractForm.id

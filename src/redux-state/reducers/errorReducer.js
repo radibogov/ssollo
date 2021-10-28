@@ -9,7 +9,6 @@ const defaultState = {
 export const errorReducer = (state = defaultState, action) => {
 
     switch (action.type) {
-
         case ERROR:
             return {
                 open: action.payload.open,

@@ -20,7 +20,6 @@ import {
 } from "../../redux-state/reducers/commentReducer";
 import {createComment} from "../../redux-state/async-actions/comments/createComment";
 import {updateComment} from "../../redux-state/async-actions/comments/updateComment";
-import {fetchComment} from "../../redux-state/async-actions/comments/fetchComment";
 
 const Wrapper = styled.form`
 width: 100%;

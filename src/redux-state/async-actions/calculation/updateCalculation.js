@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchTableRows} from "../fetchTableRows";
+import {setSuccess} from "../../reducers/successReducer";
 
 
 export const updateCalculation = (id,data) => {
@@ -24,6 +25,8 @@ export const updateCalculation = (id,data) => {
             .then( ()=> {
                 dispatch(fetchTableRows(true))
                 dispatch(fetchTableRows(false))
+                dispatch(setSuccess({open: true}))
+
             })
             .catch((error) => {
                 if(typeof error.then === "function") {

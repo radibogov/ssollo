@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { useDispatch } from "react-redux";
-import { setCalcForm } from "../redux-state/reducers/calculationReducer";
+import {clearCalculateForm, setCalcForm} from "../redux-state/reducers/calculationReducer";
 import {
   setCurrentLeft,
   setCurrentRight,
@@ -54,6 +54,7 @@ const TableRow = (props) => {
             }
             onDoubleClick={
                 () => {
+                    dispatch(clearCalculateForm())
                     dispatch(setActiveCar(props.automobile));
                     dispatch(setContractForm(props))
                     if (props.list) {
@@ -64,7 +65,7 @@ const TableRow = (props) => {
                             deposit: props.list.deposit?props.list.deposit:props,
                             delay: props.list?.delay,
                             fuel_before: props.list?.fuel_before?props.list?.fuel_before:null,
-                            fuel_after: props.list?.fuel_after?props.list?.fuel_after:null,
+                            fuel_after: props.list?.fuel_after !== ''? props.list?.fuel_after :null,
                             mileage_before: props.list?.mileage_before?props.list?.mileage_before:null,
                             mileage_after: props.list?.mileage_after?props.list?.mileage_after:null,
                             list: props.payments

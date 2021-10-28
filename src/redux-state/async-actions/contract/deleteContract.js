@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchTableRows} from "../fetchTableRows";
+import {setSuccess} from "../../reducers/successReducer";
 
 
 export const deleteContract = (id) => {
@@ -14,8 +15,10 @@ export const deleteContract = (id) => {
                     throw response.json();
                 }
             })
-            .then(()=>
+            .then(()=>{
                 dispatch(fetchTableRows(true))
+                dispatch(setSuccess({open: true}))
+            }
             )
             .catch((error) => {
                 if(typeof error.then === "function") {

@@ -32,8 +32,6 @@ const ContractDialog = () => {
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.contract)
 
-
-
     const handleClose = () => {
         dispatch(toggleContractDialog(false))
     };
