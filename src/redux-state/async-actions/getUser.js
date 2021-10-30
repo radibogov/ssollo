@@ -16,7 +16,6 @@ export const getUser = () => {
                 }
             })
             .then(response => {
-                console.log(response)
                 dispatch(setUser(response))
             })
     }

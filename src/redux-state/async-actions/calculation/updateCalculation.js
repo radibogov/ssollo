@@ -5,7 +5,18 @@ import {setSuccess} from "../../reducers/successReducer";
 
 
 export const updateCalculation = (id,data) => {
-
+    if (data.fuel_after === null) {
+        delete data['fuel_after'];
+    }
+    if (data.fuel_before === null) {
+        delete data['fuel_before'];
+    }
+    if (data.mileage_before === null) {
+        delete data['mileage_before'];
+    }
+    if (data.mileage_after === null) {
+        delete data['mileage_after'];
+    }
     return dispatch => {
         fetch(`${FETCH_URL}/calculation/${id}`, {
             headers: {

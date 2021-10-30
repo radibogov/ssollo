@@ -40,7 +40,6 @@ const PaymentForm = () => {
     const activeCar = useSelector(state => state.lists.active_car);
     const contractForm = useSelector(state => state.contractForm);
     const dispatch = useDispatch()
-
     useEffect(() => {
         if (activeCar) {
             if (!calculation.deposit) {
@@ -186,12 +185,14 @@ const PaymentForm = () => {
                             operation: 'Оплата за перепробег',
                             payment: calculation.mileage_after - calculation.mileage_before - activeCar.millage * contractForm.days_first,
                             count: 1,
+                            is_for_mileage_over: true,
                             service_name: 'Оплата за перепробег',
-                            service_price: calculation.mileage_after - calculation.mileage_before - activeCar.millage * contractForm.days_first,
+                            service_price: calculation.sum_for_mileage_over,
                             sum_of_money: calculation.sum_for_mileage_over,
                             firm_id: contractForm.firm_id,
                             date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
-                            order_id: contractForm.id
+                            order_id: contractForm.id,
+                            doc_number: contractForm.id
                         },contractForm.id))
                     }} variant="contained" color="primary" style={{ marginRight: '20px' }}>
                         Оплата за перепробег
