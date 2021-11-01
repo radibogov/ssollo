@@ -54,9 +54,9 @@ const PaymentForm = () => {
 
     useEffect(() => {
         let over = calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first;
-        if (over > 0) {
-            dispatch(setMileagePrice(over*activeCar.over_millage_price))
-        }
+
+        dispatch(setMileagePrice(over>0? over*activeCar.over_millage_price: 0))
+
     },[calculation.mileage_after,calculation.mileage_before])
 
     const formSubmit = (e) => {
@@ -183,7 +183,7 @@ const PaymentForm = () => {
                             client_id: contractForm.user_id,
                             car_id: contractForm.real_auto_id,
                             operation: 'Оплата за перепробег',
-                            payment: calculation.mileage_after - calculation.mileage_before - activeCar.millage * contractForm.days_first,
+                            payment: calculation.sum_for_mileage_over,
                             count: 1,
                             is_for_mileage_over: true,
                             service_name: 'Оплата за перепробег',
