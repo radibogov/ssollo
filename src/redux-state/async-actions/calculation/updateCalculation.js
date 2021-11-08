@@ -17,6 +17,15 @@ export const updateCalculation = (id,data) => {
     if (data.mileage_after === null) {
         delete data['mileage_after'];
     }
+
+    if (data.img_before !== null) {
+        delete data['img_before'];
+        delete data['img_before_name'];
+    }
+    if (data.img_after !== null) {
+        delete data['img_after'];
+        delete data['img_after_name'];
+    }
     return dispatch => {
         fetch(`${FETCH_URL}/calculation/${id}`, {
             headers: {

@@ -66,6 +66,10 @@ const TableRow = (props) => {
                             delay: props.list?.delay,
                             fuel_before: props.list?.fuel_before?props.list?.fuel_before:null,
                             fuel_after: props.list?.fuel_after !== ''? props.list?.fuel_after :null,
+                            img_after: props.list?.img_after,
+                            img_after_name: props.list?.img_after_name,
+                            img_before: props.list?.img_before,
+                            img_before_name: props.list?.img_before_name,
                             mileage_before: props.list?.mileage_before?props.list?.mileage_before:null,
                             mileage_after: props.list?.mileage_after?props.list?.mileage_after:null,
                             list: props.payments

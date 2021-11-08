@@ -4,9 +4,10 @@ const defaultState = {
     balance: null,
     full_name: '',
     id: null,
-    manager: null,
+    manager: false,
     phone: '',
-    user_id: null
+    user_id: null,
+    is_superuser: false
 }
 export const userReducer = (state = defaultState, action) => {
 

@@ -80,11 +80,7 @@ const CommentsForm = () => {
                         src={item.image}
                     />
                     <FormText>
-                        <Header>Замечания</Header>
-                        <Text>
-                            {item.comment}
-                        </Text>
-                        <Header>Примечания</Header>
+                        <Header>{item.comment}</Header>
                         <Text>
                             {item.mark}
                         </Text>

@@ -2,6 +2,7 @@ const TOGGLE_CONTRACT_DIALOG = 'TOGGLE_CONTRACT_DIALOG'
 const TOGGLE_AUTO_DIALOG = 'TOGGLE_AUTO_DIALOG'
 const TOGGLE_TARIFF_DIALOG = 'TOGGLE_TARIFF_DIALOG'
 const TOGGLE_CLIENT_DIALOG = 'TOGGLE_CLIENT_DIALOG'
+const TOGGLE_COMMENTS_DIALOG = 'TOGGLE_COMMENTS_DIALOG'
 const TOGGLE_REPRESENTATIVE_1_DIALOG = 'TOGGLE_REPRESENTATIVE_1_DIALOG'
 const TOGGLE_REPRESENTATIVE_2_DIALOG = 'TOGGLE_REPRESENTATIVE_2_DIALOG'
 const TOGGLE_FIRM_DIALOG = 'TOGGLE_FIRM_DIALOG'
@@ -18,6 +19,7 @@ const TOGGLE_TERRITORY_PLACE_FIX_DIALOG = 'TOGGLE_TERRITORY_PLACE_FIX_DIALOG'
 
 const defaultState = {
     contract: false,
+    comments: false,
     auto: false,
     tariff: false,
     client: false,
@@ -84,6 +86,11 @@ export const dialogReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 services: action.payload
+            }
+        case TOGGLE_COMMENTS_DIALOG:
+            return {
+                ...state,
+                comments: action.payload
             }
         case TOGGLE_SERVICES_FIX_DIALOG:
             return {
@@ -157,6 +164,7 @@ export const toggleTerritoryPlaceFixDialog = payload => { return { type: TOGGLE_
 export const toggleManagerPrDialog = payload => { return { type: TOGGLE_MANAGER_PR_DIALOG, payload } }
 export const toggleManagerOtDialog = payload => { return { type: TOGGLE_MANAGER_OT_DIALOG, payload } }
 export const toggleManagerPaymentDialog = payload => { return { type: TOGGLE_MANAGER_PAYMENT_DIALOG, payload } }
+export const toggleCommentsDialog = payload => { return { type: TOGGLE_COMMENTS_DIALOG, payload } }
 export const togglePlacePrDialog = payload => { return { type: TOGGLE_PLACE_PR_DIALOG, payload } }
 export const togglePlaceOtDialog = payload => { return { type: TOGGLE_PLACE_OT_DIALOG, payload } }
 export const toggleMoneyOpDialog = payload => { return { type: TOGGLE_MONEY_OP_DIALOG, payload } }

@@ -70,6 +70,7 @@ export default function MoneyOperationDialog() {
 
     useEffect(() => {
         if (paymentForm.user_id === null) {
+            console.log(user)
             dispatch(setUserInfo({id: user.id, full_name: user.full_name }))
         }
         if(contractForm.id){dispatch(setOrderId(contractForm.id))}

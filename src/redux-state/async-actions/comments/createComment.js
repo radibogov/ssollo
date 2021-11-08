@@ -6,7 +6,6 @@ import {setSuccess} from "../../reducers/successReducer";
 
 export const createComment = (data,cfid) => {
 
-
     return dispatch => {
         fetch(`${FETCH_URL}/comment/`, {
             headers: {

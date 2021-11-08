@@ -7,7 +7,7 @@ import {
     setDelay,
     setDeposit,
     setFuelAfter,
-    setFuelBefore,
+    setFuelBefore, setFuelPrice, setImgAfter, setImgBefore,
     setMileageAfter,
     setMileageBefore,
     setMileagePrice,
@@ -22,6 +22,7 @@ import {createPayment} from "../../redux-state/async-actions/payment/createPayme
 import moment from "moment";
 import {createCalculation} from "../../redux-state/async-actions/calculation/createCalculation";
 import {updateCalculation} from "../../redux-state/async-actions/calculation/updateCalculation";
+import PaymentUploadImg from "./Payment-upload-img/PaymentUploadImg";
 
 
 const FormWrapper = styled.form`
@@ -36,10 +37,16 @@ margin: 10px 0;
 `;
 
 const PaymentForm = () => {
+    const user = useSelector(state => state.user)
+
     const calculation = useSelector(state => state.calculation);
     const activeCar = useSelector(state => state.lists.active_car);
     const contractForm = useSelector(state => state.contractForm);
     const dispatch = useDispatch()
+
+    const hiddenImgBeforeInp = React.useRef()
+    const hiddenImgAfterInp = React.useRef()
+
     useEffect(() => {
         if (activeCar) {
             if (!calculation.deposit) {
@@ -54,10 +61,15 @@ const PaymentForm = () => {
 
     useEffect(() => {
         let over = calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first;
-
         dispatch(setMileagePrice(over>0? over*activeCar.over_millage_price: 0))
-
     },[calculation.mileage_after,calculation.mileage_before])
+
+    useEffect(() => {
+        if (calculation.fuel_after) {
+            let over = calculation.fuel_before-calculation.fuel_after;
+            dispatch(setFuelPrice(over>0? over*activeCar.fuel_price: 0))
+        }
+    },[calculation.fuel_after,calculation.fuel_before])
 
     const formSubmit = (e) => {
         e.preventDefault()
@@ -80,6 +92,15 @@ const PaymentForm = () => {
                                }
                            }
                            id="filled-basic" label="Залог" variant="filled" style={{ marginRight: 'auto' }} />
+                <PaymentUploadImg
+                    refLink={hiddenImgBeforeInp}
+                    setFunc={setImgBefore}
+                    type={'До'}
+                    title={'Приборная панель выдача'}
+                    file={calculation.img_before}
+                    fileName={calculation.img_before_name}
+                    disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
+                />
                 <TextField
                            type="number"
                            value={calculation.fuel_before}
@@ -91,6 +112,7 @@ const PaymentForm = () => {
                                        dispatch(setFuelBefore(100))
                                }
                            }
+                           disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
                            id="filled-basic" label="Топливо в начале, %" variant="filled" style={{ marginRight: '20px' }} />
                 <TextField
                            type="number"
@@ -100,6 +122,7 @@ const PaymentForm = () => {
                                    dispatch(setMileageBefore(event.target.value))
                                }
                            }
+                           disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
                            id="filled-basic" label="Пробег начало" variant="filled"/>
             </InputRow>
             <InputRow style={{justifyContent: 'flex-end'}}>
@@ -149,7 +172,16 @@ const PaymentForm = () => {
                         Возврат
                     </Button>
                 </div>
-
+                <PaymentUploadImg
+                    refLink={hiddenImgAfterInp}
+                    setFunc={setImgAfter}
+                    type={'После'}
+                    title={'Приборная панель возврат'}
+                    children={calculation.img_after}
+                    file={calculation.img_after}
+                    fileName={calculation.img_after_name}
+                    disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
+                />
                 <TextField
                            type="number"
                            value={calculation.fuel_after}
@@ -161,6 +193,7 @@ const PaymentForm = () => {
                                        dispatch(setFuelAfter(100))
                                }
                            }
+                           disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
                            id="filled-basic" label="Топливо в конце,%" variant="filled" style={{ marginRight: '20px' }} />
                 <TextField
                            type="number"
@@ -170,40 +203,65 @@ const PaymentForm = () => {
                                    dispatch(setMileageAfter(event.target.value))
                                }
                            }
+                           disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
                            id="filled-basic" label="Пробег конец" variant="filled"/>
             </InputRow>
             <InputRow style={{justifyContent: 'flex-end'}}>
-                <TextField value={calculation.fuel_before-calculation.fuel_after} id="filled-basic" label="Топливо разница" variant="filled" style={{ marginLeft: '240px',marginRight: '20px' }} />
+                <TextField value={calculation.fuel_after?calculation.fuel_before-calculation.fuel_after:0} id="filled-basic" label="Топливо разница" variant="filled" style={{ marginLeft: '240px',marginRight: '20px' }} />
                 <TextField value={calculation.mileage_after-calculation.mileage_before} id="filled-basic" label="Километраж" variant="filled" />
             </InputRow>
             <InputRow style={{justifyContent: 'flex-end'}}>
-                {(calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first)>=0?
-                    <Button onClick={()=>{
-                        dispatch(createPayment({
-                            client_id: contractForm.user_id,
-                            car_id: contractForm.real_auto_id,
-                            operation: 'Оплата за перепробег',
-                            payment: calculation.sum_for_mileage_over,
-                            count: 1,
-                            is_for_mileage_over: true,
-                            service_name: 'Оплата за перепробег',
-                            service_price: calculation.sum_for_mileage_over,
-                            sum_of_money: calculation.sum_for_mileage_over,
-                            firm_id: contractForm.firm_id,
-                            date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
-                            order_id: contractForm.id,
-                            doc_number: contractForm.id
-                        },contractForm.id))
-                    }} variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                        Оплата за перепробег
-                    </Button>:null
-                }
-
+                <TextField id="filled-basic" value={calculation.fuel_price?calculation.fuel_price:0} label="За топливо" variant="filled" style={{ marginRight: '20px' }} />
                 <TextField id="filled-basic" value={(calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first)>=0?calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first:0} label="Перепробег" variant="filled" />
             </InputRow>
             <InputRow>
+                <TextField id="filled-basic" value={calculation.sum_for_mileage_over?calculation.sum_for_mileage_over:0} label="За перепробег" variant="filled" style={{ marginLeft: 'auto' }} />
+            </InputRow>
+            <InputRow>
                 <PaymentBtnPanel />
-                <TextField id="filled-basic" value={+calculation.sum_for_mileage_over} label="За перепробег" variant="filled" style={{ marginLeft: 'auto' }} />
+                <div style={{marginLeft: 'auto'}}></div>
+                <Button onClick={()=>{
+                    dispatch(createPayment({
+                        client_id: contractForm.user_id,
+                        car_id: contractForm.real_auto_id,
+                        operation: 'Оплата за топливо',
+                        payment: calculation.fuel_price,
+                        count: 1,
+                        is_for_fuel: true,
+                        service_name: 'Оплата за топливо',
+                        service_price: calculation.fuel_price,
+                        sum_of_money: calculation.fuel_price,
+                        firm_id: contractForm.firm_id,
+                        date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
+                        order_id: contractForm.id,
+                        doc_number: contractForm.id
+                    },contractForm.id))
+                }} variant="contained" color="primary" style={{ marginRight: '20px' }}
+                    disabled={calculation.fuel_before-calculation.fuel_after <= 0}
+                >
+                    Оплата за топливо
+                </Button>
+                <Button onClick={()=>{
+                    dispatch(createPayment({
+                        client_id: contractForm.user_id,
+                        car_id: contractForm.real_auto_id,
+                        operation: 'Оплата за перепробег',
+                        payment: calculation.sum_for_mileage_over,
+                        count: 1,
+                        is_for_mileage_over: true,
+                        service_name: 'Оплата за перепробег',
+                        service_price: calculation.sum_for_mileage_over,
+                        sum_of_money: calculation.sum_for_mileage_over,
+                        firm_id: contractForm.firm_id,
+                        date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
+                        order_id: contractForm.id,
+                        doc_number: contractForm.id
+                    },contractForm.id))
+                }} variant="contained" color="primary"
+                    disabled={(calculation.mileage_after-calculation.mileage_before-activeCar.millage*contractForm.days_first) <= 0}
+                >
+                    Оплата за перепробег
+                </Button>
             </InputRow>
             <PaymentTable />
             <InputRow>

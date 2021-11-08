@@ -10,14 +10,11 @@ import {
     setTypePayment
 } from "../../redux-state/reducers/paymentReducer";
 import {deletePayment} from "../../redux-state/async-actions/payment/deletePayment";
-import {getOnePayment} from "../../redux-state/async-actions/payment/getOnePayment";
 
 const PaymentBtnPanel = () => {
     const dispatch = useDispatch()
     const contractForm = useSelector(state => state.contractForm)
     const currentRowPayment = useSelector(state => state.currentRow.payment)
-    const activePayment = useSelector(state => state.currentRow.payment_active)
-    const current = useSelector(state => state.currentRow.payment)
 
     const handleClickPayment = () => {
         dispatch(clearPaymentForm());
@@ -43,16 +40,6 @@ const PaymentBtnPanel = () => {
             </Button>
             <Button onClick={handleClickDopPayment} variant="contained" color="primary" style={{ marginRight: '20px' }}>
                 Добавить
-            </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}
-                onClick={
-                    () => {
-                        dispatch(getOnePayment(current))
-                        dispatch(toggleMoneyOpDialog({flag: true, type: activePayment?.is_main_payment ? 1 : 2}))
-                    }
-                }
-            >
-                Открыть
             </Button>
             <Button variant="contained" color="primary" style={{ marginRight: '20px' }}
                 onClick={

@@ -20,6 +20,7 @@ import {
 } from "../../redux-state/reducers/commentReducer";
 import {createComment} from "../../redux-state/async-actions/comments/createComment";
 import {updateComment} from "../../redux-state/async-actions/comments/updateComment";
+import CommentsDialog from "./CommentsDialog";
 
 const Wrapper = styled.form`
 width: 100%;
@@ -94,13 +95,14 @@ const CommentsFormBottom = () => {
             <TextField required
                        id="filled-disabled"
                        variant="filled"
-                       label="Замечания"
-                       style={{width: '75%'}}
+                       label="Повреждения"
+                       style={{width: '55%'}}
                        value={commentsForm.comment}
                        onChange={(event => {
                            dispatch(setCommentComment(event.target.value))
                        })}
             />
+            <CommentsDialog />
             <TextField required
                        id="date"
                        label="Дата"
@@ -120,7 +122,7 @@ const CommentsFormBottom = () => {
             <TextField required
                        id="filled-disabled"
                        variant="filled"
-                       label="Примечания"
+                       label="Описания"
                        style={{width: '75%'}}
                        value={commentsForm.mark}
                        onChange={(event => {

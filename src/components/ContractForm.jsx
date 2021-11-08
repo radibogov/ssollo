@@ -41,6 +41,8 @@ import TerritoryDialog from "./Dialog/TerritoryDialog";
 import moment from "moment";
 import RepresentativeDialog from "./Dialog/RepresentativeDialog";
 import Tooltip from "@material-ui/core/Tooltip";
+import ContractPrint from "./DocPrint/ContractPrint";
+import ProxyPrint from "./DocPrint/ProxyPrint";
 
 
 const FormWrapper = styled.form`
@@ -55,6 +57,7 @@ margin: 10px 0;
 `;
 const Inner = styled.div`
 border-bottom: 1px solid #3f51b5;
+margin-bottom: 20px;
 `;
 
 const ContractForm = () => {
@@ -416,7 +419,8 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'flex-start',
                     alignItems: 'end',
-                    width: '75%'
+                    width: '75%',
+                    marginRight: '20px'
                 }}>
                     <TextField value={contractForm.comment ? contractForm.comment : ''}
                                onChange={(event) => dispatch(setComment(event.target.value))} id="filled-basic"
@@ -427,6 +431,10 @@ const ContractForm = () => {
                 </Button>
             </InputRow>
         </Inner>
+        <div>
+            {contractForm.id && <ContractPrint id={contractForm.id} /> }
+            {contractForm.id && <ProxyPrint id={contractForm.id} /> }
+        </div>
     </FormWrapper>
 }
 

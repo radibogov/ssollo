@@ -6,10 +6,12 @@ export const getUser = () => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/getCurrentUser/`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {
+                    console.log(response)
                     return response.json();
                 } else {
                     throw response.json();
