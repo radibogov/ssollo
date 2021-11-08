@@ -26,6 +26,7 @@ border-left: 1px solid #000;
 border-right: 1px solid #000;
 overflow: hidden;
 min-width: 230px;
+width: 20%;
 text-align: center;
 `;
 

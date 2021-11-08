@@ -28,8 +28,7 @@ const Header = styled.header`
     justify-content: space-between;
     height: 64px;
     align-items: center;
-    padding: 20px;
-    padding-bottom: 0;
+    padding: 20px 20px 0;
 `;
 const Title = styled.h1`
     color: white;

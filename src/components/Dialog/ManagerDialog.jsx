@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-export default function ManagerDialog({priem}) {
+function ManagerDialog({priem}) {
     const dispatch = useDispatch()
     const managerList = useSelector(state => state.lists.managers)
     const classes = useStyles();
@@ -108,3 +108,4 @@ export default function ManagerDialog({priem}) {
         </div>
     );
 }
+export default React.memo(ManagerDialog)

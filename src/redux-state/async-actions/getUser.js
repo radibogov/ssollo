@@ -11,7 +11,6 @@ export const getUser = () => {
         })
             .then((response) => {
                 if (response.ok) {
-                    console.log(response)
                     return response.json();
                 } else {
                     throw response.json();

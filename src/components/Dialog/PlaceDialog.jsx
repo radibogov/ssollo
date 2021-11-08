@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-export default function PlaceDialog({priem}) {
+function PlaceDialog({priem}) {
     const dispatch = useDispatch()
     const placesList = useSelector(state => state.lists.places)
     const classes = useStyles();
@@ -150,3 +150,4 @@ export default function PlaceDialog({priem}) {
         </div>
     );
 }
+export default React.memo(PlaceDialog)

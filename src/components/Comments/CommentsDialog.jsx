@@ -41,7 +41,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CommentsDialog() {
+function CommentsDialog() {
     const dispatch = useDispatch();
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.comments)
@@ -110,3 +110,5 @@ export default function CommentsDialog() {
         </>
     );
 }
+
+export default React.memo(CommentsDialog);

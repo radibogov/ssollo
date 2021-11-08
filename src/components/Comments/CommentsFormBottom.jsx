@@ -1,10 +1,6 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import TextField from '@material-ui/core/TextField';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
@@ -12,15 +8,20 @@ import moment from "moment";
 import {useDispatch, useSelector} from "react-redux";
 import {
     clearCommentForm,
-    setActionComment,
     setCommentComment,
     setDateComment,
-    setImageComment, setMarkComment,
+    setImage1Comment,
+    setImage2Comment,
+    setImage3Comment,
+    setImage4Comment,
+    setImage5Comment,
+    setMarkComment,
     setOrderIdComment
 } from "../../redux-state/reducers/commentReducer";
 import {createComment} from "../../redux-state/async-actions/comments/createComment";
 import {updateComment} from "../../redux-state/async-actions/comments/updateComment";
 import CommentsDialog from "./CommentsDialog";
+import CommentsUploadImage from "./CommentsUploadImage";
 
 const Wrapper = styled.form`
 width: 100%;
@@ -32,9 +33,6 @@ color: #fff;
 border: 1px solid #dfdfdf;
 border-radius: .5rem;
 `;
-const HiddenFileInput = styled.input`
-display: none;
-`;
 const InputRow = styled.div`
 display: flex;
 flex-direction: row;
@@ -42,16 +40,15 @@ justify-content: space-between;
 align-items: center;
 margin: 10px 0;
 `;
-const InputImg = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-height: 100px;
-`;
 const CommentsFormBottom = () => {
     const dispatch = useDispatch();
-    const hiddenInp = React.useRef()
+
+    const hiddenInp1 = React.useRef()
+    const hiddenInp2 = React.useRef()
+    const hiddenInp3 = React.useRef()
+    const hiddenInp4 = React.useRef()
+    const hiddenInp5 = React.useRef()
+
     const id = useSelector(state => state.contractForm.id);
     const commentsForm = useSelector(state => state.commentsForm);
 
@@ -64,27 +61,11 @@ const CommentsFormBottom = () => {
         }
     })
 
-    const fileHandler = event => {
-        let reader = new FileReader();
-        reader.onload = function (e) {
-            dispatch(setImageComment({img: e.target.result, flag: true}))
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    };
-
     const formSubmit = (e) => {
         e.preventDefault()
 
         if (commentsForm.id) {
-            commentsForm.img_flag ?
-                dispatch(updateComment(commentsForm.id, commentsForm,id))
-                :
-                dispatch(updateComment(commentsForm.id, {
-                    order_id: commentsForm.order_id,
-                    action: commentsForm.action,
-                    date: commentsForm.date,
-                    comment: commentsForm.comment
-                },id))
+            dispatch(updateComment(commentsForm.id, commentsForm,id))
         } else {
             dispatch(createComment(commentsForm,id))
         }
@@ -130,43 +111,39 @@ const CommentsFormBottom = () => {
                        })}
             />
         </InputRow>
+        <div style={{display:'flex', flexWrap: 'wrap'}}>
+            <CommentsUploadImage
+                refLink={hiddenInp1}
+                setFunc={setImage1Comment}
+                file={commentsForm.image_1}
+                fileName={'Изображение 1'}
+            />
+            <CommentsUploadImage
+                refLink={hiddenInp2}
+                setFunc={setImage2Comment}
+                file={commentsForm.image_2}
+                fileName={'Изображение 2'}
+            />
+            <CommentsUploadImage
+                refLink={hiddenInp3}
+                setFunc={setImage3Comment}
+                file={commentsForm.image_3}
+                fileName={'Изображение 3'}
+            />
+            <CommentsUploadImage
+                refLink={hiddenInp4}
+                setFunc={setImage4Comment}
+                file={commentsForm.image_4}
+                fileName={'Изображение 4'}
+            />
+            <CommentsUploadImage
+                refLink={hiddenInp5}
+                setFunc={setImage5Comment}
+                file={commentsForm.image_5}
+                fileName={'Изображение 5'}
+            />
+        </div>
         <InputRow>
-            <RadioGroup aria-label="quiz" name="quiz"
-                        value={commentsForm.action}
-                        onChange={ event => {
-                    dispatch(setActionComment(event.target.value))
-                }
-            }>
-                <FormControlLabel style={{color: 'black'}} value="return" control={<Radio />} label="Будет возвращать" />
-                <FormControlLabel style={{color: 'black'}} value="extend" control={<Radio />} label="Будет продлевать" />
-            </RadioGroup>
-            <InputImg>
-                {!commentsForm.image?
-                    <Button
-                        variant="contained"
-                        color="default"
-                        startIcon={<CloudUploadIcon />}
-                        onClick={
-                            () => {
-                                hiddenInp.current.click()
-                            }
-                        }
-                    >
-                        Загрузить фото
-                    </Button>
-                    :
-                    <img onClick={
-                        () => {
-                            hiddenInp.current.click()
-                        }
-                    } style={{height: '100px'}} src={commentsForm.image? commentsForm.image : null} alt={'img'}/>
-                }
-                <HiddenFileInput
-                    onChange={fileHandler}
-                    type="file"
-                    ref={hiddenInp}
-                />
-            </InputImg>
             <Button
                 variant="contained"
                 color="primary"

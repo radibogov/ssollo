@@ -37,7 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function RepresentativeDialog({first}) {
+function RepresentativeDialog({first}) {
     const dispatch = useDispatch()
     const usersList = useSelector(state => state.lists.users)
     const classes = useStyles();
@@ -124,3 +124,5 @@ export default function RepresentativeDialog({first}) {
         </React.Fragment>
     );
 }
+
+export default React.memo(RepresentativeDialog)

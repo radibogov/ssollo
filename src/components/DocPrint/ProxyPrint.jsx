@@ -22,4 +22,4 @@ const ProxyPrint = ({id}) => {
     );
 };
 
-export default ProxyPrint;
+export default React.memo(ProxyPrint);

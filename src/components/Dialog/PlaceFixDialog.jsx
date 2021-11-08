@@ -25,7 +25,7 @@ padding-right: 30px;
 margin: 10px 0;
 `;
 
-export default function PlaceFixDialog() {
+function PlaceFixDialog() {
     const dispatch = useDispatch();
     const open = useSelector(state => state.dialogs.place_fix)
     const type = useSelector(state => state.dialogs.place_fix_type)
@@ -77,5 +77,6 @@ export default function PlaceFixDialog() {
             </DialogContent>
         </Dialog>
     );
-};
+}
 
+export default React.memo(PlaceFixDialog)

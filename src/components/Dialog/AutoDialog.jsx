@@ -32,7 +32,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AutoDialog() {
+function AutoDialog() {
     const dispatch = useDispatch()
     const autoList = useSelector(state => state.lists.cars)
     const classes = useStyles();
@@ -110,3 +110,5 @@ export default function AutoDialog() {
         </div>
     );
 }
+
+export default React.memo(AutoDialog);

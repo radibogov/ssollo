@@ -31,7 +31,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function ClientDialog() {
+function ClientDialog() {
     const dispatch = useDispatch()
     const usersList = useSelector(state => state.lists.users)
     const classes = useStyles();
@@ -103,3 +103,5 @@ export default function ClientDialog() {
         </div>
     );
 }
+
+export default React.memo(ClientDialog)

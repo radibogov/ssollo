@@ -35,7 +35,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function TariffDialog({days}) {
+function TariffDialog({days}) {
     const dispatch = useDispatch()
     const activeCar = useSelector(state => state.lists.active_car)
 
@@ -121,3 +121,5 @@ export default function TariffDialog({days}) {
         </div>
     );
 }
+
+export default React.memo(TariffDialog)

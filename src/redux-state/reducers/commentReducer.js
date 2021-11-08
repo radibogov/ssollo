@@ -2,17 +2,22 @@ const SET_ALL_COMMENT = 'SET_ALL_COMMENT'
 const SET_ORDERID_COMMENT = 'SET_ORDERID_COMMENT'
 const SET_COMMENT_COMMENT = 'SET_COMMENT_COMMENT'
 const SET_MARK_COMMENT = 'SET_MARK_COMMENT'
-const SET_ACTION_COMMENT = 'SET_ACTION_COMMENT'
 const SET_DATE_COMMENT = 'SET_DATE_COMMENT'
-const SET_IMAGE_COMMENT = 'SET_IMAGE_COMMENT'
+const SET_IMAGE_1_COMMENT = 'SET_IMAGE_1_COMMENT'
+const SET_IMAGE_2_COMMENT = 'SET_IMAGE_2_COMMENT'
+const SET_IMAGE_3_COMMENT = 'SET_IMAGE_3_COMMENT'
+const SET_IMAGE_4_COMMENT = 'SET_IMAGE_4_COMMENT'
+const SET_IMAGE_5_COMMENT = 'SET_IMAGE_5_COMMENT'
 const CLEAR_COMMENT_FORM = 'CLEAR_COMMENT_FORM'
 
 
 const defaultState = {
     order_id: null,
-    image: null,
-    img_flag: false,
-    action: '',
+    image_1: null,
+    image_2: null,
+    image_3: null,
+    image_4: null,
+    image_5: null,
     date: '',
     comment: '',
     mark: ''
@@ -25,9 +30,11 @@ export const commentReducer = (state = defaultState, action) => {
             return {
                 id: action.payload.id,
                 order_id: action.payload.order_id,
-                action: action.payload.action,
-                image: action.payload.image,
-                img_flag: false,
+                image_1: action.payload.image_1,
+                image_2: action.payload.image_2,
+                image_3: action.payload.image_3,
+                image_4: action.payload.image_4,
+                image_5: action.payload.image_5,
                 date: action.payload.date,
                 comment: action.payload.comment,
                 mark: action.payload.mark
@@ -37,16 +44,30 @@ export const commentReducer = (state = defaultState, action) => {
                 ...state,
                 order_id: action.payload
             }
-        case SET_IMAGE_COMMENT:
+        case SET_IMAGE_1_COMMENT:
             return {
                 ...state,
-                image: action.payload.img,
-                img_flag: action.payload.flag
+                image_1: action.payload,
             }
-        case SET_ACTION_COMMENT:
+        case SET_IMAGE_2_COMMENT:
             return {
                 ...state,
-                action: action.payload,
+                image_2: action.payload,
+            }
+        case SET_IMAGE_3_COMMENT:
+            return {
+                ...state,
+                image_3: action.payload,
+            }
+        case SET_IMAGE_4_COMMENT:
+            return {
+                ...state,
+                image_4: action.payload,
+            }
+        case SET_IMAGE_5_COMMENT:
+            return {
+                ...state,
+                image_5: action.payload,
             }
         case SET_DATE_COMMENT:
             return {
@@ -75,9 +96,12 @@ export const commentReducer = (state = defaultState, action) => {
 
 export const setAllComment = payload => { return { type: SET_ALL_COMMENT, payload } }
 export const setOrderIdComment = payload => { return { type: SET_ORDERID_COMMENT, payload } }
-export const setImageComment = payload => { return { type: SET_IMAGE_COMMENT, payload } }
+export const setImage1Comment = payload => { return { type: SET_IMAGE_1_COMMENT, payload } }
+export const setImage2Comment = payload => { return { type: SET_IMAGE_2_COMMENT, payload } }
+export const setImage3Comment = payload => { return { type: SET_IMAGE_3_COMMENT, payload } }
+export const setImage4Comment = payload => { return { type: SET_IMAGE_4_COMMENT, payload } }
+export const setImage5Comment = payload => { return { type: SET_IMAGE_5_COMMENT, payload } }
 export const setCommentComment = payload => { return { type: SET_COMMENT_COMMENT, payload } }
 export const setMarkComment = payload => { return { type: SET_MARK_COMMENT, payload } }
-export const setActionComment = payload => { return { type: SET_ACTION_COMMENT, payload } }
 export const setDateComment = payload => { return { type: SET_DATE_COMMENT, payload } }
 export const clearCommentForm = _ => { return { type: CLEAR_COMMENT_FORM } }

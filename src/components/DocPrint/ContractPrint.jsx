@@ -1,7 +1,6 @@
 import React from 'react';
 import {Button} from "@material-ui/core";
 import styled from "styled-components";
-
 import {FETCH_URL} from "../../configs/urls";
 
 const LinkContainer = styled.a`
@@ -22,4 +21,4 @@ const ContractPrint = ({id}) => {
     );
 };
 
-export default ContractPrint;
+export default React.memo(ContractPrint);

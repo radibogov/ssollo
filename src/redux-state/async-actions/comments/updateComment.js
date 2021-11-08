@@ -5,7 +5,21 @@ import {setSuccess} from "../../reducers/successReducer";
 
 
 export const updateComment = (id,data) => {
-
+    if (data.image_1 === null) {
+        delete data['image_1'];
+    }
+    if (data.image_2 === null) {
+        delete data['image_2'];
+    }
+    if (data.image_3 === null) {
+        delete data['image_3'];
+    }
+    if (data.image_4 === null) {
+        delete data['image_4'];
+    }
+    if (data.image_5 === null) {
+        delete data['image_5'];
+    }
     return dispatch => {
         fetch(`${FETCH_URL}/comment/${id}`, {
             headers: {

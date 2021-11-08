@@ -47,7 +47,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function TerritoryDialog() {
+function TerritoryDialog() {
     const dispatch = useDispatch()
     const autoList = useSelector(state => state.lists.territories)
     const classes = useStyles();
@@ -145,3 +145,5 @@ export default function TerritoryDialog() {
         </div>
     );
 }
+
+export default React.memo(TerritoryDialog)

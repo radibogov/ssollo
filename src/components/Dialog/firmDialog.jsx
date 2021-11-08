@@ -43,7 +43,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FirmDialog() {
+function FirmDialog() {
     const dispatch = useDispatch()
     const firmList = useSelector(state => state.lists.firms)
     const classes = useStyles();
@@ -141,3 +141,4 @@ export default function FirmDialog() {
         </div>
     );
 }
+export default React.memo(FirmDialog);
