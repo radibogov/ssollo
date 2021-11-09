@@ -2,7 +2,6 @@ import React from 'react'
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ContractForm from '../components/ContractForm';
 import PaymentForm from '../components/Payment/PaymentForm'
@@ -23,7 +22,7 @@ function TabPanel(props) {
         >
             {value === index && (
                 <Box p={3}>
-                    <Typography>{children}</Typography>
+                    <div>{children}</div>
                 </Box>
             )}
         </div>
@@ -48,8 +47,8 @@ const FormTabs = () => {
         <Paper square>
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab label="Договор" {...a11yProps(0)} />
-                <Tab label="Расчет" {...a11yProps(1)} disabled={contractForm.id? false : true} />
-                <Tab label="Замечания" {...a11yProps(2)} disabled={contractForm.id? false : true} />
+                <Tab label="Расчет" {...a11yProps(1)} disabled={!contractForm.id} />
+                <Tab label="Замечания" {...a11yProps(2)} disabled={!contractForm.id} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ContractForm/>

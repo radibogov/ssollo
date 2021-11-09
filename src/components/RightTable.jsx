@@ -88,8 +88,6 @@ const RightTable = (props) => {
                 automobile={item.automobile}
 
                 contract_number={item.contract_number}
-                uch_number={item.uch_number}
-                god_number={item.god_number}
                 manager_ot_id={item.manager_ot?.id}
                 manager_ot_name={item.manager_ot?.full_name}
                 manager_pr_id={item.manager_pr?.id}

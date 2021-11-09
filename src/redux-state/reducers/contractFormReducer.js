@@ -5,8 +5,6 @@ const SET_PLACE_OT = 'SET_PLACE_OT'
 const SET_PLACE_PR = 'SET_PLACE_PR'
 const SET_AUTOMIBILE_ID = 'SET_AUTOMIBILE_ID'
 const SET_CONTRACT_NUMBER = 'SET_CONTRACT_NUMBER'
-const SET_UCH_NUMBER = 'SET_UCH_NUMBER'
-const SET_GOD_NUMBER = 'SET_GOD_NUMBER'
 const SET_REAL_AUTO_ID = 'SET_REAL_AUTO_ID'
 const SET_USER_ID = 'SET_USER_ID'
 const SET_RESPRESENTATIVE_FIRST = 'SET_RESPRESENTATIVE_FIRST'
@@ -47,8 +45,6 @@ const defaultState = {
     address_received_id: null,
     automobile_id: null,
     contract_number: null,
-    uch_number: null,
-    god_number: null,
     real_auto_id: '',
     gos_number: '',
     auto_name: '',
@@ -92,16 +88,6 @@ export const contractFormReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 contract_number: action.payload
-            }
-        case SET_UCH_NUMBER:
-            return {
-                ...state,
-                uch_number: action.payload
-            }
-        case SET_GOD_NUMBER:
-            return {
-                ...state,
-                god_number: action.payload
             }
         case SET_AUTOMIBILE_ID:
             return {
@@ -274,8 +260,6 @@ export const contractFormReducer = (state = defaultState, action) => {
                 address_received_id: action.payload.address_received_id,
                 automobile_id: action.payload.automobile_id,
                 contract_number: action.payload.contract_number,
-                uch_number: action.payload.uch_number,
-                god_number: action.payload.god_number,
                 real_auto_id: action.payload.real_auto_id,
                 gos_number: action.payload.gos_number,
                 auto_name: action.payload.auto_name,
@@ -325,8 +309,6 @@ export const setPlaceOt = (payload) => { return { type: SET_PLACE_OT, payload } 
 export const setPlacePr = (payload) => { return { type: SET_PLACE_PR, payload } }
 export const setAutomobileId = (payload) => { return { type: SET_AUTOMIBILE_ID, payload } }
 export const setContractNumber = (payload) => { return { type: SET_CONTRACT_NUMBER, payload } }
-export const setUchNumber = (payload) => { return { type: SET_UCH_NUMBER, payload } }
-export const setGodNumber = (payload) => { return { type: SET_GOD_NUMBER, payload } }
 export const setRealAutoId = (payload) => { return { type: SET_REAL_AUTO_ID, payload } }
 export const setUserID = (payload) => { return { type: SET_USER_ID, payload } }
 export const setRepresentativeFirst = (payload) => { return { type: SET_RESPRESENTATIVE_FIRST, payload } }

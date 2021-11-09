@@ -42,19 +42,19 @@ const PaymentUploadImg = (props) => {
                 ref={refLink}
             />
             <Tooltip title={title}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<CloudUploadIcon />}
-                    disabled={disabled}
-                    onClick={
-                        () => {
+                <span>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<CloudUploadIcon/>}
+                        disabled={disabled}
+                        onClick={() => {
                             refLink.current.click()
-                        }
-                    }
-                >
-                    {fileName?fileName:type}
-                </Button>
+                        }}
+                    >
+                        {fileName ? fileName : type}
+                    </Button>
+                </span>
             </Tooltip>
             {file&&<OpenInNewIcon style={{cursor: "pointer"}} onClick={handleClickOpen}/>}
             {open && <Modal children={file} handleClickClose={handleClickClose}  header={title}/>}
