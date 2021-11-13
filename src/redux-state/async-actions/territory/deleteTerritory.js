@@ -7,7 +7,8 @@ export const deleteTerritory = (id) => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/territory/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: "include",
         })
             .then((response) => {
                 if (!response.ok) {

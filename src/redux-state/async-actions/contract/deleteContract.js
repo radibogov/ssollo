@@ -8,7 +8,8 @@ export const deleteContract = (id) => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/contract/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: "include",
         })
             .then((response) => {
                 if (!response.ok) {

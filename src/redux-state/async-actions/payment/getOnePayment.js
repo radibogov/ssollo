@@ -8,7 +8,8 @@ export const getOnePayment = (id) => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/payment/${id}`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

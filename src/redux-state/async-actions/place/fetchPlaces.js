@@ -7,7 +7,8 @@ export const fetchPlaces = () => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/place`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

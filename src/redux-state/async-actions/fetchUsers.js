@@ -7,7 +7,8 @@ export const fetchUsers = () => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/listUsers`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

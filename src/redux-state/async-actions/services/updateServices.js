@@ -12,6 +12,7 @@ export const updateServices = (id, data) => {
                 'Content-Type': 'application/json'
             },
             method: 'PATCH',
+            credentials: "include",
             body: JSON.stringify(data)
         })
             .then((response) => {

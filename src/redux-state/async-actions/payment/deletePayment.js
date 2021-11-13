@@ -8,6 +8,7 @@ export const deletePayment = (id,cfid) => {
     return dispatch => {
         fetch(`${FETCH_URL}/payment/${id}`, {
             method: 'DELETE',
+            credentials: "include",
         })
             .then((response) => {
                 if (!response.ok) {

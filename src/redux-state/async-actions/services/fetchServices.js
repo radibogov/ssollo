@@ -7,7 +7,8 @@ export const fetchServices = () => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/services/`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

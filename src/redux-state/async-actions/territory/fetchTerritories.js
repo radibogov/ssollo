@@ -7,7 +7,8 @@ export const fetchTerritories = () => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/territory`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

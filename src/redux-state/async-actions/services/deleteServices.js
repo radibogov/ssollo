@@ -7,7 +7,8 @@ export const deleteServices = (id) => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/services/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: "include",
         })
             .then((response) => {
                 if (!response.ok) {

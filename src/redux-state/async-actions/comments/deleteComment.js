@@ -8,6 +8,7 @@ export const deleteComment = (id,cfid) => {
     return dispatch => {
         fetch(`${FETCH_URL}/comment/${id}`, {
             method: 'DELETE',
+            credentials: "include",
         })
             .then((response) => {
                 if (!response.ok) {

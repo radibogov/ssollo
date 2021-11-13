@@ -7,7 +7,8 @@ export const fetchManagers = () => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/listManagers`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

@@ -7,7 +7,8 @@ import {setError} from "../reducers/errorReducer";
 export const fetchTableRows = (leftOrRight) => {
     return dispatch => {
         fetch(`${FETCH_URL}/contract/${leftOrRight ? 'left' : 'right'}?date=${moment(store.getState().date.date).format('YYYY-MM-DD')}`, {
-            type: 'GET'
+            type: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

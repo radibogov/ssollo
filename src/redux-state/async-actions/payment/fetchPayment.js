@@ -7,7 +7,8 @@ export const fetchPayment = (id) => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/payment?order_id=${id}`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

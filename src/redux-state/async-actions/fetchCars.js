@@ -7,7 +7,8 @@ export const fetchCars = () => {
 
     return dispatch => {
         fetch(`${FETCH_URL}/listCars`, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
         })
             .then((response) => {
                 if (response.ok) {

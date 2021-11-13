@@ -12,6 +12,7 @@ export const updatePayment = (id, data, cfid) => {
                 'Content-Type': 'application/json'
             },
             method: 'PATCH',
+            credentials: "include",
             body: JSON.stringify(data)
         })
             .then((response) => {
@@ -21,7 +22,7 @@ export const updatePayment = (id, data, cfid) => {
                     throw response.json();
                 }
             })
-            .then(json => {
+            .then(() => {
                 dispatch(fetchPayment(cfid))
             })
             .catch((error) => {
