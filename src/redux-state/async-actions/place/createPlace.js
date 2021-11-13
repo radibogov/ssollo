@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchPlaces} from "./fetchPlaces";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const createPlace = (data) => {
@@ -8,7 +9,8 @@ export const createPlace = (data) => {
         fetch(`${FETCH_URL}/place`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'POST',
             credentials: "include",

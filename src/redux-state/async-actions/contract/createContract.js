@@ -3,6 +3,7 @@ import {setIdContract} from "../../reducers/contractFormReducer";
 import {setError} from "../../reducers/errorReducer";
 import {fetchTableRows} from "../fetchTableRows";
 import {setSuccess} from "../../reducers/successReducer";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const createContract = (data) => {
@@ -11,7 +12,8 @@ export const createContract = (data) => {
         fetch(`${FETCH_URL}/contract/`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'POST',
             credentials: "include",

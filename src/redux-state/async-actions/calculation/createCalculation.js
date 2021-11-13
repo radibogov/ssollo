@@ -2,6 +2,7 @@ import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchTableRows} from "../fetchTableRows";
 import {setSuccess} from "../../reducers/successReducer";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const createCalculation = (data) => {
@@ -21,7 +22,8 @@ export const createCalculation = (data) => {
         fetch(`${FETCH_URL}/calculation/`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'POST',
             credentials: "include",

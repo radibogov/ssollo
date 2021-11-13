@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchTerritories} from "./fetchTerritories";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const createTerritory = (data) => {
@@ -8,7 +9,8 @@ export const createTerritory = (data) => {
         fetch(`${FETCH_URL}/territory`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'POST',
             credentials: "include",

@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchPayment} from "./fetchPayment";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const createPayment = (data,cfid) => {
@@ -9,7 +10,8 @@ export const createPayment = (data,cfid) => {
         fetch(`${FETCH_URL}/payment/`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'POST',
             credentials: "include",

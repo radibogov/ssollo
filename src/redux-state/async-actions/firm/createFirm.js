@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchFirms} from "./fetchFirms";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const createFirm = (data) => {
@@ -8,7 +9,8 @@ export const createFirm = (data) => {
         fetch(`${FETCH_URL}/firm/`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'POST',
             credentials: "include",

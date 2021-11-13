@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchFirms} from "./fetchFirms";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const updateFirm = (id, data) => {
@@ -9,7 +10,8 @@ export const updateFirm = (id, data) => {
         fetch(`${FETCH_URL}/firm/${id}`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'PATCH',
             credentials: "include",

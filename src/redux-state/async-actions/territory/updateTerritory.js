@@ -1,6 +1,7 @@
 import {FETCH_URL} from "../../../configs/urls"
 import {setError} from "../../reducers/errorReducer";
 import {fetchTerritories} from "./fetchTerritories";
+import {csrftoken} from "../../../configs/Cooki";
 
 
 export const updateTerritory = (id, data) => {
@@ -9,7 +10,8 @@ export const updateTerritory = (id, data) => {
         fetch(`${FETCH_URL}/territory/${id}`, {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             method: 'PATCH',
             credentials: "include",
