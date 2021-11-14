@@ -19,8 +19,8 @@ const defaultState = {
     image_4: null,
     image_5: null,
     date: '',
-    comment: '',
-    mark: ''
+    name: '',
+    opisanie: ''
 }
 
 export const commentReducer = (state = defaultState, action) => {
@@ -36,8 +36,8 @@ export const commentReducer = (state = defaultState, action) => {
                 image_4: action.payload.image_4,
                 image_5: action.payload.image_5,
                 date: action.payload.date,
-                comment: action.payload.comment,
-                mark: action.payload.mark
+                name: action.payload.name,
+                opisanie: action.payload.opisanie
             }
         case SET_ORDERID_COMMENT:
             return {
@@ -77,12 +77,12 @@ export const commentReducer = (state = defaultState, action) => {
         case SET_COMMENT_COMMENT:
             return {
                 ...state,
-                comment: action.payload
+                name: action.payload
             }
         case SET_MARK_COMMENT:
             return {
                 ...state,
-                mark: action.payload
+                opisanie: action.payload
             }
         case CLEAR_COMMENT_FORM:
             return {

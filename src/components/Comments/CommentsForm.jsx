@@ -84,9 +84,9 @@ const CommentsForm = () => {
             <Element>
                 <Row key={item.id}>
                     <FormText>
-                        <Header>{item.comment}</Header>
+                        <Header>{item.name}</Header>
                         <Text>
-                            {item.mark}
+                            {item.opisanie}
                         </Text>
                     </FormText>
                     <FormDate>
@@ -113,8 +113,8 @@ const CommentsForm = () => {
                                     image_4: item.image_4?item.image_4:null,
                                     image_5: item.image_5?item.image_5:null,
                                     date: item.date,
-                                    comment: item.comment,
-                                    mark: item.mark
+                                    name: item.name,
+                                    opisanie: item.opisanie
                                 }))
                                 try {
                                     const el = document.getElementById('comment-form');

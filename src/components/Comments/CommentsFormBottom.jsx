@@ -78,7 +78,7 @@ const CommentsFormBottom = () => {
                        variant="filled"
                        label="Повреждения"
                        style={{width: '55%'}}
-                       value={commentsForm.comment}
+                       value={commentsForm.name}
                        onChange={(event => {
                            dispatch(setCommentComment(event.target.value))
                        })}
@@ -105,7 +105,7 @@ const CommentsFormBottom = () => {
                        variant="filled"
                        label="Описания"
                        style={{width: '75%'}}
-                       value={commentsForm.mark}
+                       value={commentsForm.opisanie}
                        onChange={(event => {
                            dispatch(setMarkComment(event.target.value))
                        })}
