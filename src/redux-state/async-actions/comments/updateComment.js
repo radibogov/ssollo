@@ -6,19 +6,19 @@ import {csrftoken} from "../../../configs/Cooki";
 
 
 export const updateComment = (id,data) => {
-    if (data.image_1 === null) {
+    if (data.image_1 === null || !data.image_1?.startsWith('data:image/')) {
         delete data['image_1'];
     }
-    if (data.image_2 === null) {
+    if (data.image_2 === null || !data.image_2?.startsWith('data:image/')) {
         delete data['image_2'];
     }
-    if (data.image_3 === null) {
+    if (data.image_3 === null || !data.image_3?.startsWith('data:image/')) {
         delete data['image_3'];
     }
-    if (data.image_4 === null) {
+    if (data.image_4 === null || !data.image_4?.startsWith('data:image/')) {
         delete data['image_4'];
     }
-    if (data.image_5 === null) {
+    if (data.image_5 === null || !data.image_5?.startsWith('data:image/')) {
         delete data['image_5'];
     }
     return dispatch => {
