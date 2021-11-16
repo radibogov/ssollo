@@ -362,7 +362,7 @@ const ContractForm = () => {
                 }}>
                     <TextField value={contractForm.manager_pr_name ? contractForm.manager_pr_name : ''} readOnly
                                id="filled-basic" label="Менеджер выдачи" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <ManagerDialog priem={true}/>
+                    <ManagerDialog priem={false}/>
                 </div>
             </InputRow>
             <InputRow>
@@ -384,7 +384,7 @@ const ContractForm = () => {
                 }}>
                     <TextField value={contractForm.manager_ot_name ? contractForm.manager_ot_name : ''} readOnly
                                id="filled-basic" label="Менеджер приема " variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <ManagerDialog priem={false}/>
+                    <ManagerDialog priem={true}/>
                 </div>
             </InputRow>
             <InputRow>

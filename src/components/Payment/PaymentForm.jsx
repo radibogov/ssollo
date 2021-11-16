@@ -99,7 +99,7 @@ const PaymentForm = () => {
                     title={'Приборная панель выдача'}
                     file={calculation.img_before}
                     fileName={calculation.img_before_name}
-                    disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
+                    disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
                 />
                 <TextField
                            type="number"
@@ -112,7 +112,7 @@ const PaymentForm = () => {
                                        dispatch(setFuelBefore(100))
                                }
                            }
-                           disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
+                           disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
                            id="filled-basic" label="Топливо в начале, %" variant="filled" style={{ marginRight: '20px' }} />
                 <TextField
                            type="number"
@@ -122,7 +122,7 @@ const PaymentForm = () => {
                                    dispatch(setMileageBefore(event.target.value))
                                }
                            }
-                           disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
+                           disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
                            id="filled-basic" label="Пробег начало" variant="filled"/>
             </InputRow>
             <InputRow style={{justifyContent: 'flex-end'}}>
@@ -180,7 +180,7 @@ const PaymentForm = () => {
                     children={calculation.img_after}
                     file={calculation.img_after}
                     fileName={calculation.img_after_name}
-                    disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
+                    disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
                 />
                 <TextField
                            type="number"
@@ -193,7 +193,7 @@ const PaymentForm = () => {
                                        dispatch(setFuelAfter(100))
                                }
                            }
-                           disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
+                           disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
                            id="filled-basic" label="Топливо в конце,%" variant="filled" style={{ marginRight: '20px' }} />
                 <TextField
                            type="number"
@@ -203,7 +203,7 @@ const PaymentForm = () => {
                                    dispatch(setMileageAfter(event.target.value))
                                }
                            }
-                           disabled={!user.is_superuser && contractForm.manager_ot_id !== user.id}
+                           disabled={!user.is_superuser && contractForm.manager_pr_id !== user.id}
                            id="filled-basic" label="Пробег конец" variant="filled"/>
             </InputRow>
             <InputRow style={{justifyContent: 'flex-end'}}>
