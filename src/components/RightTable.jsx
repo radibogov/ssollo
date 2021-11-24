@@ -80,14 +80,14 @@ const RightTable = (props) => {
                 id={item.id}
                 isCurrent={current === item.id}
                 side='right'
-
                 balance={item.user?.balance}
 
-                list={item.calculation}
-                payment={item.payment}
+                list={item.calculation[0]}
+                payments={item.payments}
                 automobile={item.automobile}
 
                 contract_number={item.contract_number}
+
                 manager_ot_id={item.manager_ot?.id}
                 manager_ot_name={item.manager_ot?.full_name}
                 manager_pr_id={item.manager_pr?.id}
@@ -96,7 +96,7 @@ const RightTable = (props) => {
                 address_gave_id={item.address_gave?.id}
                 address_received={item.address_received?.address}
                 address_received_id={item.address_received?.id}
-                automobile_id={item.automobile?.id}
+                automobile_id={item.automobile.id}
                 tariff_name={item.automobile?.name}
                 real_auto_id={item.real_auto?.id}
                 gos_number={item.real_auto?.gos_number}

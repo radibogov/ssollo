@@ -41,15 +41,6 @@ const PaymentBtnPanel = () => {
             <Button onClick={handleClickDopPayment} variant="contained" color="primary" style={{ marginRight: '20px' }}>
                 Добавить
             </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '20px' }}
-                onClick={
-                    ()=> {
-                        dispatch(deletePayment(currentRowPayment,contractForm.id))
-                    }
-                }
-            >
-                Удалить
-            </Button>
         </React.Fragment>
     );
 };

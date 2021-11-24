@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -22,6 +22,7 @@ import {
     toggleRepresentative1Dialog, toggleRepresentative2Dialog
 } from '../../redux-state/reducers/DialogsReducer';
 import CancelIcon from "@material-ui/icons/Cancel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -29,7 +30,12 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         marginLeft: theme.spacing(2),
-        flex: 1,
+    },
+    input: {
+        border: '1px solid white',
+        marginLeft: theme.spacing(1),
+        color: 'white',
+        width: '20%'
     },
 }));
 
@@ -51,7 +57,13 @@ function RepresentativeDialog({first}) {
         first ? dispatch(toggleRepresentative1Dialog(false)) : dispatch(toggleRepresentative2Dialog(false))
 
     };
-
+    const [inValue, setInValue] = useState('')
+    function filterByValue(item) {
+        if (inValue === '') {
+            return true
+        }
+        return item?.full_name?.toLowerCase().indexOf(inValue.toLowerCase()) !== -1 || item?.phone?.indexOf(inValue) !== -1;
+    }
     React.useEffect(() => {
         dispatch(fetchUsers())
     }, [])
@@ -85,6 +97,15 @@ function RepresentativeDialog({first}) {
                         <Typography variant="h6" className={classes.title}>
                             {first ? 'Представитель 1' : 'Представитель 2'}
                         </Typography>
+                        <OutlinedInput
+                            className={classes.input}
+                            value={inValue}
+                            onChange={(event) => setInValue(event.target.value)}
+                            id="outlined"
+                            label="Outlined"
+                            variant="outlined"
+                            placeholder="Поиск"
+                        />
                     </Toolbar>
                 </AppBar>
                 <List>
@@ -94,7 +115,9 @@ function RepresentativeDialog({first}) {
                         <ListItemText style={{width: '25%', textAlign: 'center'}} primary="Телефон"/>
                         <ListItemText style={{width: '25%', textAlign: 'center'}} primary="Баланс"/>
                     </ListItem>
-                    {usersList.map(el =>
+                    {usersList
+                        .filter(filterByValue)
+                        .map(el =>
                         <React.Fragment
                             key={el.id}
                         >

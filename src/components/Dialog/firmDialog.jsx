@@ -45,6 +45,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function FirmDialog() {
     const dispatch = useDispatch()
+    const contractFirm = useSelector(state => state.contractForm.firm_id);
     const firmList = useSelector(state => state.lists.firms)
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.firm)
@@ -87,10 +88,11 @@ function FirmDialog() {
                         <ListItemText primary="Айди" />
                         <ListItemText primary="Название" />
                     </ListItem>
-                    {firmList.map(el =>
+                    {firmList.map((el, index) =>
                         <React.Fragment
                             key={el.id}
                         >
+                            {!contractFirm && index===0 && dispatch(setFirmId(el))}
                             <RowFlex>
                                 <ListItem button
                                           onClick={

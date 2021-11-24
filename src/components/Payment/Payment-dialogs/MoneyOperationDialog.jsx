@@ -199,7 +199,7 @@ export default function MoneyOperationDialog() {
                             >
                                 <ArrowLeftIcon />
                             </IconButton>
-                            <TextField id="filled-basic" label={type===1?'Дней':'Количество'} value={'' + paymentForm.count} onChange={(event) =>event.target.value>0?dispatch(setCountPayment(event.target.value)):dispatch(setCountPayment(1))} type="number" />
+                            <TextField id="filled-basic" style={{width: '20%'}} label={type===1?'Дней':'Количество'} value={'' + paymentForm.count} onChange={(event) =>event.target.value>0?dispatch(setCountPayment(event.target.value)):dispatch(setCountPayment(1))} type="number" />
                             <IconButton color="primary"
                                         onClick={
                                             () => {

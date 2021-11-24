@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '../../redux-state/async-actions/fetchUsers';
 import { setUserID } from '../../redux-state/reducers/contractFormReducer';
 import { toggleClientDialog } from '../../redux-state/reducers/DialogsReducer';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -23,7 +24,13 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         marginLeft: theme.spacing(2),
-        flex: 1,
+        marginRight: '20px'
+    },
+    input: {
+        border: '1px solid white',
+        marginLeft: theme.spacing(1),
+        width: '20%',
+        color: 'white'
     },
 }));
 
@@ -36,6 +43,7 @@ function ClientDialog() {
     const usersList = useSelector(state => state.lists.users)
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.client)
+
     const handleClickOpen = () => {
         dispatch(toggleClientDialog(true))
     };
@@ -44,6 +52,13 @@ function ClientDialog() {
         dispatch(toggleClientDialog(false))
     };
 
+    const [inValue, setInValue] = useState('')
+    function filterByValue(item) {
+        if (inValue === '') {
+            return true
+        }
+        return item?.full_name?.toLowerCase().indexOf(inValue.toLowerCase()) !== -1 || item?.phone?.indexOf(inValue) !== -1;
+    }
     React.useEffect(() => {
         dispatch(fetchUsers())
     }, [])
@@ -67,6 +82,15 @@ function ClientDialog() {
                         <Typography variant="h6" className={classes.title}>
                             Пользователи
                         </Typography>
+                        <OutlinedInput
+                            className={classes.input}
+                            value={inValue}
+                            onChange={(event) => setInValue(event.target.value)}
+                            id="outlined"
+                            label="Outlined"
+                            variant="outlined"
+                            placeholder="Поиск"
+                        />
                     </Toolbar>
                 </AppBar>
                 <List>
@@ -76,7 +100,8 @@ function ClientDialog() {
                         <ListItemText style={{width: '25%', textAlign: 'center'}} primary="Телефон" />
                         <ListItemText style={{width: '25%', textAlign: 'center'}} primary="Баланс" />
                     </ListItem>
-                    {usersList.map(el =>
+                    {usersList.filter(filterByValue)
+                        .map(el =>
                         <React.Fragment
                         key={el.id}
                         >

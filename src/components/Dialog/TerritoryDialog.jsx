@@ -14,7 +14,7 @@ import Slide from '@material-ui/core/Slide';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setTerritory } from '../../redux-state/reducers/contractFormReducer';
+import {setTerritory} from '../../redux-state/reducers/contractFormReducer';
 import { fetchTerritories } from '../../redux-state/async-actions/territory/fetchTerritories';
 import {
     toggleTerritoryDialog,
@@ -49,7 +49,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function TerritoryDialog() {
     const dispatch = useDispatch()
-    const autoList = useSelector(state => state.lists.territories)
+    const contractTerritory = useSelector(state => state.contractForm.territory_id);
+    const territories = useSelector(state => state.lists.territories)
     const classes = useStyles();
     const open = useSelector(state => state.dialogs.territory)
 
@@ -91,10 +92,11 @@ function TerritoryDialog() {
                         <ListItemText primary="Айди" />
                         <ListItemText primary="Территория" />
                     </ListItem>
-                    {autoList.map(el =>
+                    {territories.map((el,index) =>
                         <React.Fragment
                             key={el.id}
                         >
+                            {!contractTerritory && index===0 && dispatch(setTerritory({id: el.id, address: el.territory_name}))}
                             <RowFlex>
                                 <ListItem button
                                           onClick={

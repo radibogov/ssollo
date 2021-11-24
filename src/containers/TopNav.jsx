@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import NoteIcon from '@material-ui/icons/Note';
 import IconButton from '@material-ui/core/IconButton';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Tooltip from '@material-ui/core/Tooltip';
 import 'date-fns';
 import Slide from '@material-ui/core/Slide';
@@ -21,7 +20,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import FormTabs from '../containers/FormTabs'
-import { deleteContract } from '../redux-state/async-actions/contract/deleteContract';
 import { fetchTableRows } from '../redux-state/async-actions/fetchTableRows';
 import {clearContractForm} from '../redux-state/reducers/contractFormReducer';
 import {clearActiveCar} from "../redux-state/reducers/listsReducer";
@@ -30,6 +28,7 @@ import moment from "moment";
 import {ArrowLeftIcon} from "@material-ui/pickers/_shared/icons/ArrowLeftIcon";
 import {clearCalculateForm} from "../redux-state/reducers/calculationReducer";
 import {clearCommentForm} from "../redux-state/reducers/commentReducer";
+import DeleteDialog from "./DeleteDialog/DeleteDialog";
 
 const Wrapper = styled.div`
 display: flex;
@@ -77,7 +76,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const TopNav = () => {
   const date = useSelector(state => state.date.date)
-  const current = useSelector(state => state.currentRow.left)
   const dispatch = useDispatch()
   const classes = useStyles();
 
@@ -126,18 +124,7 @@ const TopNav = () => {
           </AppBar>
           <FormTabs />
         </Dialog>
-
-        <Tooltip title="Удалить договор">
-          <IconButton 
-          onClick={
-            () => {
-              dispatch(deleteContract(current))
-            }
-          }
-          aria-label="delete" color="primary">
-            <DeleteForeverIcon />
-          </IconButton>
-        </Tooltip>
+        <DeleteDialog />
       </Inner>
       <Inner>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>

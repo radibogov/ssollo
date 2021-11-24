@@ -11,9 +11,8 @@ import {
     setMileageAfter,
     setMileageBefore,
     setMileagePrice,
-    setOrderIdCalc
+    setOrderIdCalc, setSum
 } from '../../redux-state/reducers/calculationReducer';
-import PaymentTable from './PaymentTable';
 import MoneyOperationDialog from "./Payment-dialogs/MoneyOperationDialog";
 import PaymentBtnPanel from "./PaymentBtnPanel";
 import {setOrderId} from "../../redux-state/reducers/paymentReducer";
@@ -23,6 +22,8 @@ import moment from "moment";
 import {createCalculation} from "../../redux-state/async-actions/calculation/createCalculation";
 import {updateCalculation} from "../../redux-state/async-actions/calculation/updateCalculation";
 import PaymentUploadImg from "./Payment-upload-img/PaymentUploadImg";
+import PaymentTableRows from "./PaymentTableRows";
+import PaymentFormFooter from "./PaymentFormFooter";
 
 
 const FormWrapper = styled.form`
@@ -127,50 +128,54 @@ const PaymentForm = () => {
             </InputRow>
             <InputRow style={{justifyContent: 'flex-end'}}>
                 <div style={{ marginRight: 'auto' }}>
-                    <Button onClick={()=>{
-                        dispatch(createPayment({
-                            client_id: contractForm.user_id,
-                            car_id: contractForm.real_auto_id,
-                            operation: 'Залог',
-                            payment: calculation.deposit,
-                            count: 1,
-                            is_deposit: true,
-                            is_main_payment: false,
-                            service_name: 'Оплата залога',
-                            service_price: calculation.deposit,
-                            sum_of_money: calculation.deposit,
-                            doc_number: contractForm.id,
-                            firm_id: contractForm.firm_id,
-                            date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
-                            order_id: contractForm.id
-                        },contractForm.id))
+                    {user.is_superuser &&
+                        <>
+                        <Button onClick={() => {
+                            dispatch(createPayment({
+                                client_id: contractForm.user_id,
+                                car_id: contractForm.real_auto_id,
+                                operation: 'Залог',
+                                payment: calculation.deposit,
+                                count: 1,
+                                is_deposit: true,
+                                is_main_payment: false,
+                                service_name: 'Оплата залога',
+                                service_price: calculation.deposit,
+                                sum_of_money: calculation.deposit,
+                                doc_number: contractForm.id,
+                                firm_id: contractForm.firm_id,
+                                date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
+                                order_id: contractForm.id
+                            }, contractForm.id))
 
-                    }} variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                        Залог
-                    </Button>
-                    <Button onClick={()=>{
-                        dispatch(createPayment({
-                            client_id: contractForm.user_id,
-                            car_id: contractForm.real_auto_id,
-                            operation: 'Возврат залога',
-                            payment: calculation.deposit,
-                            count: 1,
-                            is_deposit: false,
-                            is_deposit_return: true,
-                            is_main_payment: false,
-                            service_name: 'Возврат залога',
-                            service_price: calculation.deposit,
-                            sum_of_money: calculation.deposit, 
-                            doc_number: contractForm.id,
-                            firm_id: contractForm.firm_id,
-                            date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
-                            order_id: contractForm.id
-                        },contractForm.id))
-                    }}
+                        }} variant="contained" color="primary" style={{marginRight: '20px'}}>
+                            Залог
+                        </Button>
+                            <Button onClick={() => {
+                            dispatch(createPayment({
+                                client_id: contractForm.user_id,
+                                car_id: contractForm.real_auto_id,
+                                operation: 'Возврат залога',
+                                payment: calculation.deposit,
+                                count: 1,
+                                is_deposit: false,
+                                is_deposit_return: true,
+                                is_main_payment: false,
+                                service_name: 'Возврат залога',
+                                service_price: calculation.deposit,
+                                sum_of_money: calculation.deposit,
+                                doc_number: contractForm.id,
+                                firm_id: contractForm.firm_id,
+                                date_of_payment: moment().format('YYYY-MM-DDTHH:mm'),
+                                order_id: contractForm.id
+                            }, contractForm.id))
+                        }}
 
-                            variant="contained" color="primary" style={{ marginRight: '20px' }}>
-                        Возврат
-                    </Button>
+                            variant="contained" color="primary" style={{marginRight: '20px'}}>
+                            Возврат
+                            </Button>
+                        </>
+                    }
                 </div>
                 <PaymentUploadImg
                     refLink={hiddenImgAfterInp}
@@ -217,6 +222,7 @@ const PaymentForm = () => {
             <InputRow>
                 <TextField id="filled-basic" value={calculation.sum_for_mileage_over?calculation.sum_for_mileage_over:0} label="За перепробег" variant="filled" style={{ marginLeft: 'auto' }} />
             </InputRow>
+            {user.is_superuser&&
             <InputRow>
                 <PaymentBtnPanel />
                 <div style={{marginLeft: 'auto'}}></div>
@@ -263,16 +269,11 @@ const PaymentForm = () => {
                     Оплата за перепробег
                 </Button>
             </InputRow>
-            <PaymentTable />
+            }
+
+            <PaymentTableRows />
             <InputRow>
-                <TextField
-                    type="number" id="filled-basic" value={''+calculation.delay} label="Дней" variant="filled" style={{ marginRight: '30px' }} />
-                <TextField value={+calculation.sum_one}
-                           type="number" id="filled-basic" label="Начислено" variant="filled" style={{ marginRight: '30px' }} />
-                <TextField value={+calculation.sum_two}
-                           type="number" id="filled-basic" label="Оплачено" variant="filled" style={{ marginRight: '30px' }} />
-                <TextField value={+calculation.balance}
-                           type="number" id="filled-basic" label="Баланс" variant="filled" style={{ marginRight: '30px' }} />
+                <PaymentFormFooter  calculation={calculation} />
             </InputRow>
             <Button type='submit' style={{marginLeft: 'auto'}} variant="contained" color="primary">
                 Сохранить

@@ -16,6 +16,7 @@ const TOGGLE_PLACE_PR_DIALOG = 'TOGGLE_PLACE_PR_DIALOG'
 const TOGGLE_PLACE_OT_DIALOG = 'TOGGLE_PLACE_OT_DIALOG'
 const TOGGLE_MONEY_OP_DIALOG = 'TOGGLE_MONEY_OP_DIALOG'
 const TOGGLE_TERRITORY_PLACE_FIX_DIALOG = 'TOGGLE_TERRITORY_PLACE_FIX_DIALOG'
+const TOGGLE_DEL = 'TOGGLE_DEL'
 
 const defaultState = {
     contract: false,
@@ -40,7 +41,8 @@ const defaultState = {
     place_pr: false,
     place_ot: false,
     moneyOp: false,
-    moneyOpType: ''
+    moneyOpType: '',
+    delete: false
 }
 
 export const dialogReducer = (state = defaultState, action) => {
@@ -56,6 +58,11 @@ export const dialogReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 auto: action.payload
+            }
+        case TOGGLE_DEL:
+            return {
+                ...state,
+                delete: action.payload
             }
         case TOGGLE_TARIFF_DIALOG:
             return {
@@ -168,3 +175,4 @@ export const toggleCommentsDialog = payload => { return { type: TOGGLE_COMMENTS_
 export const togglePlacePrDialog = payload => { return { type: TOGGLE_PLACE_PR_DIALOG, payload } }
 export const togglePlaceOtDialog = payload => { return { type: TOGGLE_PLACE_OT_DIALOG, payload } }
 export const toggleMoneyOpDialog = payload => { return { type: TOGGLE_MONEY_OP_DIALOG, payload } }
+export const toggleDelDialog = payload => { return { type: TOGGLE_DEL, payload } }

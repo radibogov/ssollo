@@ -6,12 +6,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
-import AddIcon from '@material-ui/icons/Add';
 import {useDispatch, useSelector} from 'react-redux';
 import {
     setContractNumber,
     setDaysFirst,
-    setDaysSecond,
     setEndDatetime,
     setIsGiven,
     setIsReturned,
@@ -62,6 +60,8 @@ margin-bottom: 20px;
 
 const ContractForm = () => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.user)
+
     const contractForm = useSelector(state => state.contractForm);
     const calculation = useSelector(state => state.calculation);
     const activeCar = useSelector(state => state.lists.active_car)
@@ -155,7 +155,7 @@ const ContractForm = () => {
                 }}>
                     <TextField required value={'' + contractForm.gos_number} readOnly id="filled-basic" label="Автомобиль"
                                variant="filled" style={{width: '90%', background: "#f0ff008c"}}/>
-                    <AutoDialog/>
+                    {user.is_superuser &&<AutoDialog/>}
                 </div>
                 <TextField required id="filled-basic" value={contractForm.auto_name} variant="filled" style={{width: '70%', background: "#f0ff008c"}}/>
             </InputRow>
@@ -164,11 +164,11 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '77%'
+                    width: '76%'
                 }}>
                     <TextField required readOnly value={contractForm.client_name?contractForm.client_name:''} id="filled-basic" label="Клиент"
-                               variant="filled" style={{width: '95%', background: "#f0ff008c"}}/>
-                    <ClientDialog/>
+                               variant="filled" style={{width: '100%', background: "#f0ff008c"}}/>
+                    {user.is_superuser &&<ClientDialog/>}
                 </div>
                 <TextField id="filled-basic" value='Новый'  variant="filled" style={{width: '30%', background: "#f0ff008c"}}/>
             </InputRow>
@@ -177,13 +177,13 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '77%'
+                    width: '75%'
                 }}>
                     <TextField
                         value={contractForm.representative_first_name ? contractForm.representative_first_name : ''}
                         id="filled-basic" label="Представитель 1" variant="filled"
-                        style={{width: '95%', background: "#f0ff008c"}}/>
-                    <RepresentativeDialog first={true}/>
+                        style={{width: '100%', background: "#f0ff008c"}}/>
+                    {user.is_superuser && <RepresentativeDialog first={true}/>}
                 </div>
             </InputRow>
             <InputRow>
@@ -191,13 +191,13 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    width: '77%'
+                    width: '75%'
                 }}>
                     <TextField
                         value={contractForm.representative_second_name ? contractForm.representative_second_name : ''}
                         id="filled-basic" label="Представитель 2" variant="filled"
-                        style={{width: '95%', background: "#f0ff008c"}}/>
-                    <RepresentativeDialog first={false}/>
+                        style={{width: '100%', background: "#f0ff008c"}}/>
+                    {user.is_superuser &&<RepresentativeDialog first={false}/>}
                 </div>
             </InputRow>
         </Inner>
@@ -274,7 +274,7 @@ const ContractForm = () => {
                     }}
                 />
             </InputRow>
-            <InputRow>
+            <InputRow style={{transform: 'translateX(-48px)'}}>
                 <IconButton color="primary"
                             onClick={
                                 () => {
@@ -286,7 +286,7 @@ const ContractForm = () => {
                 </IconButton>
                 <TextField id="filled-basic" label="Дней" variant="filled" value={'' + contractForm.days_first}
                            onChange={(event) => event.target.value > 0 ? dispatch(setDaysFirst(event.target.value)) : dispatch(setDaysFirst(1))}
-                           type="number"/>
+                           type="number" style={{width: '10%'}}/>
                 <IconButton color="primary"
                             onClick={
                                 () => {
@@ -296,10 +296,6 @@ const ContractForm = () => {
                 >
                     <ArrowRightIcon/>
                 </IconButton>
-                <AddIcon/>
-                <TextField id="filled-basic" variant="filled" value={contractForm.days_second}
-                           onChange={event => event.target.value > 0 ? dispatch(setDaysSecond(event.target.value)) : dispatch(setDaysSecond(0))}
-                           type="number" style={{width: '80px', marginLeft: '15px'}}/>
             </InputRow>
             <InputRow>
                 <div style={{
@@ -311,16 +307,16 @@ const ContractForm = () => {
                     <TextField value={'' + contractForm.tariff}
                                onChange={(event) => {event.target.value<=1000000?dispatch(setTariff(event.target.value)):dispatch(setTariff(contractForm.tariff))}} id="filled-basic"
                                label="Тариф" variant="filled" style={{width: '65%'}}/>
-                    <TariffDialog days={'' + contractForm.days_first}/>
+                    {user.is_superuser &&<TariffDialog days={'' + contractForm.days_first}/>}
                 </div>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
-                    width: '20%'
+                    width: '30%'
                 }}>
                     <TextField value={'' + contractForm.tariff_name} id="filled-basic" label="Название тарифа"
-                               variant="filled" style={{width: '95%', background: "#f0ff008c"}}/>
+                               variant="filled" style={{width: '100%', background: "#f0ff008c"}}/>
                 </div>
             </InputRow>
             <InputRow>
@@ -352,7 +348,7 @@ const ContractForm = () => {
                 }}>
                     <TextField value={contractForm.address_gave ? contractForm.address_gave : ''} readOnly
                                id="filled-basic" label="Выдача" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <PlaceDialog priem={false}/>
+                    {user.is_superuser &&<PlaceDialog priem={false}/>}
                 </div>
                 <div style={{
                     display: 'flex',
@@ -362,7 +358,7 @@ const ContractForm = () => {
                 }}>
                     <TextField value={contractForm.manager_ot_name ? contractForm.manager_ot_name : ''} readOnly
                                id="filled-basic" label="Менеджер выдачи" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <ManagerDialog priem={false}/>
+                    {user.is_superuser &&<ManagerDialog priem={false}/>}
                 </div>
             </InputRow>
             <InputRow>
@@ -374,7 +370,7 @@ const ContractForm = () => {
                 }}>
                     <TextField value={contractForm.address_received ? contractForm.address_received : ''} readOnly
                                id="filled-basic" label="Прием" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <PlaceDialog priem={true}/>
+                    {user.is_superuser && <PlaceDialog priem={true}/>}
                 </div>
                 <div style={{
                     display: 'flex',
@@ -384,7 +380,7 @@ const ContractForm = () => {
                 }}>
                     <TextField value={contractForm.manager_pr_name ? contractForm.manager_pr_name : ''} readOnly
                                id="filled-basic" label="Менеджер приема " variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <ManagerDialog priem={true}/>
+                    {user.is_superuser &&<ManagerDialog priem={true}/>}
                 </div>
             </InputRow>
             <InputRow>
@@ -392,11 +388,11 @@ const ContractForm = () => {
                     display: 'flex',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
-                    width: '60%'
+                    width: '50%'
                 }}>
-                    <TextField value={contractForm.territory_address ? contractForm.territory_address : ''} readOnly
+                    <TextField required value={contractForm.territory_address ? contractForm.territory_address : ''} readOnly
                                id="filled-basic" label="Территория" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <TerritoryDialog/>
+                    {user.is_superuser &&<TerritoryDialog/>}
                 </div>
                 <div style={{
                     display: 'flex',
@@ -406,7 +402,7 @@ const ContractForm = () => {
                 }}>
                     <TextField required value={contractForm.firm_name ? contractForm.firm_name : ''} readOnly
                                id="filled-basic" label="Фирма" variant="filled" style={{width: '87%', background: "#f0ff008c"}}/>
-                    <FirmDialog/>
+                    {user.is_superuser &&<FirmDialog/>}
                 </div>
             </InputRow>
             <InputRow
