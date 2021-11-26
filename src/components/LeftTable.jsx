@@ -97,6 +97,7 @@ const LeftTable = (props) => {
                 auto_name={item.real_auto?.name + ', ' + item.real_auto?.gos_number}
                 user_id={item.user?.id}
                 client_name={item.user?.full_name}
+                client_phone={item.user?.phone}
                 comment={item.comment}
                 marks={item.marks}
                 territory_id={item.territory?.id}

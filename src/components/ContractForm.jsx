@@ -166,7 +166,7 @@ const ContractForm = () => {
                     alignItems: 'center',
                     width: '76%'
                 }}>
-                    <TextField required readOnly value={contractForm.client_name?contractForm.client_name:''} id="filled-basic" label="Клиент"
+                    <TextField required readOnly value={contractForm.client_name?contractForm.client_name +', '+ contractForm.client_phone:''} id="filled-basic" label="Клиент"
                                variant="filled" style={{width: '100%', background: "#f0ff008c"}}/>
                     {user.is_superuser &&<ClientDialog/>}
                 </div>

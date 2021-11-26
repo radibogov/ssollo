@@ -50,6 +50,7 @@ const defaultState = {
     auto_name: '',
     user_id: null,
     client_name: '',
+    client_phone: '',
     representative_first_id: null,
     representative_first_name: '',
     representative_second_id: null,
@@ -134,6 +135,7 @@ export const contractFormReducer = (state = defaultState, action) => {
                 ...state,
                 user_id: action.payload.id,
                 client_name: action.payload.name,
+                client_phone: action.payload.phone
             }
         case SET_RESPRESENTATIVE_FIRST:
             return {
@@ -265,6 +267,7 @@ export const contractFormReducer = (state = defaultState, action) => {
                 auto_name: action.payload.auto_name,
                 user_id: action.payload.user_id,
                 client_name: action.payload.client_name,
+                client_phone: action.payload.client_phone,
                 representative_first_id: action.payload.representative_first_id,
                 representative_first_name: action.payload.representative_first_name,
                 representative_second_id: action.payload.representative_second_id,

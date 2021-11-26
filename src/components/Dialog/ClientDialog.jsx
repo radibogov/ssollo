@@ -108,7 +108,7 @@ function ClientDialog() {
                             <ListItem button
                                 onClick={
                                     () => {
-                                        dispatch(setUserID({ id: el.id, name: el.full_name + ', ' + el.phone }))
+                                        dispatch(setUserID({ id: el.id, name: el.full_name,phone: el.phone}))
                                         dispatch(toggleClientDialog(false))
                                     }
                                 }
