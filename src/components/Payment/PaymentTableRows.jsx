@@ -129,7 +129,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 const EnhancedTableToolbar = (props) => {
     const dispatch = useDispatch()
     const classes = useToolbarStyles();
-    const { selected, cfid } = props;
+    const { selected,setFunc, cfid } = props;
     const numSelected = selected.length;
 
     return (
@@ -156,6 +156,7 @@ const EnhancedTableToolbar = (props) => {
                                 selected.map(id => {
                                     dispatch(deletePayment(id, cfid))
                                 })
+                                setFunc([])
                             }
                         }
                     >
@@ -265,7 +266,7 @@ export default function PaymentTableRows() {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar selected={selected} cfid={cfid}/>
+                <EnhancedTableToolbar selected={selected} setFunc={setSelected} cfid={cfid}/>
                 <TableContainer>
                     <Table
                         className={classes.table}
