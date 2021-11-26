@@ -341,6 +341,7 @@ export default function PaymentTableRows() {
                     page={page}
                     onChangePage={handleChangePage}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
+                    labelRowsPerPage={'Строк на странице'}
                 />
             </Paper>
             <FormControlLabel
