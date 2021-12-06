@@ -248,7 +248,7 @@ const ContractForm = () => {
                         value={moment(contractForm.gave_datetime).format('YYYY-MM-DDTHH:mm')}
                         onChange={
                             (event) => {
-                                dispatch(setGaveDateTime(event.target.value))
+                                dispatch(setGaveDateTime(moment(event.target.value)).format('YYYY-MM-DDTHH:mm'))
                             }
                         }
                         InputLabelProps={{
@@ -293,7 +293,7 @@ const ContractForm = () => {
                         value={moment(contractForm.taken_datetime).format('YYYY-MM-DDTHH:mm')}
                         onChange={
                             (event) => {
-                                dispatch(setTakeDateTime(event.target.value))
+                                dispatch(setTakeDateTime(moment(event.target.value)).format('YYYY-MM-DDTHH:mm'))
                             }
                         }
                         InputLabelProps={{
