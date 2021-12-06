@@ -248,7 +248,7 @@ const ContractForm = () => {
                         value={moment(contractForm.gave_datetime).format('YYYY-MM-DDTHH:mm')}
                         onChange={
                             (event) => {
-                                dispatch(setGaveDateTime(moment(event.target.value)).format('YYYY-MM-DDTHH:mm'))
+                                dispatch(setGaveDateTime(event.target.value))
                             }
                         }
                         InputLabelProps={{
@@ -263,6 +263,7 @@ const ContractForm = () => {
                         id="datetime-local"
                         label="Возврат"
                         type="datetime-local"
+                        max="9999-12-31T23:59"
                         value={moment(contractForm.end_datetime).format('YYYY-MM-DDTHH:mm')}
                         onChange={
                             (event) => {
@@ -293,7 +294,7 @@ const ContractForm = () => {
                         value={moment(contractForm.taken_datetime).format('YYYY-MM-DDTHH:mm')}
                         onChange={
                             (event) => {
-                                dispatch(setTakeDateTime(moment(event.target.value)).format('YYYY-MM-DDTHH:mm'))
+                                dispatch(setTakeDateTime(event.target.value))
                             }
                         }
                         InputLabelProps={{
