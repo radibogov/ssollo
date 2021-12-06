@@ -22,7 +22,7 @@ import {
     setTariffDate,
     setDepDateTime,
     setTariff,
-    setSummaProkata, setPayDate
+    setSummaProkata, setPayDate, setTakeDateTime, setGaveDateTime
 } from '../redux-state/reducers/contractFormReducer';
 import {Button} from '@material-ui/core';
 
@@ -52,6 +52,11 @@ display: flex;
 justify-content: flex-start;
 align-items: center;
 margin: 10px 0;
+`;
+const InputRowBetween = styled.div`
+display: flex;
+justify-content: space-between;
+
 `;
 const Inner = styled.div`
 border-bottom: 1px solid #3f51b5;
@@ -202,66 +207,103 @@ const ContractForm = () => {
             </InputRow>
         </Inner>
         <Inner>
-            <InputRow>
-                <TextField
-                    id="datetime-local"
-                    label="Начало"
-                    type="datetime-local"
-                    value={moment(contractForm.start_datetime).format('YYYY-MM-DDTHH:mm')}
-                    onChange={
-                        (event) => {
-                            dispatch(setStartDateTime(event.target.value))
-                            event.target.value < contractForm.end_datetime ? dispatch(setStartDateTime(event.target.value)) : dispatch(setStartDateTime(contractForm.start_datetime))
-                        }
-                    }
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-                <TextField
-                    id="date"
-                    label="Дата тар."
-                    type="date"
-                    value={moment(contractForm.tariff_date).format('YYYY-MM-DD')}
-                    onChange={
-                        (event) => {
-                            dispatch(setTariffDate(event.target.value))
-                        }
-                    }
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    style={{marginLeft: '20px'}}/>
+            <InputRowBetween>
+                <InputRow>
+                        <TextField
+                            id="datetime-local"
+                            label="Начало"
+                            type="datetime-local"
+                            value={moment(contractForm.start_datetime).format('YYYY-MM-DDTHH:mm')}
+                            onChange={
+                                (event) => {
+                                    dispatch(setStartDateTime(event.target.value))
+                                    event.target.value < contractForm.end_datetime ? dispatch(setStartDateTime(event.target.value)) : dispatch(setStartDateTime(contractForm.start_datetime))
+                                }
+                            }
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            id="date"
+                            label="Дата тар."
+                            type="date"
+                            value={moment(contractForm.tariff_date).format('YYYY-MM-DD')}
+                            onChange={
+                                (event) => {
+                                    dispatch(setTariffDate(event.target.value))
+                                }
+                            }
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            style={{marginLeft: '20px'}}/>
 
             </InputRow>
-            <InputRow>
-                <TextField
-                    id="datetime-local"
-                    label="Возврат"
-                    type="datetime-local"
-                    value={moment(contractForm.end_datetime).format('YYYY-MM-DDTHH:mm')}
-                    onChange={
-                        (event) => {
-                            event.target.value > contractForm.start_datetime ? dispatch(setEndDatetime(event.target.value)) : dispatch(setEndDatetime(contractForm.end_datetime))
+                <InputRow style={{width: '200px'}}>
+                    <TextField style={{width: '100%'}}
+                        id="datetime-local"
+                        label="Время выдачи"
+                        type="datetime-local"
+                        value={moment(contractForm.gave_datetime).format('YYYY-MM-DDTHH:mm')}
+                        onChange={
+                            (event) => {
+                                dispatch(setGaveDateTime(event.target.value))
+                            }
                         }
-                    }
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-                <Tooltip title={(calculation.fuel_after===null && calculation.mileage_after===null)? "Пока не заполнены топливо и(или) пробег в конце - нельзя нажать" : ''}
-                    >
-                    <FormControlLabel
-                        disabled={(calculation.fuel_after===null && calculation.mileage_after===null)? true : false}
-                        control={<Checkbox checked={contractForm.is_returned} onChange={() => {
-                            dispatch(setIsReturned())
-                        }} name="checkedA"/>}
-                        label="Возвращено"
-                        style={{marginLeft: '20px'}}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
-                </Tooltip>
+                </InputRow>
+            </InputRowBetween>
+            <InputRowBetween>
+                <InputRow>
+                    <TextField
+                        id="datetime-local"
+                        label="Возврат"
+                        type="datetime-local"
+                        value={moment(contractForm.end_datetime).format('YYYY-MM-DDTHH:mm')}
+                        onChange={
+                            (event) => {
+                                event.target.value > contractForm.start_datetime ? dispatch(setEndDatetime(event.target.value)) : dispatch(setEndDatetime(contractForm.end_datetime))
+                            }
+                        }
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <Tooltip title={(calculation.fuel_after===null && calculation.mileage_after===null)? "Пока не заполнены топливо и(или) пробег в конце - нельзя нажать" : ''}
+                    >
+                        <FormControlLabel
+                            disabled={(calculation.fuel_after===null && calculation.mileage_after===null)? true : false}
+                            control={<Checkbox checked={contractForm.is_returned} onChange={() => {
+                                dispatch(setIsReturned())
+                            }} name="checkedA"/>}
+                            label="Возвращено"
+                            style={{marginLeft: '20px'}}
+                        />
+                    </Tooltip>
+                </InputRow>
+                <InputRow style={{width: '200px'}}>
+                    <TextField style={{width: '100%'}}
+                        id="datetime-local"
+                        label="Время приема"
+                        type="datetime-local"
+                        value={moment(contractForm.taken_datetime).format('YYYY-MM-DDTHH:mm')}
+                        onChange={
+                            (event) => {
+                                dispatch(setTakeDateTime(event.target.value))
+                            }
+                        }
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </InputRow>
+            </InputRowBetween>
 
-            </InputRow>
+
             <InputRow>
                 <TextField
                     id="date"

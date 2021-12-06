@@ -121,6 +121,9 @@ const LeftTable = (props) => {
                 pay_date={item.tariff_date}
                 firm_id={item.firm?.id}
                 firm_name={item.firm?.name}
+
+                taken_datetime={item.taken_datetime}
+                gave_datetime={item.gave_datetime}
             />
         )}
 

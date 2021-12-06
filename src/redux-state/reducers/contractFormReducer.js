@@ -11,6 +11,8 @@ const SET_RESPRESENTATIVE_FIRST = 'SET_RESPRESENTATIVE_FIRST'
 const SET_RESPRESENTATIVE_SECOND = 'SET_RESPRESENTATIVE_SECOND'
 const SET_DEP_DATATIME = 'SET_DEP_DATATIME'
 const SET_START_DATETIME = 'SET_START_DATETIME'
+const SET_TAKE_DATETIME = 'SET_TAKE_DATETIME'
+const SET_GAVE_DATETIME = 'SET_GAVE_DATETIME'
 const SET_END_DATETIME = 'SET_END_DATETIME'
 const SET_TARIFF_DATE = 'SET_TARIFF_DATE'
 const SET_PAY_DATE = 'SET_PAY_DATE'
@@ -57,6 +59,8 @@ const defaultState = {
     representative_second_name: '',
     start_datetime: '',
     end_datetime: '',
+    gave_datetime:'',
+    taken_datetime:'',
     tariff_date: null,
     is_given: false,
     is_returned: false,
@@ -160,6 +164,16 @@ export const contractFormReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 start_datetime: action.payload,
+            }
+        case SET_TAKE_DATETIME:
+            return {
+                ...state,
+                taken_datetime: action.payload,
+            }
+        case SET_GAVE_DATETIME:
+            return {
+                ...state,
+                gave_datetime: action.payload,
             }
         case SET_END_DATETIME:
             return {
@@ -291,7 +305,9 @@ export const contractFormReducer = (state = defaultState, action) => {
                 territory_id: action.payload.territory_id,
                 territory_address: action.payload.territory_address,
                 comment: action.payload.comment,
-                marks: action.payload.marks
+                marks: action.payload.marks,
+                taken_datetime: action.payload.taken_datetime,
+                gave_datetime: action.payload.gave_datetime
             }
         case CLEAR_FORM:
             return {
@@ -318,6 +334,8 @@ export const setRepresentativeFirst = (payload) => { return { type: SET_RESPRESE
 export const setRepresentativeSecond = (payload) => { return { type: SET_RESPRESENTATIVE_SECOND, payload } }
 export const setDepDateTime = (payload) => { return { type: SET_DEP_DATATIME, payload } }
 export const setStartDateTime = (payload) => { return { type: SET_START_DATETIME, payload } }
+export const setTakeDateTime = (payload) => { return { type: SET_TAKE_DATETIME, payload } }
+export const setGaveDateTime = (payload) => { return { type: SET_GAVE_DATETIME, payload } }
 export const setEndDatetime = (payload) => { return { type: SET_END_DATETIME, payload } }
 export const setTariffDate = (payload) => { return { type: SET_TARIFF_DATE, payload } }
 export const setPayDate = (payload) => { return { type: SET_PAY_DATE, payload } }
