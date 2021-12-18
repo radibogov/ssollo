@@ -13,6 +13,8 @@ const SET_TYPE_PAYMENT = 'SET_TYPE_PAYMENT'
 const CLEAR_FORM_PAYMENT = 'CLEAR_FORM_PAYMENT'
 const SET_ALL_PAYMENT = 'SET_ALL_PAYMENT'
 const SET_USER_INFO = 'SET_USER_INFO'
+const SET_SERVICE_PRICE = 'SET_SERVICE_PRICE'
+const SET_COUNT_BEFORE = 'SET_COUNT_BEFORE'
 
 
 const defaultState = {
@@ -28,6 +30,7 @@ const defaultState = {
     service_id: '',
     service_name: '',
     service_price: '',
+    count_before: null,
     sum_of_money: '',
     doc_number: '',
     firm_id: '',
@@ -73,6 +76,16 @@ export const paymentReducer = (state = defaultState, action) => {
                 service_id: action.payload.id,
                 service_name: action.payload.name,
                 service_price: action.payload.price,
+            }
+        case SET_SERVICE_PRICE:
+            return {
+                ...state,
+                service_price: action.payload,
+            }
+        case SET_COUNT_BEFORE:
+            return {
+                ...state,
+                count_before: action.payload,
             }
         case SET_COUNT_PAYMENT:
             return {
@@ -129,6 +142,8 @@ export const setAllPayment = payload => { return { type: SET_ALL_PAYMENT, payloa
 export const setClientId = payload => { return { type: SET_CLIENT_ID_PAYMENT, payload } }
 export const setCarIdPayment = payload => { return { type: SET_CAR_ID_PAYMENT, payload } }
 export const setService = payload => { return { type: SET_SERVICE_PAYMENT, payload } }
+export const setServicePrice = payload => { return { type: SET_SERVICE_PRICE, payload } }
+export const setCountBefore = payload => { return { type: SET_COUNT_BEFORE, payload } }
 export const setUserInfo = payload => { return { type: SET_USER_INFO, payload } }
 export const setCountPayment = payload => { return { type: SET_COUNT_PAYMENT, payload } }
 export const setAccruedPayment = payload => { return { type: SET_ACCRUED_PAYMENT, payload } }

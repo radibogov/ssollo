@@ -11,7 +11,7 @@ import { toggleMoneyOpDialog } from '../../../redux-state/reducers/DialogsReduce
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import {
+import { setServicePrice,
     setAccruedPayment, setCarIdPayment, setClientId, setCountPayment,
     setDateOfPayment, setDocNumber, setFirmIdPayment, setOrderId, setSumOfMoney, setUserInfo
 } from '../../../redux-state/reducers/paymentReducer';
@@ -27,6 +27,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import moment from "moment";
 import {createPayment} from "../../../redux-state/async-actions/payment/createPayment";
 import {updatePayment} from "../../../redux-state/async-actions/payment/updatePayment";
+import {getRealCount} from "../../../redux-state/async-actions/getRealCount";
 
 const InputRow = styled.div`
 display: flex;
@@ -57,16 +58,32 @@ export default function MoneyOperationDialog() {
     const contractForm = useSelector(state => state.contractForm)
     const paymentForm = useSelector(state => state.paymentForm)
     const user = useSelector(state => state.user)
-
+    const activeCar = useSelector(state => state.lists.active_car)
+    const isMainPaymentBefore = useSelector(state => state.calculation.list).find(row => row.is_main_payment === true);
     useEffect(() => {
+        if (type===1 && isMainPaymentBefore) {
+            dispatch(getRealCount(contractForm.id))
+        }
         if (paymentForm.date_of_payment === '') {
             dispatch(setDateOfPayment(moment().format('YYYY-MM-DDTHH:mm')))
         }
     },[open]);
-    useEffect((render) => {
+    useEffect(() => {
         let summa = paymentForm.service_price*paymentForm.count
         dispatch(setAccruedPayment(Math.ceil(summa)))
-    }, [paymentForm.service_price,paymentForm.count]);
+
+        if (type===1) {
+            let count = paymentForm.count_before + paymentForm.count
+            if (activeCar) {
+                +count < 3 ? dispatch(setServicePrice(activeCar?.tarif_one_two)) :
+                    +count < 7 ? dispatch(setServicePrice(activeCar?.tarif_three_six)) :
+                        +count < 15 ? dispatch(setServicePrice(activeCar?.tarif_seven_four)) :
+                            +count < 31 ? dispatch(setServicePrice(activeCar?.tarif_five_three)) :
+                                dispatch(setServicePrice(activeCar?.tarif_one_two_mounth))
+            }
+        }
+    }, [paymentForm.service_price, paymentForm.count,paymentForm.count_before]);
+
 
     useEffect(() => {
         if (paymentForm.user_id === null) {
