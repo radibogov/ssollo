@@ -62,7 +62,8 @@ export default function MoneyOperationDialog() {
     const isMainPaymentBefore = useSelector(state => state.calculation.list).find(row => row.is_main_payment === true);
     useEffect(() => {
         if (type===1 && isMainPaymentBefore) {
-            dispatch(getRealCount(contractForm.id))
+            dispatch(getRealCount(contractForm.id));
+            dispatch(setCountPayment(1))
         }
         if (paymentForm.date_of_payment === '') {
             dispatch(setDateOfPayment(moment().format('YYYY-MM-DDTHH:mm')))
@@ -70,6 +71,7 @@ export default function MoneyOperationDialog() {
     },[open]);
     useEffect(() => {
         let summa = paymentForm.service_price*paymentForm.count
+
         dispatch(setAccruedPayment(Math.ceil(summa)))
 
         if (type===1) {
