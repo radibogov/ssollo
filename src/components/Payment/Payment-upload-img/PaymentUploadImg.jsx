@@ -52,7 +52,9 @@ const PaymentUploadImg = (props) => {
                             refLink.current.click()
                         }}
                     >
-                        {fileName ? fileName : type}
+                        <span style={{textOverflow: 'ellipsis', maxWidth: '50px',whiteSpace: 'nowrap', overflow:'hidden' }}>
+                             {fileName ? fileName : type}
+                        </span>
                     </Button>
                 </span>
             </Tooltip>

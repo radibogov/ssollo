@@ -94,11 +94,11 @@ const CommentsForm = () => {
                     </FormDate>
                 </Row>
                 <ImageBlock>
-                    <CommentsImageElement file={item.image_1} fileName={'Изображение 1'} />
-                    <CommentsImageElement file={item.image_2} fileName={'Изображение 2'} />
-                    <CommentsImageElement file={item.image_3} fileName={'Изображение 3'} />
-                    <CommentsImageElement file={item.image_4} fileName={'Изображение 4'} />
-                    <CommentsImageElement file={item.image_5} fileName={'Изображение 5'} />
+                    {item.image_1?<CommentsImageElement file={item.image_1} fileName={'Изображение 1'} />:null}
+                    {item.image_2?<CommentsImageElement file={item.image_2} fileName={'Изображение 2'} />:null}
+                    {item.image_3?<CommentsImageElement file={item.image_3} fileName={'Изображение 3'} />:null}
+                    {item.image_4?<CommentsImageElement file={item.image_4} fileName={'Изображение 4'} />:null}
+                    {item.image_5?<CommentsImageElement file={item.image_5} fileName={'Изображение 5'} />:null}
                 </ImageBlock>
                 <FormBtn >
                     <Tooltip title="Изменить">
